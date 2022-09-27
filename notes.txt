@@ -1,0 +1,21 @@
+# Find all instances of damage, hopefully
+# includes damage to heroes AND minions - 
+# we'll need to find a way to filter to heroes only
+
+# XPATH filter to get all major (?) events
+//Block//MetaData
+
+MetaName="DAMAGE"
+
+data attribute is the amount of damage taken
+<MetaData meta="1" data="1" infoCount="1" MetaName="DAMAGE">
+	<Info index="0" entity="66" EntityName="Rexxar"/>
+</MetaData>
+<MetaData meta="1" data="2" infoCount="1" MetaName="DAMAGE">
+	<Info index="0" entity="76" EntityName="Uther Lightbringer"/>
+</MetaData>
+<MetaData meta="1" data="4" infoCount="1" MetaName="DAMAGE">
+	<Info index="0" entity="64" EntityName="Madame Lazul"/>
+</MetaData>
+
+# TODO: Find out how healing and armour work
