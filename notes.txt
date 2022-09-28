@@ -1,8 +1,24 @@
-# https://hsreplay.net/replay/G6WU4VYVG7rPhPaUcPeZLY
-# Annotated game - T5 win as Naga Priest vs Madam Lazul
+<!-- https://hsreplay.net/replay/G6WU4VYVG7rPhPaUcPeZLY
+Annotated game - T5 win as King Anduin vs Madam Lazul
 
-# This file shows all the MetaData tags inside a <Block>
-# in a Hearthstone replay XML (XPATH expression: //Block//MetaData)
+see https://hearthsim.info/docs/gamestate-protocol/
+
+This file shows some setup tags that will be relevant for the project
+followed by all the MetaData tags inside a <Block>
+in a Hearthstone replay XML (XPATH expression: //Block//MetaData)
+
+This should (!) give all the info required to build arrays 
+of each hero's health each turn for the game
+
+to retrieve all actions which resulted in damage:
+//Block//MetaData[@MetaName="DAMAGE"] -->
+
+<Player id="2" playerID="1" accountHi="144115193835963207" accountLo="629195027" name="Ysoserious#11818">
+<Player id="3" playerID="2" accountHi="144115193835963207" accountLo="50788805" name="sa128k#1136">
+
+<FullEntity id="64" cardID="HERO_09b" EntityName="Madame Lazul">
+  <Tag tag="50" value="1" GameTagName="CONTROLLER"/>
+
 
 Opp. trades
 <MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
