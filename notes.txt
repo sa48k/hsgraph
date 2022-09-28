@@ -1,13 +1,254 @@
-# Find all instances of damage, hopefully
-# includes damage to heroes AND minions - 
-# we'll need to find a way to filter to heroes only
+# https://hsreplay.net/replay/G6WU4VYVG7rPhPaUcPeZLY
+# Annotated game - T5 win as Naga Priest vs Madam Lazul
 
-# XPATH filter to get all major (?) events
-//Block//MetaData
+# This file shows all the MetaData tags inside a <Block>
+# in a Hearthstone replay XML (XPATH expression: //Block//MetaData)
+
+Opp. trades
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="16" EntityName="Shard of the Naaru"/>
+      </MetaData>
+
+I coin
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="68" EntityName="The Coin"/>
+      </MetaData>
+
+I play Murkwater Scribe
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="44" EntityName="Murkwater Scribe"/>
+      </MetaData>
+
+Opp. plays TitS and discovers Shard of the Naaru
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="5" EntityName="Thrive in the Shadows"/>
+      </MetaData>
+<MetaData meta="20" data="7000" infoCount="1" MetaName="SLUSH_TIME">
+          <Info index="0" entity="5" EntityName="Thrive in the Shadows"/>
+        </MetaData>
+<MetaData meta="8" data="0" infoCount="1" MetaName="OVERRIDE_HISTORY">
+          <Info index="0" entity="5" EntityName="Thrive in the Shadows"/>
+        </MetaData>
+<MetaData meta="7" data="0" infoCount="1" MetaName="HISTORY_TARGET">
+          <Info index="0" entity="16" EntityName="Shard of the Naaru"/>
+        </MetaData>
+
+I play Amalgam on Murkwater and discover a Slitherspear        
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="52" EntityName="Amalgam of the Deep"/>
+      </MetaData>
+
+Murkwater hits Opp. face for 3 
+<MetaData meta="20" data="1200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="44" EntityName="Murkwater Scribe"/>
+      </MetaData>     
+<MetaData meta="1" data="3" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+
+Opp. plays Cathedral...
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="22" EntityName="Cathedral of Atonement"/>
+      </MetaData>
+
+I also play Cathedral... 
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="45" EntityName="Cathedral of Atonement"/>
+      </MetaData>
+
+and target Amalgam with it. It becomes a 4/4
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="52" EntityName="Amalgam of the Deep"/>
+        </MetaData>
+
+Amalgam attacks face for 4
+<MetaData meta="20" data="1200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="52" EntityName="Amalgam of the Deep"/>
+      </MetaData>
+<MetaData meta="1" data="4" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+
+And Murkwater does the same for 3
+<MetaData meta="20" data="1200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="44" EntityName="Murkwater Scribe"/>
+      </MetaData>
+<MetaData meta="1" data="3" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+
+Opp. plays Teacher, uses Cathedral on it, discovers a Call of the Grave (?)
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="15" EntityName="School Teacher"/>
+      </MetaData>
+<MetaData meta="8" data="0" infoCount="1" MetaName="OVERRIDE_HISTORY">
+          <Info index="0" entity="15" EntityName="School Teacher"/>
+        </MetaData>
+<MetaData meta="7" data="0" infoCount="1" MetaName="HISTORY_TARGET">
+          <Info index="0" entity="98"/>
+        </MetaData>
+<MetaData meta="7" data="0" infoCount="1" MetaName="HISTORY_TARGET">
+          <Info index="0" entity="97"/>
+        </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="15" EntityName="School Teacher"/>
+        </MetaData>
+
+I play Slitherspear and Radiant
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="88" EntityName="Vicious Slitherspear"/>
+      </MetaData>
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="56" EntityName="Radiant Elemental"/>
+      </MetaData>
+
+Then Shadow Word: Devour on Amalgam
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="58" EntityName="Shadow Word: Devour"/>
+      </MetaData>
+<MetaData meta="6" data="0" infoCount="1" MetaName="EFFECT_TIMING">
+            <Info index="0" entity="58" EntityName="Shadow Word: Devour"/>
+          </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+            <Info index="0" entity="58" EntityName="Shadow Word: Devour"/>
+          </MetaData>
+
+Casting the spell increases Slitherspear's attack by 1
+<MetaData meta="20" data="200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="88" EntityName="Vicious Slitherspear"/>
+      </MetaData>
+
+I Bless the Amalgam to make it a 10/10
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="53" EntityName="Bless"/>
+      </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+            <Info index="0" entity="52" EntityName="Amalgam of the Deep"/>
+          </MetaData>
+
+Casting the spell increases Slitherspear's attack by 1
+<MetaData meta="20" data="200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="88" EntityName="Vicious Slitherspear"/>
+      </MetaData>
+
+Attack Hero with Amalgam for 10
+<MetaData meta="20" data="1200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="52" EntityName="Amalgam of the Deep"/>
+      </MetaData>
+<MetaData meta="1" data="10" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+
+Attack Hero with Murkwater for 3
+<MetaData meta="20" data="1200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="44" EntityName="Murkwater Scribe"/>
+      </MetaData>
+<MetaData meta="1" data="3" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+
+Opp. plays Radiant
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="32" EntityName="Radiant Elemental"/>
+      </MetaData>
+
+Opp. plays Shard of the Naaru
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="16" EntityName="Shard of the Naaru"/>
+      </MetaData>
+<MetaData meta="6" data="0" infoCount="1" MetaName="EFFECT_TIMING">
+            <Info index="0" entity="16" EntityName="Shard of the Naaru"/>
+          </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="44" EntityName="Murkwater Scribe"/>
+        </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="52" EntityName="Amalgam of the Deep"/>
+        </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="88" EntityName="Vicious Slitherspear"/>
+        </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="56" EntityName="Radiant Elemental"/>
+        </MetaData>
+
+Opp. plays Serpent wig and Boon of Ascended on School Teacher
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="27" EntityName="Serpent Wig"/>
+      </MetaData>
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="6" EntityName="Boon of the Ascended"/>
+      </MetaData>
+<MetaData meta="8" data="0" infoCount="1" MetaName="OVERRIDE_HISTORY">
+          <Info index="0" entity="6" EntityName="Boon of the Ascended"/>
+        </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="15" EntityName="School Teacher"/>
+        </MetaData>
+<MetaData meta="9" data="0" infoCount="1" MetaName="HISTORY_TARGET_DONT_DUPLICATE_UNTIL_END">
+          <Info index="0" entity="135" EntityName="Ascended Kyrian"/>
+        </MetaData>
+
+School Teacher attacks Murkwater for 7 dmg, receiving 3 dmg
+<MetaData meta="20" data="1200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="15" EntityName="School Teacher"/>
+      </MetaData>
+<MetaData meta="1" data="7" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="44" EntityName="Murkwater Scribe"/>
+      </MetaData>
+<MetaData meta="1" data="3" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="15" EntityName="School Teacher"/>
+      </MetaData>
+
+I play SotN
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="39" EntityName="Shard of the Naaru"/>
+      </MetaData>
+<MetaData meta="6" data="0" infoCount="1" MetaName="EFFECT_TIMING">
+            <Info index="0" entity="39" EntityName="Shard of the Naaru"/>
+          </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="15" EntityName="School Teacher"/>
+        </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="32" EntityName="Radiant Elemental"/>
+        </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="135" EntityName="Ascended Kyrian"/>
+        </MetaData>
+
+I play Cathedral on Radiant, making it a 4/4
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="56" EntityName="Radiant Elemental"/>
+        </MetaData>
+
+I hit Hero face for 4
+<MetaData meta="20" data="1200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="56" EntityName="Radiant Elemental"/>
+      </MetaData>
+<MetaData meta="1" data="4" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+
+I heal myself for zero, as a flex
+<MetaData meta="20" data="2000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="67" EntityName="Lesser Heal"/>
+      </MetaData>
+<MetaData meta="0" data="0" infoCount="1" MetaName="TARGET">
+          <Info index="0" entity="66" EntityName="King Anduin"/>
+        </MetaData>
+
+I play Murkwater
+<MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="35" EntityName="Murkwater Scribe"/>
+      </MetaData>
+
+Opp. concedes
+
 
 MetaName="DAMAGE"
 
-data attribute is the amount of damage taken
+
 <MetaData meta="1" data="1" infoCount="1" MetaName="DAMAGE">
 	<Info index="0" entity="66" EntityName="Rexxar"/>
 </MetaData>
