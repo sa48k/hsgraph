@@ -1,9 +1,10 @@
 from lxml import etree
 
-tree = etree.parse("./data/PriestWinT5.xml")
+# tree = etree.parse("./data/PriestWinT5.xml")
+tree = etree.parse("./data/BeastHunterWin_annotated.xml")
 
 players = tree.xpath('//Player')
-# damages = tree.xpath('//Block//MetaData[@MetaName="DAMAGE"]')
+damages = tree.xpath('//Block//MetaData[@MetaName="DAMAGE"]')
 
 player1 = {}
 player2 = {}
@@ -18,23 +19,20 @@ player2['name'] = players[1].get('name').split('#')[0]
 player2['entityid'] = players[1].xpath('Tag[@GameTagName = "HERO_ENTITY"] ')[0].get('value')
 player2['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player2['entityid'] + '"]/parent::* ')[0].get('EntityName')
 
-# dmg_amounts = [d.get('data') for d in damages]
-# dmg_target_entities = [d.getchildren()[0].get('entity') for d in damages]
-# dmg_target_names = [d.getchildren()[0].get('EntityName') for d in damages]
-# dmg_zip = list(zip(dmg_amounts, dmg_target_entities, dmg_target_names))
+dmg_amounts = [d.get('data') for d in damages]
+dmg_target_entities = [d.getchildren()[0].get('entity') for d in damages]
+dmg_target_names = [d.getchildren()[0].get('EntityName') for d in damages]
+dmg_zip = list(zip(dmg_amounts, dmg_target_entities, dmg_target_names))
 
-# print('Damages that occurred in this match:\n', dmg_zip)
+print('Damages that occurred in this match (dmg amount, target entityid, target name):\n', dmg_zip)
 
-# SCRATCH ALL THAT
-
-# We can retrieve the Hero's damage so far using:
+# We can retrieve the Hero's damage (maybe) using:
 # <TagChange entity="64" tag="44" value="23" EntityCardID="HERO_09b" EntityCardName="Madame Lazul" GameTagName="DAMAGE"/>
 #     Hero entity id /	    damage taken /
 
 healthtree1 = tree.xpath('//TagChange[@entity="' + player1['entityid'] + '"][@tag="44"]  ') 
-print(healthtree1)
 player1['health'] = [d.get('value') for d in healthtree1]
 healthtree2 = tree.xpath('//TagChange[@entity="' + player2['entityid'] + '"][@tag="44"]') 
 player2['health'] = [d.get('value') for d in healthtree2]
 
-print('Players:\n', player1, player2, '\n')
+print('Players:\n', player1, '\n', player2)
