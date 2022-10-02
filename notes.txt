@@ -13,13 +13,46 @@ of each hero's health each turn for the game
 to retrieve all actions which resulted in damage:
 //Block//MetaData[@MetaName="DAMAGE"] -->
 
+<!-- Take the playerID and name from here -->
 <Player id="2" playerID="1" accountHi="144115193835963207" accountLo="629195027" name="Ysoserious#11818">
 <Player id="3" playerID="2" accountHi="144115193835963207" accountLo="50788805" name="sa128k#1136">
 
+<!-- The id="64" becomes the entityID in damage blocks.
+Match the playerID here to the CONTROLLER tag to get the id and portrait of both Heroes -->
 <FullEntity id="64" cardID="HERO_09b" EntityName="Madame Lazul">
   <Tag tag="50" value="1" GameTagName="CONTROLLER"/>
+</FullEntity>
+<FullEntity id="66" cardID="HERO_09c" EntityName="King Anduin">
+  <Tag tag="50" value="2" GameTagName="CONTROLLER"/>
+</FullEntity>
 
+------------ DAMAGE BLOCKS ONLY -------------
+<MetaData meta="1" data="3" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+<MetaData meta="1" data="4" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+<MetaData meta="1" data="3" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+<MetaData meta="1" data="10" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+<MetaData meta="1" data="3" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
+<MetaData meta="1" data="7" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="44" EntityName="Murkwater Scribe"/>
+      </MetaData>
+<MetaData meta="1" data="3" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="15" EntityName="School Teacher"/>
+      </MetaData>
+<MetaData meta="1" data="4" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Madame Lazul"/>
+      </MetaData>
 
+------------------FULL GAME-----------------------
 Opp. trades
 <MetaData meta="20" data="3000" infoCount="1" MetaName="SLUSH_TIME">
         <Info index="0" entity="16" EntityName="Shard of the Naaru"/>
@@ -261,18 +294,204 @@ I play Murkwater
 
 Opp. concedes
 
+------------------------------------------
 
-MetaName="DAMAGE"
+    # A single turn in which the opponent (Illidan, Demon Hunter)
+    # Hero powers then hits a 2/1 Peasant
 
-
-<MetaData meta="1" data="1" infoCount="1" MetaName="DAMAGE">
-	<Info index="0" entity="66" EntityName="Rexxar"/>
-</MetaData>
-<MetaData meta="1" data="2" infoCount="1" MetaName="DAMAGE">
-	<Info index="0" entity="76" EntityName="Uther Lightbringer"/>
-</MetaData>
-<MetaData meta="1" data="4" infoCount="1" MetaName="DAMAGE">
-	<Info index="0" entity="64" EntityName="Madame Lazul"/>
-</MetaData>
-
-# TODO: Find out how healing and armour work
+    <Block entity="1" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:06.997099+13:00" block_sequence_num="19" EntityCardID="GameEntity" EntityCardName="GameEntity" BlockTypeName="TRIGGER">
+      <TagChange entity="3" tag="1292" value="1" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136"/>
+      <TagChange entity="3" tag="1292" value="0" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136"/>
+      <TagChange entity="2" tag="1292" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="3" tag="7" value="55" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" GameTagName="TIMEOUT"/>
+      <TagChange entity="56" tag="273" value="1" EntityCardID="BAR_074" EntityCardName="Far Watch Post" GameTagName="NUM_TURNS_IN_HAND"/>
+      <TagChange entity="63" tag="273" value="1" EntityCardID="TSC_070" EntityCardName="Harpoon Gun" GameTagName="NUM_TURNS_IN_HAND"/>
+      <TagChange entity="46" tag="273" value="1" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="NUM_TURNS_IN_HAND"/>
+      <TagChange entity="3" tag="23" value="0" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" GameTagName="CURRENT_PLAYER"/>
+      <TagChange entity="2" tag="23" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="CURRENT_PLAYER"/>
+      <TagChange entity="1" tag="20" value="2" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="TURN"/>
+      <TagChange entity="1" tag="1882" value="1" EntityCardID="GameEntity" EntityCardName="GameEntity"/>
+      <TagChange entity="2" tag="20" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="TURN"/>
+      <TagChange entity="1" tag="198" value="6" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="NEXT_STEP" StepName="MAIN_READY"/>
+    </Block>
+    <TagChange entity="1" tag="19" value="6" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="STEP" StepName="MAIN_READY"/>
+    <Block entity="2" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:06.997099+13:00" block_sequence_num="20" EntityCardID="tracee#21705" EntityCardName="tracee#21705" BlockTypeName="TRIGGER">
+      <TagChange entity="1" tag="271" value="2" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="NUM_TURNS_IN_PLAY"/>
+      <TagChange entity="2" tag="271" value="2" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="NUM_TURNS_IN_PLAY"/>
+      <TagChange entity="3" tag="271" value="2" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" GameTagName="NUM_TURNS_IN_PLAY"/>
+      <TagChange entity="64" tag="271" value="2" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="NUM_TURNS_IN_PLAY"/>
+      <TagChange entity="65" tag="271" value="2" EntityCardID="HERO_10bp" EntityCardName="Demon Claws" GameTagName="NUM_TURNS_IN_PLAY"/>
+      <TagChange entity="66" tag="271" value="2" EntityCardID="HERO_05" EntityCardName="Rexxar" GameTagName="NUM_TURNS_IN_PLAY"/>
+      <TagChange entity="67" tag="271" value="2" EntityCardID="HERO_05bp" EntityCardName="Steady Shot" GameTagName="NUM_TURNS_IN_PLAY"/>
+      <TagChange entity="39" tag="271" value="1" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="NUM_TURNS_IN_PLAY"/>
+      <TagChange entity="2" tag="26" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="RESOURCES"/>
+      <TagChange entity="3" tag="399" value="0" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" GameTagName="NUM_CARDS_DRAWN_THIS_TURN"/>
+      <TagChange entity="1" tag="198" value="17" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="NEXT_STEP" StepName="MAIN_START_TRIGGERS"/>
+    </Block>
+    <TagChange entity="1" tag="19" value="17" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="STEP" StepName="MAIN_START_TRIGGERS"/>
+    <Block entity="2" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:06.997099+13:00" block_sequence_num="21" EntityCardID="tracee#21705" EntityCardName="tracee#21705" BlockTypeName="TRIGGER">
+      <TagChange entity="1" tag="198" value="9" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="NEXT_STEP" StepName="MAIN_START"/>
+    </Block>
+    <TagChange entity="1" tag="19" value="9" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="STEP" StepName="MAIN_START"/>
+    <Block entity="2" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:06.997099+13:00" block_sequence_num="22" EntityCardID="tracee#21705" EntityCardName="tracee#21705" BlockTypeName="TRIGGER">
+      <TagChange entity="2" tag="2166" value="27" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="2" tag="467" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="27" tag="49" value="3" GameTagName="ZONE" ZoneName="HAND"/>
+      <TagChange entity="27" tag="263" value="6" GameTagName="ZONE_POSITION"/>
+      <TagChange entity="2" tag="399" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="NUM_CARDS_DRAWN_THIS_TURN"/>
+      <TagChange entity="2" tag="995" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="2" tag="467" value="0" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="1" tag="198" value="10" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="NEXT_STEP" StepName="MAIN_ACTION"/>
+    </Block>
+    <TagChange entity="1" tag="19" value="10" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="STEP" StepName="MAIN_ACTION"/>
+    <Block entity="2" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:06.997099+13:00" block_sequence_num="23" EntityCardID="tracee#21705" EntityCardName="tracee#21705" BlockTypeName="TRIGGER">
+      <TagChange entity="1" tag="198" value="12" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="NEXT_STEP" StepName="MAIN_END"/>
+    </Block>
+    <Block entity="65" type="7" effectCardId="System.Collections.Generic.List`1[System.String]" effectIndex="0" ts="2022-09-29T21:55:10.183411+13:00" block_sequence_num="24" EntityCardID="HERO_10bp" EntityCardName="Demon Claws" BlockTypeName="PLAY">
+      <TagChange entity="2" tag="2245" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="2" tag="25" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="RESOURCES_USED"/>
+      <TagChange entity="2" tag="418" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="NUM_RESOURCES_SPENT_THIS_GAME"/>
+      <MetaData meta="20" data="2000" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="65" EntityName="Demon Claws"/>
+      </MetaData>
+      <Block entity="65" type="3" effectCardId="System.Collections.Generic.List`1[System.String]" effectIndex="0" ts="2022-09-29T21:55:10.183411+13:00" block_sequence_num="25" EntityCardID="HERO_10bp" EntityCardName="Demon Claws" BlockTypeName="POWER">
+        <FullEntity id="78" EntityName="Demon Claws">
+          <Tag tag="49" value="6" GameTagName="ZONE" ZoneName="SETASIDE"/>
+          <Tag tag="50" value="1" GameTagName="CONTROLLER"/>
+          <Tag tag="53" value="78" GameTagName="ENTITY_ID"/>
+        </FullEntity>
+        <ShowEntity entity="78" cardID="HERO_10bpe" EntityName="Demon Claws">
+          <Tag tag="50" value="1" GameTagName="CONTROLLER"/>
+          <Tag tag="202" value="6" GameTagName="CARDTYPE"/>
+          <Tag tag="40" value="64" GameTagName="ATTACHED"/>
+          <Tag tag="49" value="6" GameTagName="ZONE" ZoneName="SETASIDE"/>
+          <Tag tag="53" value="78" GameTagName="ENTITY_ID"/>
+          <Tag tag="313" value="65" GameTagName="CREATOR"/>
+          <Tag tag="338" value="1" GameTagName="TAG_ONE_TURN_EFFECT"/>
+          <Tag tag="1037" value="1"/>
+          <Tag tag="1068" value="0"/>
+          <Tag tag="1284" value="60224" GameTagName="CREATOR_DBID"/>
+          <Tag tag="1556" value="1" GameTagName="SPAWN_TIME_COUNT"/>
+        </ShowEntity>
+        <TagChange entity="64" tag="338" value="1" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="TAG_ONE_TURN_EFFECT"/>
+        <TagChange entity="78" tag="1068" value="1" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws"/>
+        <TagChange entity="78" tag="1068" value="0" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws"/>
+        <TagChange entity="78" tag="49" value="1" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws" GameTagName="ZONE" ZoneName="PLAY"/>
+        <TagChange entity="64" tag="479" value="1" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage"/>
+        <TagChange entity="64" tag="47" value="1" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="ATK"/>
+      </Block>
+      <TagChange entity="2" tag="406" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="HEROPOWER_ACTIVATIONS_THIS_TURN"/>
+      <TagChange entity="2" tag="1739" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="65" tag="43" value="1" EntityCardID="HERO_10bp" EntityCardName="Demon Claws" GameTagName="EXHAUSTED"/>
+      <Block entity="2" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:10.183411+13:00" block_sequence_num="26" EntityCardID="tracee#21705" EntityCardName="tracee#21705" BlockTypeName="TRIGGER">
+        <TagChange entity="2" tag="394" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="NUM_TIMES_HERO_POWER_USED_THIS_GAME"/>
+      </Block>
+      <TagChange entity="1" tag="1323" value="2" EntityCardID="GameEntity" EntityCardName="GameEntity"/>
+      <TagChange entity="2" tag="358" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="NUM_OPTIONS_PLAYED_THIS_TURN"/>
+    </Block>
+    <MetaData meta="20" data="1000" infoCount="1" MetaName="SLUSH_TIME">
+      <Info index="0" entity="65" EntityName="Demon Claws"/>
+    </MetaData>
+    <TagChange entity="64" tag="267" value="39" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="CARD_TARGET"/>
+    <Block entity="64" type="1" effectCardId="System.Collections.Generic.List`1[System.String]" effectIndex="0" target="39" ts="2022-09-29T21:55:11.534944+13:00" block_sequence_num="27" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" TargetName="Peasant" BlockTypeName="ATTACK">
+      <TagChange entity="64" tag="1715" value="64" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage"/>
+      <TagChange entity="39" tag="1715" value="64" EntityCardID="SW_319" EntityCardName="Peasant"/>
+      <TagChange entity="1" tag="39" value="64" EntityCardID="GameEntity" EntityCardName="GameEntity" ValueReferenceCardID="HERO_10" ValueReferenceCardName="Illidan Stormrage" GameTagName="PROPOSED_ATTACKER"/>
+      <TagChange entity="1" tag="37" value="39" EntityCardID="GameEntity" EntityCardName="GameEntity" ValueReferenceCardID="SW_319" ValueReferenceCardName="Peasant" GameTagName="PROPOSED_DEFENDER"/>
+      <TagChange entity="64" tag="38" value="1" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="ATTACKING"/>
+      <MetaData meta="20" data="1200" infoCount="1" MetaName="SLUSH_TIME">
+        <Info index="0" entity="64" EntityName="Illidan Stormrage"/>
+      </MetaData>
+      <TagChange entity="39" tag="36" value="1" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="DEFENDING"/>
+      <TagChange entity="64" tag="297" value="1" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="NUM_ATTACKS_THIS_TURN"/>
+      <TagChange entity="64" tag="43" value="1" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="EXHAUSTED"/>
+      <TagChange entity="39" tag="2187" value="64" EntityCardID="SW_319" EntityCardName="Peasant"/>
+      <TagChange entity="39" tag="318" value="1" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="PREDAMAGE"/>
+      <TagChange entity="39" tag="1173" value="39" EntityCardID="SW_319" EntityCardName="Peasant"/>
+      <TagChange entity="39" tag="2187" value="0" EntityCardID="SW_319" EntityCardName="Peasant"/>
+      <TagChange entity="39" tag="318" value="0" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="PREDAMAGE"/>
+      <TagChange entity="39" tag="1173" value="0" EntityCardID="SW_319" EntityCardName="Peasant"/>
+      <TagChange entity="2" tag="2335" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="39" tag="318" value="1" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="PREDAMAGE"/>
+      <TagChange entity="39" tag="318" value="0" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="PREDAMAGE"/>
+      <MetaData meta="1" data="1" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="39" EntityName="Peasant"/>
+      </MetaData>
+      <TagChange entity="39" tag="18" value="64" EntityCardID="SW_319" EntityCardName="Peasant" ValueReferenceCardID="HERO_10" ValueReferenceCardName="Illidan Stormrage" GameTagName="LAST_AFFECTED_BY"/>
+      <TagChange entity="39" tag="44" value="1" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="DAMAGE"/>
+      <TagChange entity="64" tag="2187" value="39" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage"/>
+      <TagChange entity="64" tag="318" value="2" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="PREDAMAGE"/>
+      <TagChange entity="64" tag="1173" value="64" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage"/>
+      <TagChange entity="64" tag="2187" value="0" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage"/>
+      <TagChange entity="64" tag="318" value="0" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="PREDAMAGE"/>
+      <TagChange entity="64" tag="1173" value="0" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage"/>
+      <TagChange entity="64" tag="318" value="2" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="PREDAMAGE"/>
+      <TagChange entity="64" tag="318" value="0" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="PREDAMAGE"/>
+      <MetaData meta="1" data="2" infoCount="1" MetaName="DAMAGE">
+        <Info index="0" entity="64" EntityName="Illidan Stormrage"/>
+      </MetaData>
+      <TagChange entity="64" tag="18" value="39" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" ValueReferenceCardID="SW_319" ValueReferenceCardName="Peasant" GameTagName="LAST_AFFECTED_BY"/>
+      <TagChange entity="64" tag="44" value="2" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="DAMAGE"/>
+      <TagChange entity="2" tag="464" value="2" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="2" tag="1575" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="2" tag="1573" value="1" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="1" tag="1710" value="1" EntityCardID="GameEntity" EntityCardName="GameEntity"/>
+      <TagChange entity="1" tag="1710" value="0" EntityCardID="GameEntity" EntityCardName="GameEntity"/>
+      <TagChange entity="1" tag="1710" value="1" EntityCardID="GameEntity" EntityCardName="GameEntity"/>
+      <TagChange entity="1" tag="1710" value="0" EntityCardID="GameEntity" EntityCardName="GameEntity"/>
+      <TagChange entity="1" tag="39" value="0" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="PROPOSED_ATTACKER"/>
+      <TagChange entity="1" tag="37" value="0" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="PROPOSED_DEFENDER"/>
+      <TagChange entity="64" tag="38" value="0" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="ATTACKING"/>
+      <TagChange entity="39" tag="36" value="0" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="DEFENDING"/>
+    </Block>
+    <Block entity="1" type="6" effectCardId="System.Collections.Generic.List`1[System.String]" effectIndex="0" ts="2022-09-29T21:55:11.534944+13:00" block_sequence_num="28" EntityCardID="GameEntity" EntityCardName="GameEntity" BlockTypeName="DEATHS">
+      <TagChange entity="3" tag="368" value="1" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" GameTagName="NUM_MINIONS_PLAYER_KILLED_THIS_TURN"/>
+      <TagChange entity="1" tag="369" value="1" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="NUM_MINIONS_KILLED_THIS_TURN"/>
+      <TagChange entity="39" tag="1068" value="4" EntityCardID="SW_319" EntityCardName="Peasant"/>
+      <TagChange entity="39" tag="1068" value="0" EntityCardID="SW_319" EntityCardName="Peasant"/>
+      <TagChange entity="39" tag="43" value="0" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="EXHAUSTED"/>
+      <TagChange entity="39" tag="263" value="0" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="ZONE_POSITION"/>
+      <TagChange entity="39" tag="49" value="4" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="ZONE" ZoneName="GRAVEYARD"/>
+      <TagChange entity="3" tag="398" value="1" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" GameTagName="NUM_FRIENDLY_MINIONS_THAT_DIED_THIS_TURN"/>
+      <TagChange entity="3" tag="412" value="1" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" GameTagName="NUM_FRIENDLY_MINIONS_THAT_DIED_THIS_GAME"/>
+      <TagChange entity="39" tag="44" value="0" EntityCardID="SW_319" EntityCardName="Peasant" GameTagName="DAMAGE"/>
+    </Block>
+    <TagChange entity="1" tag="1323" value="3" EntityCardID="GameEntity" EntityCardName="GameEntity"/>
+    <TagChange entity="2" tag="358" value="2" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="NUM_OPTIONS_PLAYED_THIS_TURN"/>
+    <MetaData meta="20" data="1000" infoCount="1" MetaName="SLUSH_TIME">
+      <Info index="0" entity="64" EntityName="Illidan Stormrage"/>
+    </MetaData>
+    <TagChange entity="1" tag="19" value="12" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="STEP" StepName="MAIN_END"/>
+    <Block entity="2" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:12.668957+13:00" block_sequence_num="29" EntityCardID="tracee#21705" EntityCardName="tracee#21705" BlockTypeName="TRIGGER">
+      <TagChange entity="1" tag="198" value="16" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="NEXT_STEP" StepName="MAIN_CLEANUP"/>
+    </Block>
+    <Block entity="2" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:12.668957+13:00" block_sequence_num="30" EntityCardID="tracee#21705" EntityCardName="tracee#21705" BlockTypeName="TRIGGER"/>
+    <Block entity="2" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" effectIndex="1" ts="2022-09-29T21:55:12.668957+13:00" block_sequence_num="31" EntityCardID="tracee#21705" EntityCardName="tracee#21705" BlockTypeName="TRIGGER">
+      <TagChange entity="2" tag="1853" value="2" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+    </Block>
+    <Block entity="3" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:12.668957+13:00" block_sequence_num="32" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" BlockTypeName="TRIGGER"/>
+    <Block entity="3" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" effectIndex="1" ts="2022-09-29T21:55:12.668957+13:00" block_sequence_num="33" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" BlockTypeName="TRIGGER"/>
+    <TagChange entity="1" tag="19" value="16" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="STEP" StepName="MAIN_CLEANUP"/>
+    <Block entity="2" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:12.668957+13:00" block_sequence_num="34" EntityCardID="tracee#21705" EntityCardName="tracee#21705" BlockTypeName="TRIGGER">
+      <TagChange entity="1" tag="198" value="13" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="NEXT_STEP" StepName="MAIN_NEXT"/>
+    </Block>
+    <Block entity="78" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" triggerKeyword="338" ts="2022-09-29T21:55:12.668957+13:00" block_sequence_num="35" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws" TriggerKeywordName="TAG_ONE_TURN_EFFECT" BlockTypeName="TRIGGER">
+      <TagChange entity="78" tag="2747" value="78" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws"/>
+      <TagChange entity="78" tag="18" value="78" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws" ValueReferenceCardID="HERO_10bpe" ValueReferenceCardName="Demon Claws" GameTagName="LAST_AFFECTED_BY"/>
+      <TagChange entity="78" tag="1068" value="4" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws"/>
+      <TagChange entity="78" tag="1068" value="0" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws"/>
+      <TagChange entity="78" tag="49" value="4" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws" GameTagName="ZONE" ZoneName="GRAVEYARD"/>
+      <TagChange entity="64" tag="338" value="0" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="TAG_ONE_TURN_EFFECT"/>
+      <TagChange entity="78" tag="1234" value="64" EntityCardID="HERO_10bpe" EntityCardName="Demon Claws"/>
+      <HideEntity entity="78" zone="4" ts="2022-09-29T21:55:12.668957+13:00"/>
+      <TagChange entity="64" tag="479" value="0" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage"/>
+      <TagChange entity="64" tag="47" value="0" EntityCardID="HERO_10" EntityCardName="Illidan Stormrage" GameTagName="ATK"/>
+    </Block>
+    <TagChange entity="1" tag="19" value="13" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="STEP" StepName="MAIN_NEXT"/>
+    <Block entity="1" type="5" effectCardId="System.Collections.Generic.List`1[System.String]" ts="2022-09-29T21:55:12.668957+13:00" block_sequence_num="36" EntityCardID="GameEntity" EntityCardName="GameEntity" BlockTypeName="TRIGGER">
+      <TagChange entity="2" tag="1292" value="0" EntityCardID="tracee#21705" EntityCardName="tracee#21705"/>
+      <TagChange entity="3" tag="1292" value="1" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136"/>
+      <TagChange entity="2" tag="7" value="55" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="TIMEOUT"/>
+      <TagChange entity="2" tag="23" value="0" EntityCardID="tracee#21705" EntityCardName="tracee#21705" GameTagName="CURRENT_PLAYER"/>
+      <TagChange entity="3" tag="23" value="1" EntityCardID="sa128k#1136" EntityCardName="sa128k#1136" GameTagName="CURRENT_PLAYER"/>
+      <TagChange entity="1" tag="20" value="3" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="TURN"/>

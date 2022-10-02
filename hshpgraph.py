@@ -1,8 +1,8 @@
 from lxml import etree
 
 # tree = etree.parse("./data/PriestWinT5.xml")
-# tree = etree.parse("./data/BeastHunterWin_annotated.xml")
-tree = etree.parse("./data/BeastHunterWin2_annotated.xml") # https://hsreplay.net/replay/gRfknupKptbsozKXa7DnZk
+tree = etree.parse("./data/BeastHunterWin_annotated.xml") # https://hsreplay.net/replay/LQ2unSYf7w7hLfBu5Foa6U
+# tree = etree.parse("./data/BeastHunterWin2_annotated.xml") # https://hsreplay.net/replay/gRfknupKptbsozKXa7DnZk
 
 players = tree.xpath('//Player')
 damages = tree.xpath('//Block//MetaData[@MetaName="DAMAGE"]')
@@ -12,7 +12,7 @@ player2 = {}
 
 player1['id'] = players[0].get('playerID')
 player1['name'] = players[0].get('name').split('#')[0]
-player1['entityid'] = players[0].xpath('//Tag[@GameTagName = "HERO_ENTITY"] ')[0].get('value') # TODO: This changes e.g. when Hero Cards are played
+player1['entityid'] = players[0].xpath('//Tag[@GameTagName = "HERO_ENTITY"] ')[0].get('value') # TODO: Handle changes e.g. when Hero Cards are played
 player1['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player1['entityid'] + '"]/parent::* ')[0].get('EntityName')
 
 player2['id'] = players[1].get('playerID')
@@ -41,4 +41,19 @@ player2['health'] = [d.get('value') for d in healthtree2]
 
 print('Players:\n', player1, '\n', player2)
 
+# turns = tree.xpath('//TagChange[@entity="1"][@tag="20"]')
+# print(f'This game took {len(turns)} turns')
 # TODO: A better way might be to iterate over each turn, then calculate each Hero's health at the end of that turn
+# This line denotes a change of turn
+#
+# <TagChange entity="1" tag="20" value="19" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="TURN"/>
+#                             19th turn /   (both players take turns, so this is T10 in-game)
+
+turns = tree.xpath('//Block//TagChange[@entity="1"][@tag="20"]|//Block//MetaData[@MetaName="DAMAGE"]')
+currentturn = 0
+
+for turn in turns:
+    if turn.get('GameTagName'):  # next turn
+        currentturn += 1         # TODO: find a more reliable way to do this
+        print(f'Turn {currentturn}')
+    print(turn.items())
