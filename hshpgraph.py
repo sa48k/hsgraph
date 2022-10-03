@@ -56,7 +56,11 @@ for turn in turns:
     else:
         target = turn.getchildren()[0].get('EntityName')
         dmg = turn.get('data')
-        if turn.get('meta') == '1':
+        if turn.get('meta') == '1':     # damages target
             print(f'{dmg} damage to {target}')
-        if turn.get('meta') == '2':
+        if turn.get('meta') == '2':     # heals target
             print(f'{dmg} healing to {target}')
+            
+# outcome = tree.xpath('//TagChange[@tag="17"][@value="4"]|//TagChange[@tag="17"][@value="5"]')
+winner = tree.xpath('//TagChange[@tag="17"][@value="4"]')[0]
+print(f"The winner was {winner.get('EntityCardID').split('#')[0]}")
