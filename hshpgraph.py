@@ -1,8 +1,9 @@
 from lxml import etree
 
 # tree = etree.parse("./data/PriestWinT5.xml")
-tree = etree.parse("./data/BeastHunterWin_annotated.xml") # https://hsreplay.net/replay/LQ2unSYf7w7hLfBu5Foa6U
+# tree = etree.parse("./data/BeastHunterWin_annotated.xml") # https://hsreplay.net/replay/LQ2unSYf7w7hLfBu5Foa6U
 # tree = etree.parse("./data/BeastHunterWin2_annotated.xml") # https://hsreplay.net/replay/gRfknupKptbsozKXa7DnZk
+tree = etree.parse("./data/Healfest_annotated.xml") # priest healfest
 
 players = tree.xpath('//Player')
 damages = tree.xpath('//Block//MetaData[@MetaName="DAMAGE"]')
@@ -41,19 +42,21 @@ player2['health'] = [d.get('value') for d in healthtree2]
 
 print('Players:\n', player1, '\n', player2)
 
-# turns = tree.xpath('//TagChange[@entity="1"][@tag="20"]')
-# print(f'This game took {len(turns)} turns')
-# TODO: A better way might be to iterate over each turn, then calculate each Hero's health at the end of that turn
-# This line denotes a change of turn
-#
+# change of turn looks like this:
 # <TagChange entity="1" tag="20" value="19" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="TURN"/>
 #                             19th turn /   (both players take turns, so this is T10 in-game)
 
-turns = tree.xpath('//Block//TagChange[@entity="1"][@tag="20"]|//Block//MetaData[@MetaName="DAMAGE"]')
-currentturn = 0
+turns = tree.xpath('//Block//TagChange[@entity="1"][@tag="20"]|//Block//MetaData[@MetaName="DAMAGE"]|//Block//MetaData[@MetaName="HEALING"]')
+currentturn = 1
 
 for turn in turns:
     if turn.get('GameTagName'):  # next turn
-        currentturn += 1         # TODO: find a more reliable way to do this
-        print(f'Turn {currentturn}')
-    print(turn.items())
+        currentturn += 1         # TODO: find a more reliable way to do this, preferably just using Tag/Entity/Value attributes; the real XML won't have these annotations
+        print(f'Turn {int(currentturn/2)}')
+    else:
+        target = turn.getchildren()[0].get('EntityName')
+        dmg = turn.get('data')
+        if turn.get('meta') == '1':
+            print(f'{dmg} damage to {target}')
+        if turn.get('meta') == '2':
+            print(f'{dmg} healing to {target}')
