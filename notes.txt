@@ -26,6 +26,10 @@ Match the playerID here to the CONTROLLER tag to get the id and portrait of both
   <Tag tag="50" value="2" GameTagName="CONTROLLER"/>
 </FullEntity>
 
+# dealing with armor
+# <TagChange entity="74" tag="292" value="29" EntityCardID="HERO_01" EntityCardName="Garrosh Hellscream" GameTagName="ARMOR"/>
+#             player /    amount of armor /
+
 ------------ DAMAGE BLOCKS ONLY -------------
 <MetaData meta="1" data="3" infoCount="1" MetaName="DAMAGE">
         <Info index="0" entity="64" EntityName="Madame Lazul"/>
