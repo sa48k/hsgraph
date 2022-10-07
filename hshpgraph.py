@@ -6,14 +6,12 @@ tree = etree.parse("./data/BeastHunterWin_annotated.xml") # https://hsreplay.net
 # tree = etree.parse("./data/Healfest_annotated.xml") # priest healfest
 # tree = etree.parse("./data/Armorfest_annotated.xml") # warrior armorfest
 
-players = tree.xpath('//Player')
-damages = tree.xpath('//Block//MetaData[@MetaName="DAMAGE"]')
-
 # set up player dicts
+players = tree.xpath('//Player')
 player1 = {}
 player2 = {}
 
-player1['id'] = players[0].xpath('Tag[@tag="53"]')[0].get("value") # either 2 or 3
+player1['id'] = players[0].xpath('Tag[@tag="53"]')[0].get("value") # either 2 or 3  # currently unused
 player1['name'] = players[0].get('name').split('#')[0]
 player1['controller'] = players[0].xpath('Tag[@tag="50"]')[0].get('value')
 player1['entityid'] = players[0].xpath('Tag[@tag="27"]')[0].get('value') # TODO: Handle changes e.g. when Hero Cards are played
@@ -21,7 +19,10 @@ player1['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player1['entityid'] 
 player1['damaged'] = 0
 player1['healed'] = 0
 player1['armor'] = 0
-# TODO: handle Renethal
+# TODO: handle Renethal. Starting health for Heroes can be obtained from:
+#   <FullEntity id="64" cardID="HERO_10" EntityName="Illidan Stormrage">
+#     <Tag tag="45" value="30" GameTagName="HEALTH"/>
+#   </FullEntity>
 
 player2['id'] = players[1].xpath('Tag[@tag="53"]')[0].get("value")
 player2['name'] = players[1].get('name').split('#')[0]
@@ -49,7 +50,7 @@ print('Players:\n', player1, '\n', player2)
 # Armour: //Block//TagChange[@tag="292"]
 # <TagChange entity="18" tag="292" value="4" EntityCardID="AV_204" EntityCardName="Kurtrus, Demon-Render" GameTagName="ARMOR"/>
 #
-# Hero card:    //ShowEntity/Tag[@tag="202"][@value="3"]/ancestor::ShowEntity/Tag[@tag="292"]/ancestor::ShowEntity  # HACK, must be a better way to do this
+# Hero card:    //Block/ShowEntity/Tag[@tag="202"][@value="3"]/ancestor::ShowEntity/Tag[@tag="292"]/ancestor::ShowEntity  # HACK, must be a better way to do this
 # <ShowEntity entity="18" cardID="AV_204" EntityName="Kurtrus, Demon-Render"> 
 #   <Tag tag="50" value="1" GameTagName="CONTROLLER"/>
 #   <Tag tag="202" value="3" GameTagName="CARDTYPE"/>
@@ -57,17 +58,16 @@ print('Players:\n', player1, '\n', player2)
 #   <Tag tag="292" value="5" GameTagName="ARMOR"/> 
 # </ShowEntity>
 
-events = tree.xpath('//Block//TagChange[@entity="1"][@tag="20"] | //Block//TagChange[@tag="44"] | //Block//MetaData[@meta="2"] | //Block//TagChange[@tag="292"] | //ShowEntity/Tag[@tag="202"][@value="3"]/ancestor::ShowEntity/Tag[@tag="292"]/ancestor::ShowEntity')
+events = tree.xpath('//Block//TagChange[@entity="1"][@tag="20"] | //Block//TagChange[@tag="44"] | //Block//MetaData[@meta="2"] | //Block//TagChange[@tag="292"] | //Block/ShowEntity/Tag[@tag="202"][@value="3"]/ancestor::ShowEntity/Tag[@tag="292"]/ancestor::ShowEntity')
 currentturn = 1
 
 for event in events:
     # print(turn.items()) # debug
     if event.get('tag') == '20':                 # next turn
         currentturn += 1
-        print('End of turn HP:')
         p1hp = 30 - int(player1["damaged"]) + int(player1["healed"])
         p2hp = 30 - int(player2["damaged"]) + int(player2["healed"])
-        print(f'{player1["hero"]}: {p1hp} ')
+        print(f'\n{player1["hero"]}: {p1hp} ')
         print(f'{player2["hero"]}: {p2hp} ')
         print(f'\nTurn {int(currentturn/2)}')
     
@@ -98,9 +98,10 @@ for event in events:
         print(f'{targetname} (ID: {targetid}) was healed for {heal}')
             
     if event.get('tag') == '292':                # change armor
-        target = event.get('entity')
+        targetid = event.get('entity')
+        targetname = event.get('EntityCardName')
         armor = event.get('value')
-        print(f'Entity {target} now has {armor} armour')
+        print(f'Entity {targetid} ({targetname}) now has {armor} armour')
         
     if event.xpath('name()') == 'ShowEntity':    # Hero card played
         controller = event.xpath('Tag[@tag="50"]')[0].get('value')
@@ -110,13 +111,14 @@ for event in events:
             player1['entity'] = event.get('entity')
             player1['hero'] = newhero
             player1['armor'] = newarmor
+            print(f'{player1["name"]} played a Hero card...')
         elif controller == player2['controller']:
             player2['entity'] = event.get('entity')
             player2['hero'] = newhero
             player2['armor'] = newarmor
-        print(f'Hero card played by player with controller ({controller}), updating entity to {event.get("entity")} and hero to {newhero}')
-        print(f'{controller} now has {newarmor} armour')
+            print(f'{player2["name"]} played a Hero card...')
+        print(f'...updating entity id to {event.get("entity")}, hero to {newhero}, and armour to {newarmor}')
         
 # outcome = tree.xpath('//TagChange[@tag="17"][@value="4"]|//TagChange[@tag="17"][@value="5"]')
 winner = tree.xpath('//TagChange[@tag="17"][@value="4"]')[0]
-print(f"\nThe winner was {winner.get('EntityCardID').split('#')[0]}")
+print(f"\nThe winner was {winner.get('EntityCardID').split('#')[0]}\n")
