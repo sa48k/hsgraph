@@ -125,7 +125,7 @@ for event in events:
         controller = event.xpath('TagChange[@tag="1828"]')[0].get('entity')
         newarmor = int(event.xpath('TagChange[@tag="1828"]')[0].get('value'))
         newhero = event.get('EntityCardName')
-        newentityid = event.xpath('Block')[0].get('entity')
+        newentityid = event.get('entity')
         if controller == player1['id']:
             player1['entityid'] = newentityid
             player1['hero'] = newhero
