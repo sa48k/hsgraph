@@ -4,8 +4,8 @@ import csv
 # infile = "./data/PriestWinT5.xml"
 # infile = "./data/BeastHunterWin_annotated.xml" # https://hsreplay.net/replay/LQ2unSYf7w7hLfBu5Foa6U
 # infile = "./data/BeastHunterWin2_annotated.xml" # https://hsreplay.net/replay/gRfknupKptbsozKXa7DnZk
-# infile = "./data/BH3_annotated.xml" # https://hsreplay.net/replay/gWZxEM78EtbWYUzxHtFyK8
-infile = "./data/BH4_annotated.xml" # https://hsreplay.net/replay/Y3WUXrG6H8GKuNX83UmS8o
+infile = "./data/BH3_annotated.xml" # https://hsreplay.net/replay/gWZxEM78EtbWYUzxHtFyK8
+# infile = "./data/BH4_annotated.xml" # https://hsreplay.net/replay/Y3WUXrG6H8GKuNX83UmS8o
 # infile = "./data/Healfest_annotated.xml" # priest healfest
 # infile = "./data/Armorfest_annotated.xml" # warrior armorfest
 tree = etree.parse(infile)
@@ -71,8 +71,8 @@ for event in events:
     # print(event.items()) # debug
     if event.get('tag') == '20':                 # next turn
         currentturn += 1
-        p1hp = player1['starthealth'] - int(player1["damaged"]) + player1["armor"]
-        p2hp = player2['starthealth'] - int(player2["damaged"]) + player2["armor"]
+        p1hp = player1['starthealth'] - int(player1["damaged"]) + player1["healed"] + player1["armor"]
+        p2hp = player2['starthealth'] - int(player2["damaged"]) + player2["healed"] + player2["armor"]
         print('-' * 40)
         print(f'{player1["hero"]} (ID {player1["entityid"]}): {p1hp}', end = " ")
         if player1['armor']:
@@ -80,6 +80,10 @@ for event in events:
         print(f'\n{player2["hero"]} (ID {player2["entityid"]}): {p2hp}', end = " ")
         if player2['armor']:
             print(f'({player2["armor"]} from armour)')
+            if p1hp < 0:
+                p1hp = 0
+            if p2hp < 0:
+                p2hp = 0
         result.append([p1hp, p2hp])
         print(f'\n\nTurn {int(currentturn/2)}')
     
@@ -93,16 +97,18 @@ for event in events:
             continue
         if targetid == player1['entityid']:     # keep track of damage to player (cumulative)
             player1['damaged'] = int(dmg)
+            player1['healed'] = 0
         elif targetid == player2['entityid']:
             player2['damaged'] = int(dmg)
+            player2['healed'] = 0
         print(f'{targetname} (ID: {targetid}) has received {dmg} damage')
         
-    if event.get('meta') == '2':                 # heals target # EDIT: Scrap all this
+    if event.get('meta') == '2':                 # heals target
         targetid = event.getchildren()[0].get('entity')
         targetname = event.getchildren()[0].get('EntityName')
         heal = int(event.get('data'))
         if targetid == player1['entityid']:     # keep track of healing so far (cumulative)
-            player1['healed'] += heal              # EDIT: NOT NEEDED
+            player1['healed'] += heal           # this can get reset to zero when the player next takes damage
         elif targetid == player2['entityid']:
             player2['healed'] += heal
         else:
@@ -142,11 +148,15 @@ for event in events:
 # TODO: set loser's HP to zero before returning results
 winner = tree.xpath('//TagChange[@tag="17"][@value="4"]')[0]
 print(f"\nThe winner was {winner.get('EntityCardID').split('#')[0]}\n")
+if winner.get('entity') == player1['id']:
+    result.append([player1['starthealth'] - int(player1["damaged"]) + player1["healed"] + player1["armor"], 0])
+else:
+    result.append([0, player2['starthealth'] - int(player2["damaged"]) + player2["healed"] + player2["armor"]])
 
 # temp solution: write to csv. when this works, export JSON to frontend instead
-# outfile = (infile.split(".")[0])+'.csv'
-# print('Saving to ' + outfile)
-with open(infile+'.csv', 'w', newline='') as csvfile:
+outfile = '.' + infile.split(".")[-2] + '.csv'
+print('Saving to ' + outfile)
+with open(outfile, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(['turn', player1['name'], player2['name']])
     for count, t in enumerate(result):
