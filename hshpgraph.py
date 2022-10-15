@@ -26,7 +26,7 @@ renathalcheck = tree.xpath('//Block[@EntityCardID="REV_018"]/TagChange[@tag="45"
 if renathalcheck and renathalcheck[0].get('entity') == player1['entityid']: # check for Renathal
     player1['starthealth'] = 40    
 player1['damaged'] = 0
-player1['healed'] = 0  # edit: don't actually need this - the 'damaged' value is cumulative over the match and takes healing into account
+player1['healed'] = 0
 player1['armor'] = 0
 
 # DRY - players should be stored as a tuple of dicts 
@@ -145,7 +145,6 @@ for event in events:
         print(f'...updating entity id to {event.get("entity")}, hero to {newhero}, and adding {newarmor} armour')
         
 # outcome = tree.xpath('//TagChange[@tag="17"][@value="4"]|//TagChange[@tag="17"][@value="5"]')
-# TODO: set loser's HP to zero before returning results
 winner = tree.xpath('//TagChange[@tag="17"][@value="4"]')[0]
 print(f"\nThe winner was {winner.get('EntityCardID').split('#')[0]}\n")
 if winner.get('entity') == player1['id']:
