@@ -4,10 +4,11 @@ import csv
 # infile = "./data/PriestWinT5.xml"
 # infile = "./data/BeastHunterWin_annotated.xml" # https://hsreplay.net/replay/LQ2unSYf7w7hLfBu5Foa6U
 # infile = "./data/BeastHunterWin2_annotated.xml" # https://hsreplay.net/replay/gRfknupKptbsozKXa7DnZk
-infile = "./data/BH3_annotated.xml" # https://hsreplay.net/replay/gWZxEM78EtbWYUzxHtFyK8
+# infile = "./data/BH3_annotated.xml" # https://hsreplay.net/replay/gWZxEM78EtbWYUzxHtFyK8
 # infile = "./data/BH4_annotated.xml" # https://hsreplay.net/replay/Y3WUXrG6H8GKuNX83UmS8o
 # infile = "./data/Healfest_annotated.xml" # priest healfest
 # infile = "./data/Armorfest_annotated.xml" # warrior armorfest
+infile = "./data/ComebackMage_annotated.xml" 
 tree = etree.parse(infile)
 
 # set up player dicts
@@ -128,8 +129,11 @@ for event in events:
         
     if event.get('type') == '7':    # Hero card played
         # print(event.items()) # debug
+        # print(event.xpath('TagChange[@tag="1828"]')[0].items())
         controller = event.xpath('TagChange[@tag="1828"]')[0].get('entity')
-        newarmor = int(event.xpath('TagChange[@tag="1828"]')[0].get('value'))
+        # newarmor = int(event.xpath('TagChange[@tag="1828"]')[0].get('value'))  # BUG: Tag 1828 is total armour gained this match
+        # temp. fix:
+        newarmor = 5
         newhero = event.get('EntityCardName')
         newentityid = event.get('entity')
         if controller == player1['id']:
