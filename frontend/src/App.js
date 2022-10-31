@@ -24,7 +24,6 @@ export default function App() {
       <Container sx={{ border: 1, borderColor: 'primary.main', height: 'calc(100vh - 50px)' }}>
 
         <Grid container spacing={0} sx={{ height: '75%' }} >
-
           <Grid p={3} xs={6} sx={{ border: 1, height: '100%' }}>
             <Typography variant="h1">xs=6</Typography>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel porro aut esse iste blanditiis quia, eos illo, vitae cumque unde voluptates recusandae ipsam repellat corrupti voluptas nobis. Et, voluptate sit?</p>

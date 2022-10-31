@@ -8,7 +8,8 @@ import csv
 # infile = "./data/BH4_annotated.xml" # https://hsreplay.net/replay/Y3WUXrG6H8GKuNX83UmS8o
 # infile = "./data/Healfest_annotated.xml" # priest healfest
 # infile = "./data/Armorfest_annotated.xml" # warrior armorfest
-infile = "./data/ComebackMage_annotated.xml" 
+# infile = "./data/ComebackMage_annotated.xml" 
+infile = "./data/ThiefRogueVsThiefPriestLol_annotated.xml" 
 tree = etree.parse(infile)
 
 # set up player dicts
@@ -23,8 +24,8 @@ player1['controller'] = players[0].xpath('Tag[@tag="50"]')[0].get('value')  # un
 player1['entityid'] = players[0].xpath('Tag[@tag="27"]')[0].get('value')
 player1['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player1['entityid'] + '"]/parent::* ')[0].get('EntityName')
 player1['starthealth'] = 30
-renathalcheck = tree.xpath('//Block[@EntityCardID="REV_018"]/TagChange[@tag="45"]')
-if renathalcheck and renathalcheck[0].get('entity') == player1['entityid']: # check for Renathal
+renathalcheck = tree.xpath('//Block[@EntityCardID="REV_018"]/TagChange[@tag="45"][@entity="' + player1['entityid'] + '"]')
+if renathalcheck: # check for Renathal
     player1['starthealth'] = 40    
 player1['damaged'] = 0
 player1['healed'] = 0
@@ -37,7 +38,7 @@ player2['controller'] = players[1].xpath('Tag[@tag="50"]')[0].get('value')  # un
 player2['entityid'] = players[1].xpath('Tag[@tag="27"] ')[0].get('value')
 player2['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player2['entityid'] + '"]/parent::* ')[0].get('EntityName')
 player2['starthealth'] = 30 # tree.xpath('//FullEntity[@id="' + player2['entityid'] + '"]/Tag[@tag="45"]')[0].get('value')
-renathalcheck = tree.xpath('//Block[@EntityCardID="REV_018"]/TagChange[@tag="45"]')
+renathalcheck = tree.xpath('//Block[@EntityCardID="REV_018"]/TagChange[@tag="45"][@entity="' + player2['entityid'] + '"]')
 if renathalcheck and renathalcheck[0].get('entity') == player2['entityid']: # check for Renathal
     player2['starthealth'] = 40  
 player2['damaged'] = 0
