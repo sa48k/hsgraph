@@ -45,9 +45,24 @@ player2['damaged'] = 0
 player2['healed'] = 0
 player2['armor'] = 0
 
+# set initial classes (it might change later due to Maestra)
+lookup = {'HERO_01': 'Warrior', 'HERO_02': 'Shaman', 'HERO_03': 'Rogue', 'HERO_04': 'Paladin', 'HERO_05': 'Rexxar', 'HERO_06': 'Druid', 'HERO_07': 'Warlock', 'HERO_08': 'Mage', 'HERO_09': 'Priest', 'HERO_10': 'Demon Hunter'}
+classes = tree.xpath('//FullEntity[starts-with(@cardID, "HERO_")]')
+player1['class'] = lookup[classes[0].get("cardID")[:7]]
+player2['class'] = lookup[classes[2].get("cardID")[:7]]
+
+# handle maestra being played
+maestra = tree.xpath('//SubSpell[starts-with(@spellPrefabGuid, "SWFX_MaestraOfTheMasquerade_Ritual_Super")]')
+for m in maestra:
+    if m.getchildren()[0].get('entity') == player1['entityid']:
+        player1['class'] = 'Rogue'
+    if m.getchildren()[0].get('entity') == player2['entityid']:
+        player2['class'] = 'Rogue'
+        
 print('Players:\n', player1, '\n', player2)
 
 # from tree, get these events: next turn | damage | healing | armour | hero card
+#
 # Next turn: //Block//TagChange[@entity="1"][@tag="20"
 # <TagChange entity="1" tag="20" value="1" EntityCardID="GameEntity" EntityCardName="GameEntity" GameTagName="TURN"/>
 #
