@@ -1,5 +1,7 @@
 from lxml import etree
 import csv
+import json
+from datetime import datetime
 
 def outputToCSV(result):
     # write result to csv with the top row: turn #, player names / classes
@@ -13,30 +15,42 @@ def outputToCSV(result):
             writer.writerow([count+1, *t])
         csvfile.close()
 
-def outputToJSON(p1, p2, result):
-    pass
+def outputToJSON(timestamp, p1, p2, result):
+    output = {
+        "timestamp": timestamp,
+        "player1": {
+            "name": p1['name'],
+            "class": p1['class']
+        },
+        "player2": {
+            "name": p2['name'],
+            "class": p2['class']
+        },
+        "matchdata": result
+    }
+    print(json.dumps(output))
     
 # infile = "./data/PriestWinT5.xml"
 # infile = "./data/BeastHunterWin_annotated.xml" # https://hsreplay.net/replay/LQ2unSYf7w7hLfBu5Foa6U
-# infile = "./data/BeastHunterWin2_annotated.xml" # https://hsreplay.net/replay/gRfknupKptbsozKXa7DnZk
+infile = "./data/BeastHunterWin2_annotated.xml" # https://hsreplay.net/replay/gRfknupKptbsozKXa7DnZk
 # infile = "./data/BH3_annotated.xml" # https://hsreplay.net/replay/gWZxEM78EtbWYUzxHtFyK8
 # infile = "./data/BH4_annotated.xml" # https://hsreplay.net/replay/Y3WUXrG6H8GKuNX83UmS8o
 # infile = "./data/Healfest_annotated.xml" # priest healfest
 # infile = "./data/Armorfest_annotated.xml" # warrior armorfest
 # infile = "./data/ComebackMage_annotated.xml" 
-# infile = "./data/ThiefRogueVsThiefPriestLol.xml" 
-infile = "./data/ThiefRogueClownFiesta.xml" 
-tree = etree.parse(infile)
+# infile = "./data/ThiefRogueVsThiefPriestLol.xml"
+# infile = "./data/ThiefRogueClownFiesta.xml"
 
-# set up player dicts
+# initial setup: tree, player dicts, empty array for results, ts
+tree = etree.parse(infile)
 players = tree.xpath('//Player')
 player1 = {}
 player2 = {}
 result = []
+timestamp = tree.xpath('//Game')[0].get("ts")
 
 player1['id'] = players[0].xpath('Tag[@tag="53"]')[0].get("value") # either 2 or 3
 player1['name'] = players[0].get('name').split('#')[0]
-player1['controller'] = players[0].xpath('Tag[@tag="50"]')[0].get('value')  # unused - remove
 player1['entityid'] = players[0].xpath('Tag[@tag="27"]')[0].get('value')
 player1['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player1['entityid'] + '"]/parent::* ')[0].get('EntityName')
 player1['starthealth'] = 30
@@ -50,10 +64,9 @@ player1['armor'] = 0
 # DRY - players should be stored as a tuple of dicts 
 player2['id'] = players[1].xpath('Tag[@tag="53"]')[0].get("value")
 player2['name'] = players[1].get('name').split('#')[0]
-player2['controller'] = players[1].xpath('Tag[@tag="50"]')[0].get('value')  # unused - remove
 player2['entityid'] = players[1].xpath('Tag[@tag="27"] ')[0].get('value')
 player2['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player2['entityid'] + '"]/parent::* ')[0].get('EntityName')
-player2['starthealth'] = 30 # tree.xpath('//FullEntity[@id="' + player2['entityid'] + '"]/Tag[@tag="45"]')[0].get('value')
+player2['starthealth'] = 30
 renathalcheck = tree.xpath('//Block[@type="5"]/TagChange[@tag="45"][@value="40"][@entity="' + player1['entityid'] + '"]')
 if renathalcheck:
     player2['starthealth'] = 40  
@@ -187,8 +200,8 @@ else:
     result.append([0, player2['starthealth'] - int(player2["damaged"]) + player2["healed"] + player2["armor"]])
     print(f"\nThe winner was {player2['name']}")
 
-outputToCSV(result)
-# outputToJSON(player1, player2, result)
+# outputToCSV(result)
+outputToJSON(timestamp, player1, player2, result)
 
 print(result)
 
