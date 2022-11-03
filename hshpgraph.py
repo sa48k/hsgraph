@@ -1,8 +1,14 @@
 from lxml import etree
 import csv
 import json
+import string
+import random
 from datetime import datetime
 
+def generateID(length=8):
+    chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
+    return(''.join(random.choice(chars) for i in range(length)))
+    
 def outputToCSV(result):
     # write result to csv with the top row: turn #, player names / classes
     # then an array of tuples showing hero HP at the end of each turn
@@ -17,6 +23,7 @@ def outputToCSV(result):
 
 def outputToJSON(timestamp, p1, p2, result):
     output = {
+        "id": generateID(),
         "timestamp": timestamp,
         "player1": {
             "name": p1['name'],
@@ -75,7 +82,7 @@ player2['healed'] = 0
 player2['armor'] = 0
 
 # set initial classes (it might change later due to Maestra)
-lookup = {'HERO_01': 'Warrior', 'HERO_02': 'Shaman', 'HERO_03': 'Rogue', 'HERO_04': 'Paladin', 'HERO_05': 'Rexxar', 'HERO_06': 'Druid', 'HERO_07': 'Warlock', 'HERO_08': 'Mage', 'HERO_09': 'Priest', 'HERO_10': 'Demon Hunter'}
+lookup = {'HERO_01': 'Warrior', 'HERO_02': 'Shaman', 'HERO_03': 'Rogue', 'HERO_04': 'Paladin', 'HERO_05': 'Hunter', 'HERO_06': 'Druid', 'HERO_07': 'Warlock', 'HERO_08': 'Mage', 'HERO_09': 'Priest', 'HERO_10': 'Demon Hunter'}
 classes = tree.xpath('//FullEntity[starts-with(@cardID, "HERO_")]')
 player1['class'] = lookup[classes[0].get("cardID")[:7]]
 player2['class'] = lookup[classes[2].get("cardID")[:7]]

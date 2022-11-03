@@ -96,7 +96,7 @@ export const matches = [
         "timestamp": "2022-09-30T14:09:39.674515+13:00",
         "player1": {
             "name": "sa128k",
-            "class": "Rexxar"
+            "class": "Hunter"
         },
         "player2": {
             "name": "Oogway",
