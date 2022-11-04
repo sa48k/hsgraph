@@ -11,7 +11,6 @@ const MatchList = (props) => {
 
 	const listItems = props.matches.map((match) =>
 		<>
-
 			<ListItemButton key={match.id}>
 				<ListItemIcon>
 					<InsightsIcon />
@@ -22,7 +21,6 @@ const MatchList = (props) => {
 		</>
 	)
 
-	console.log(listItems)
 	return listItems
 }
 

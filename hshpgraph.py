@@ -39,7 +39,7 @@ def outputToJSON(timestamp, p1, p2, result):
     
 # infile = "./data/PriestWinT5.xml"
 # infile = "./data/BeastHunterWin_annotated.xml" # https://hsreplay.net/replay/LQ2unSYf7w7hLfBu5Foa6U
-infile = "./data/BeastHunterWin2_annotated.xml" # https://hsreplay.net/replay/gRfknupKptbsozKXa7DnZk
+# infile = "./data/BeastHunterWin2_annotated.xml" # https://hsreplay.net/replay/gRfknupKptbsozKXa7DnZk
 # infile = "./data/BH3_annotated.xml" # https://hsreplay.net/replay/gWZxEM78EtbWYUzxHtFyK8
 # infile = "./data/BH4_annotated.xml" # https://hsreplay.net/replay/Y3WUXrG6H8GKuNX83UmS8o
 # infile = "./data/Healfest_annotated.xml" # priest healfest
@@ -47,6 +47,7 @@ infile = "./data/BeastHunterWin2_annotated.xml" # https://hsreplay.net/replay/gR
 # infile = "./data/ComebackMage_annotated.xml" 
 # infile = "./data/ThiefRogueVsThiefPriestLol.xml"
 # infile = "./data/ThiefRogueClownFiesta.xml"
+infile = "./data/ThiefRogueArmourMadness.xml"
 
 # initial setup: tree, player dicts, empty array for results, ts
 tree = etree.parse(infile)
@@ -209,6 +210,3 @@ else:
 
 # outputToCSV(result)
 outputToJSON(timestamp, player1, player2, result)
-
-print(result)
-
