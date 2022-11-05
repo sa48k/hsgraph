@@ -16,7 +16,6 @@ ChartJS.register(
     LinearScale,
     PointElement,
     LineElement,
-    Title,
     Tooltip,
     Legend
 );
@@ -28,14 +27,14 @@ function SmallChart({ match }) {
     
     const classColours = {
         'Warrior': '#8E1002',
-        'Shaman': '#8E1002',
+        'Shaman': '#0070DE',
         'Rogue': '#4C4D48',
         'Paladin': '#AA8F00',
         'Hunter': '#016E01',
         'Druid': '#703606',
         'Warlock': '#7624AD',
         'Mage': '#0092AB',
-        'Priest': '#C7C19F',
+        'Priest': '#A7A17F',
         'Demon Hunter': '#193338',
     }
 
@@ -56,18 +55,15 @@ function SmallChart({ match }) {
         } else {
             return hexColor;
         }
-    };
+    }
     
     const options = {
         responsive: true,
         plugins: {
             legend: {
                 position: 'bottom',
-            },
-            title: {
-                // display: true,
-            },
-        },
+            }
+        }
     }
 
     const labels = Array.from({ length: match.matchdata.length }, (_, i) => i + 1)
@@ -76,17 +72,19 @@ function SmallChart({ match }) {
         datasets: [
             {
                 label: match.player1.name,
-                lineTension: 0.2,
+                lineTension: 0.3,
+                pointRadius: 2,
                 data: unzip(match.matchdata)[0],
-                borderColor: classColours[match.player1.class],
-                backgroundColor: newShade(classColours[match.player1.class], 50)
+                backgroundColor: classColours[match.player1.class],              // dots
+                borderColor: newShade(classColours[match.player1.class], 30)     // lines
             },
             {
                 label: match.player2.name,
-                lineTension: 0.2,
+                lineTension: 0.3,
+                pointRadius: 2,
                 data: unzip(match.matchdata)[1],
-                borderColor: classColours[match.player2.class],
-                backgroundColor: newShade(classColours[match.player2.class], -50)
+                backgroundColor: classColours[match.player2.class],
+                borderColor: newShade(classColours[match.player2.class], -10)
             },
         ],
     };

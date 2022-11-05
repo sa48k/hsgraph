@@ -13,7 +13,7 @@ const GraphGridItems = (props) => {
         const d = new Date(match.timestamp)
         const ts = d.toLocaleDateString(undefined, opts)
         return (
-            <Grid item xs={12} sm={6} lg={4}>
+            <Grid key={match.id} item xs={12} sm={6} lg={4}>
                 <Paper
                     sx={{
                         p: 2,
