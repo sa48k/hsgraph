@@ -4,7 +4,10 @@ import csv
 import json
 import string
 import random
+import time
 from datetime import datetime
+
+start_time = time.time()
 
 def generateID(length=8):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
@@ -39,21 +42,26 @@ def generateJSON(timestamp, p1, p2, result):
     return(output)
 
 def buildData(infile):
-    # initial setup: tree, player dicts, empty array for results, ts
+    # rudimentary check that the xml is a HSreplay
     tree = etree.parse(infile)
+    checkxml = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="2"]') # standard ranked and casual only, for now
+    if len(checkxml) == 0:
+        print('Skipping - no valid HSReplay xml found\n')
+        return None
+    # initial setup: tree, player dicts, empty array for results, ts
     players = tree.xpath('//Player')
     player1 = {}
     player2 = {}
     result = []
     timestamp = tree.xpath('//Game')[0].get("ts")
 
-    player1['id'] = players[0].xpath('Tag[@tag="53"]')[0].get("value") # either 2 or 3
-    player1['name'] = players[0].get('name').split('#')[0]
-    player1['entityid'] = players[0].xpath('Tag[@tag="27"]')[0].get('value')
+    player1['id'] = players[0].xpath('Tag[@tag="53"]')[0].get("value")          # either 2 or 3
+    player1['name'] = players[0].get('name').split('#')[0]                      # username
+    player1['entityid'] = players[0].xpath('Tag[@tag="27"]')[0].get('value')    # this can change when a hero card is played
     player1['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player1['entityid'] + '"]/parent::* ')[0].get('EntityName')
     player1['starthealth'] = 30
     renathalcheck = tree.xpath('//Block[@type="5"]/TagChange[@tag="45"][@value="40"][@entity="' + player1['entityid'] + '"]')
-    if renathalcheck: # check for Renathal
+    if renathalcheck: # check for Renathal and set starting health to 40 if needed
         player1['starthealth'] = 40    
     player1['damaged'] = 0
     player1['healed'] = 0
@@ -207,9 +215,13 @@ print(f'Looking for xml files in {os.getcwd()}')
 filelist = glob.glob('*.xml')
 fulldata = []
 for f in filelist:
+    print(f'Loading {f}')
     matchjson = buildData(f)
     fulldata.append(matchjson)
 
 with open("matchdata_" + generateID(4) + ".json", "w") as outfile:
     print(f'Writing {outfile.name} to {os.getcwd()}')
-    outfile.write(json.dumps(fulldata))
+    output = [el for el in fulldata if el != None]
+    outfile.write(json.dumps(output))
+    
+print("--- %s seconds ---" % round((time.time() - start_time), 3))

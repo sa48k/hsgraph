@@ -57,6 +57,10 @@ function SmallChart({ match }) {
         }
     }
     
+    const adjustColour = (color, amount) => {
+        return '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
+    }
+
     const options = {
         responsive: true,
         plugins: {
@@ -76,7 +80,7 @@ function SmallChart({ match }) {
                 pointRadius: 2,
                 data: unzip(match.matchdata)[0],
                 backgroundColor: classColours[match.player1.class],              // dots
-                borderColor: newShade(classColours[match.player1.class], 30)     // lines
+                borderColor: adjustColour(classColours[match.player1.class], 75)     // lines
             },
             {
                 label: match.player2.name,
@@ -84,7 +88,7 @@ function SmallChart({ match }) {
                 pointRadius: 2,
                 data: unzip(match.matchdata)[1],
                 backgroundColor: classColours[match.player2.class],
-                borderColor: newShade(classColours[match.player2.class], -10)
+                borderColor: adjustColour(classColours[match.player2.class], -75)
             },
         ],
     };
