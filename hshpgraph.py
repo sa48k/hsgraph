@@ -73,7 +73,7 @@ def buildData(infile):
     player2['entityid'] = players[1].xpath('Tag[@tag="27"] ')[0].get('value')
     player2['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player2['entityid'] + '"]/parent::* ')[0].get('EntityName')
     player2['starthealth'] = 30
-    renathalcheck = tree.xpath('//Block[@type="5"]/TagChange[@tag="45"][@value="40"][@entity="' + player1['entityid'] + '"]')
+    renathalcheck = tree.xpath('//Block[@type="5"]/TagChange[@tag="45"][@value="40"][@entity="' + player2['entityid'] + '"]')
     if renathalcheck:
         player2['starthealth'] = 40  
     player2['damaged'] = 0
@@ -221,7 +221,7 @@ for f in filelist:
 
 with open("matchdata_" + generateID(4) + ".json", "w") as outfile:
     print(f'Writing {outfile.name} to {os.getcwd()}')
-    output = [el for el in fulldata if el != None]
+    output = [el for el in fulldata if el != None]          # remove empty elements
     outfile.write(json.dumps(output))
     
 print("--- %s seconds ---" % round((time.time() - start_time), 3))
