@@ -5,9 +5,15 @@ import json
 import string
 import random
 import time
+import logging
 from datetime import datetime
+from dateutil import parser
 
 start_time = time.time()
+
+# logging - level 1 for info, level 2 for debug
+handlers = [logging.StreamHandler(), logging.FileHandler('example.log')]
+logging.basicConfig(encoding='utf-8', level=0, handlers=handlers)
 
 def generateID(length=8):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
@@ -25,37 +31,45 @@ def outputToCSV(player1, player2, result):
             writer.writerow([count+1, *t])
         csvfile.close()
 
-def generateJSON(timestamp, p1, p2, result):
+def generateJSON(metadata, p1, p2):
     output = {
         "id": generateID(),
-        "timestamp": timestamp,
+        "timestamp": metadata['timestamp'],
+        "gamelength": metadata['gamelength'],
         "player1": {
             "name": p1['name'],
-            "class": p1['class']
+            "class": p1['class'],
+            "winner": True if p1.get('winner') else False
         },
         "player2": {
             "name": p2['name'],
-            "class": p2['class']
+            "class": p2['class'],
+            "winner": True if p2.get('winner') else False
         },
-        "matchdata": result
+        "matchdata": metadata['result']
     }
     return(output)
 
 def buildData(infile):
     # rudimentary check that the xml is a HSreplay
     tree = etree.parse(infile)
-    checkxml = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="2"]') # standard ranked and casual only, for now
+    checkxml = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="2"]') # standard ranked and casual only
     if len(checkxml) == 0:
         print('Skipping - no valid HSReplay xml found\n')
         return None
-    # initial setup: tree, player dicts, empty array for results, ts
+    # initial setup: player dicts, empty array for results, timestamps
+
     players = tree.xpath('//Player')
     player1 = {}
     player2 = {}
     result = []
-    timestamp = tree.xpath('//Game')[0].get("ts")
-
-    player1['id'] = players[0].xpath('Tag[@tag="53"]')[0].get("value")          # either 2 or 3
+    timestamp = tree.xpath('//Game')[0].get('ts')
+    endtime = tree.xpath('(//Block[@entity="1"])[last()]')[0].get('ts')
+    d1 = parser.isoparse(timestamp)
+    d2 = parser.isoparse(endtime)
+    gamelength = round((d2 - d1).total_seconds()/60, 1) # in minutes
+    
+    player1['id'] = players[0].xpath('Tag[@tag="53"]')[0].get('value')          # either 2 or 3
     player1['name'] = players[0].get('name').split('#')[0]                      # username
     player1['entityid'] = players[0].xpath('Tag[@tag="27"]')[0].get('value')    # this can change when a hero card is played
     player1['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player1['entityid'] + '"]/parent::* ')[0].get('EntityName')
@@ -94,8 +108,8 @@ def buildData(infile):
         if m.getchildren()[0].get('entity') == player2['entityid']:
             player2['class'] = 'Rogue'
             
-    print('Players:\n', player1, '\n', player2)
-
+    logging.debug('Players:\n' + json.dumps(player1) + '\n' + json.dumps(player2))
+    logging.info(f"{timestamp[:16]} - {player1['name']} ({player1['class']}) vs {player2['name']} ({player2['class']})")
     # from tree, get these events: next turn | damage | healing | armour | hero card
     #
     # Next turn: //Block//TagChange[@entity="1"][@tag="20"
@@ -119,25 +133,25 @@ def buildData(infile):
     events = tree.xpath('//Block//TagChange[@entity="1"][@tag="20"] | //Block//TagChange[@tag="44"] | //Block//MetaData[@meta="2"] | //Block//TagChange[@tag="292"] | //Block[@type="7"]/TagChange[@tag="1828"]/.. ')
     currentturn = 1
 
+    # christ, this is a mess
     for event in events:
         # print(event.items()) # debug
         if event.get('tag') == '20':                 # next turn
             currentturn += 1
             p1hp = player1['starthealth'] - int(player1["damaged"]) + player1["healed"] + player1["armor"]
             p2hp = player2['starthealth'] - int(player2["damaged"]) + player2["healed"] + player2["armor"]
-            print('-' * 40)
-            print(f'{player1["hero"]} (ID {player1["entityid"]}): {p1hp}', end = " ")
-            if player1['armor']:
-                print(f'({player1["armor"]} from armour)', end = " ")
-            print(f'\n{player2["hero"]} (ID {player2["entityid"]}): {p2hp}', end = " ")
-            if player2['armor']:
-                print(f'({player2["armor"]} from armour)')
-                if p1hp < 0:
-                    p1hp = 0
-                if p2hp < 0:
-                    p2hp = 0
+            logging.debug(f'{player1["name"]} (ID {player1["entityid"]}): {p1hp}')
+            # if player1['armor']:
+            #     logging.debug('({player1["armor"]} from armour)')
+            logging.debug(f'{player2["name"]} (ID {player2["entityid"]}): {p2hp}')
+            # if player2['armor']:
+            #     logging.debug(f'({player2["armor"]} from armour)')
+            if p1hp < 0:
+                p1hp = 0
+            if p2hp < 0:
+                p2hp = 0
             result.append([p1hp, p2hp])
-            print(f'\n\nTurn {int(currentturn/2)}')
+            logging.debug(f'Turn {int(currentturn/2)}')
         
         targetid = event.get('entity')
         if event.get('tag') == '44':                 # target receives damage
@@ -149,11 +163,13 @@ def buildData(infile):
                 continue
             if targetid == player1['entityid']:      # keep track of damage to player (cumulative)
                 player1['damaged'] = int(dmg)
+                targetname = player1['name']
                 player1['healed'] = 0
             elif targetid == player2['entityid']:
                 player2['damaged'] = int(dmg)
+                targetname = player2['name']
                 player2['healed'] = 0
-            print(f'{targetname} (ID: {targetid}) has received {dmg} damage')
+            logging.debug(f'{targetname} (ID: {targetid}) has received {dmg} damage')
             
         if event.get('meta') == '2':                 # heals target
             targetid = event.getchildren()[0].get('entity')
@@ -161,22 +177,26 @@ def buildData(infile):
             heal = int(event.get('data'))
             if targetid == player1['entityid']:     # keep track of healing so far (cumulative)
                 player1['healed'] += heal           # this can get reset to zero when the player next takes damage
+                targetname = player1['name']
             elif targetid == player2['entityid']:
                 player2['healed'] += heal
+                targetname = player2['name']
             else:
                 continue
-            print(f'{targetname} (ID: {targetid}) was healed for {heal}')
+            logging.debug(f'{targetname} (ID: {targetid}) was healed for {heal}')
                 
         if event.get('tag') == '292':                # change armor
             targetname = event.get('EntityCardName')
             armor = int(event.get('value'))
             if targetid == player1['entityid']:     # set armor value (not cumulative)
                 player1['armor'] = armor
+                targetname = player1['name']
             elif targetid == player2['entityid']:
                 player2['armor'] = armor
+                targetname = player2['name']
             else:
                 continue
-            print(f'Entity {targetid} ({targetname}) now has {armor} armour')
+            logging.debug(f'Entity {targetid} ({targetname}) now has {armor} armour')
             
         if event.get('type') == '7':    # Hero card played
             # print(event.items()) # debug
@@ -188,40 +208,46 @@ def buildData(infile):
                 player1['entityid'] = newentityid
                 player1['hero'] = newhero
                 player1['armor'] += newarmor
-                print(f'{player1["name"]} played a Hero card...')
+                logging.debug(f'{player1["name"]} played a Hero card...')
             elif controller == player2['id']:
                 player2['entityid'] = newentityid
                 player2['hero'] = newhero
                 player2['armor'] += newarmor
-                print(f'{player2["name"]} played a Hero card...')
-            print(f'...updating entity id to {event.get("entity")}, hero to {newhero}, and adding {newarmor} armour')
+                logging.debug(f'{player2["name"]} played a Hero card...')
+            logging.debug(f'...updating entity id to {event.get("entity")}')
             
     # outcome = tree.xpath('//TagChange[@tag="17"][@value="4"]|//TagChange[@tag="17"][@value="5"]')
     winner_id = tree.xpath('//TagChange[@tag="17"][@value="4"]')[0].get("entity")
 
     if winner_id == player1['id']:
         result.append([player1['starthealth'] - int(player1["damaged"]) + player1["healed"] + player1["armor"], 0])
-        print(f"\nThe winner was {player1['name']}")
+        player1['winner'] = True
+        logging.info(f"The winner was {player1['name']}\n")
     else:
         result.append([0, player2['starthealth'] - int(player2["damaged"]) + player2["healed"] + player2["armor"]])
-        print(f"\nThe winner was {player2['name']}")
+        player2['winner'] = True
+        logging.info(f"The winner was {player2['name']}\n")
 
     # outputToCSV(result)
-    return generateJSON(timestamp, player1, player2, result)
+    metadata = {}
+    metadata['timestamp'] = timestamp
+    metadata['gamelength'] = gamelength
+    metadata['result'] = result
+    return generateJSON(metadata, player1, player2)
 
 ##########################################
 
-print(f'Looking for xml files in {os.getcwd()}')
+logging.info(f'Looking for xml files in {os.getcwd()}')
 filelist = glob.glob('*.xml')
 fulldata = []
 for f in filelist:
-    print(f'Loading {f}')
+    logging.info(f'Loading {f}')
     matchjson = buildData(f)
     fulldata.append(matchjson)
 
 with open("matchdata_" + generateID(4) + ".json", "w") as outfile:
-    print(f'Writing {outfile.name} to {os.getcwd()}')
+    logging.info(f'Writing {outfile.name} to {os.getcwd()}')
     output = [el for el in fulldata if el != None]          # remove empty elements
     outfile.write(json.dumps(output))
     
-print("--- %s seconds ---" % round((time.time() - start_time), 3))
+logging.info("--- %s seconds ---" % round((time.time() - start_time), 3))
