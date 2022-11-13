@@ -57,8 +57,8 @@ def buildData(infile):
     if len(checkxml) == 0:
         print('Skipping - no valid HSReplay xml found\n')
         return None
-    # initial setup: player dicts, empty array for results, timestamps
-
+    
+    # initial setup: player dicts; empty array for results; timestamps and calculated game length
     players = tree.xpath('//Player')
     player1 = {}
     player2 = {}
@@ -67,12 +67,12 @@ def buildData(infile):
     endtime = tree.xpath('(//Block[@entity="1"])[last()]')[0].get('ts')
     d1 = parser.isoparse(timestamp)
     d2 = parser.isoparse(endtime)
-    gamelength = round((d2 - d1).total_seconds()/60, 1) # in minutes
+    gamelength = round((d2 - d1).total_seconds()/60, 1) # in minutes, rounded to 1 decimal point
     
     player1['id'] = players[0].xpath('Tag[@tag="53"]')[0].get('value')          # either 2 or 3
     player1['name'] = players[0].get('name').split('#')[0]                      # username
     player1['entityid'] = players[0].xpath('Tag[@tag="27"]')[0].get('value')    # this can change when a hero card is played
-    player1['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player1['entityid'] + '"]/parent::* ')[0].get('EntityName')
+    player1['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player1['entityid'] + '"]/parent::* ')[0].get('EntityName') 
     player1['starthealth'] = 30
     renathalcheck = tree.xpath('//Block[@type="5"]/TagChange[@tag="45"][@value="40"][@entity="' + player1['entityid'] + '"]')
     if renathalcheck: # check for Renathal and set starting health to 40 if needed
@@ -239,15 +239,18 @@ def buildData(infile):
 
 logging.info(f'Looking for xml files in {os.getcwd()}')
 filelist = glob.glob('*.xml')
-fulldata = []
-for f in filelist:
-    logging.info(f'Loading {f}')
-    matchjson = buildData(f)
-    fulldata.append(matchjson)
+if len(filelist) == 0:
+    logging.info('No XML files found')
+else:
+    fulldata = []
+    for f in filelist:
+        logging.info(f'Loading {f}')
+        matchjson = buildData(f)
+        fulldata.append(matchjson)
 
-with open("matchdata_" + generateID(4) + ".json", "w") as outfile:
-    logging.info(f'Writing {outfile.name} to {os.getcwd()}')
-    output = [el for el in fulldata if el != None]          # remove empty elements
-    outfile.write(json.dumps(output))
+    with open("matchdata_" + generateID(4) + ".json", "w") as outfile:
+        logging.info(f'Writing {outfile.name} to {os.getcwd()}')
+        output = [el for el in fulldata if el != None]          # remove empty elements
+        outfile.write(json.dumps(output))
     
 logging.info("--- %s seconds ---" % round((time.time() - start_time), 3))
