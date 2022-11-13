@@ -133,11 +133,14 @@ def buildData(infile):
     events = tree.xpath('//Block//TagChange[@entity="1"][@tag="20"] | //Block//TagChange[@tag="44"] | //Block//MetaData[@meta="2"] | //Block//TagChange[@tag="292"] | //Block[@type="7"]/TagChange[@tag="1828"]/.. ')
     currentturn = 1
 
+    # def getPlayerHealth(player):
+        # pass  
+        
     # christ, this is a mess
     for event in events:
         # print(event.items()) # debug
         if event.get('tag') == '20':                 # next turn
-            currentturn += 1
+            turn += 1
             p1hp = player1['starthealth'] - int(player1["damaged"]) + player1["healed"] + player1["armor"]
             p2hp = player2['starthealth'] - int(player2["damaged"]) + player2["healed"] + player2["armor"]
             logging.debug(f'{player1["name"]} (ID {player1["entityid"]}): {p1hp}')
@@ -151,7 +154,7 @@ def buildData(infile):
             if p2hp < 0:
                 p2hp = 0
             result.append([p1hp, p2hp])
-            logging.debug(f'Turn {int(currentturn/2)}')
+            logging.debug(f'Turn {int(turn/2)}')
         
         targetid = event.get('entity')
         if event.get('tag') == '44':                 # target receives damage

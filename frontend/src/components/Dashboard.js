@@ -75,12 +75,8 @@ const DashboardContent = () => {
 				'Accept': 'application/json'
 			}
 		})
-			.then(function (res) {
-				return res.json();
-			})
-			.then(function (myJson) {
-				setData(myJson);
-			});
+			.then(res => res.json())
+			.then(myJson => setData(myJson))
 		}	
 
 	useEffect(() => {

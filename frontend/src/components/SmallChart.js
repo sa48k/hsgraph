@@ -10,6 +10,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js'
+import { integerPropType } from '@mui/utils';
 
 ChartJS.register(
     CategoryScale,
@@ -24,7 +25,7 @@ function SmallChart({ match }) {
     if (match.length < 1) return null
 
     const unzip = arr => arr.reduce((acc, c) => (c.forEach((v, i) => acc[i].push(v)), acc), Array.from({ length: Math.max(...arr.map(a => a.length)) }, (_) => []));
-    
+
     const classColours = {
         'Warrior': '#8E1002',
         'Shaman': '#0070DE',
@@ -56,7 +57,7 @@ function SmallChart({ match }) {
             return hexColor;
         }
     }
-    
+
     const adjustColour = (color, amount) => {
         return '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
     }
@@ -67,8 +68,24 @@ function SmallChart({ match }) {
             legend: {
                 position: 'bottom',
             }
+        },
+        scales: {
+
+            x: {
+                ticks: {
+                    callback: function (value, index, ticks) {
+                        console.log(index)
+                        if (value / 2 !== Math.ceil(index / 2) | index === 0) {
+                            return Math.ceil(index / 2)
+                        } else {
+                            return ''
+                        }
+                    }
+                }
+            }
         }
     }
+
 
     const labels = Array.from({ length: match.matchdata.length }, (_, i) => i + 1)
     const data = {
