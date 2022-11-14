@@ -116,12 +116,12 @@ const DashboardContent = () => {
 							noWrap
 							sx={{ flexGrow: 1 }}
 						>
-							hshpgraph v0.9
+							hsgraph v0.9
 						</Typography>
 						<IconButton color="inherit">
-							<Badge badgeContent={4} color="secondary">
+							{/* <Badge badgeContent={4} color="secondary">
 
-							</Badge>
+							</Badge> */}
 						</IconButton>
 					</Toolbar>
 				</AppBar>

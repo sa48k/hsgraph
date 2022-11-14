@@ -1,8 +1,11 @@
 import React from 'react'
 import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+
 import Paper from '@mui/material/Paper'
 import Title from './Title'
 import SmallChart from './SmallChart'
+import PlayerIcons from './PlayerIcons'
 import Typography from '@mui/material/Typography'
 
 const GraphGridItems = (props) => {
@@ -25,7 +28,14 @@ const GraphGridItems = (props) => {
                     <Typography color="text.secondary" sx={{ flex: 1 }}>
                         {ts}
                     </Typography>
-                    <SmallChart match={match} />
+                    <Grid container spacing={1}>
+                        <Grid item xs={10}>
+                            <SmallChart match={match} />
+                        </Grid>
+                        <Grid item xs={2} p={1}>
+                            <PlayerIcons p1={match.player1} p2={match.player2} />
+                        </Grid>
+                    </Grid>
                 </Paper>
             </Grid>
         )

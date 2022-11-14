@@ -11,9 +11,17 @@ from dateutil import parser
 
 start_time = time.time()
 
-# logging - level 1 for info, level 2 for debug
-handlers = [logging.StreamHandler(), logging.FileHandler('example.log')]
-logging.basicConfig(encoding='utf-8', level=0, handlers=handlers)
+# logging
+file_handler = logging.FileHandler('debug.log')
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setLevel(logging.INFO)
+logging.basicConfig(
+    level=logging.DEBUG,
+    handlers=[
+        file_handler,
+        console_handler
+    ]
+)
 
 def generateID(length=8):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
@@ -100,14 +108,6 @@ def buildData(infile):
     player1['class'] = lookup[classes[0].get("cardID")[:7]]
     player2['class'] = lookup[classes[2].get("cardID")[:7]]
 
-    # handle maestra being played
-    maestra = tree.xpath('//SubSpell[starts-with(@spellPrefabGuid, "SWFX_MaestraOfTheMasquerade_Ritual_Super")]')
-    for m in maestra:
-        if m.getchildren()[0].get('entity') == player1['entityid']:
-            player1['class'] = 'Rogue'
-        if m.getchildren()[0].get('entity') == player2['entityid']:
-            player2['class'] = 'Rogue'
-            
     logging.debug('Players:\n' + json.dumps(player1) + '\n' + json.dumps(player2))
     logging.info(f"{timestamp[:16]} - {player1['name']} ({player1['class']}) vs {player2['name']} ({player2['class']})")
     # from tree, get these events: next turn | damage | healing | armour | hero card
@@ -129,12 +129,19 @@ def buildData(infile):
     # Hero card: //Block[@type="7"]/TagChange[@tag="1828"]/..
     # <Block entity="17" type="7" block_sequence_num="206" EntityCardID="AV_113" EntityCardName="Beaststalker Tavish" BlockTypeName="PLAY">
     # ..
-
-    events = tree.xpath('//Block//TagChange[@entity="1"][@tag="20"] | //Block//TagChange[@tag="44"] | //Block//MetaData[@meta="2"] | //Block//TagChange[@tag="292"] | //Block[@type="7"]/TagChange[@tag="1828"]/.. ')
-    currentturn = 1
+    #
+    # Maestra reveal: //SubSpell[starts-with(@spellPrefabGuid, "SWFX_MaestraOfTheMasquerade_Ritual_Super")]
+    # Like Hero Cards, these change the player's entity ID
+    # <SubSpell spellPrefabGuid="SWFX_MaestraOfTheMasquerade_Ritual_Super:bbf4c69ff3cbadf469d0062df7eaacc2" source="80" targetCount="1" ts="2022-11-14T20:46:44.234990+13:00">
+    #   <SubSpellTarget index="0" entity="76"/>                                 <- 76 is player's old entityid
+    #   <FullEntity id="98" cardID="HERO_03" EntityName="Valeera Sanguinar">    <- 98 is the updated entityid
+    
+                         # next turn                                  # damage                        # healing                      # armour                         # hero card                                    # maestra
+    events = tree.xpath('//Block//TagChange[@entity="1"][@tag="20"] | //Block//TagChange[@tag="44"] | //Block//MetaData[@meta="2"] | //Block//TagChange[@tag="292"] | //Block[@type="7"]/TagChange[@tag="1828"]/.. | //Block/SubSpell[starts-with(@spellPrefabGuid, "SWFX_MaestraOfTheMasquerade_Ritual_Super")] ')
+    turn = 1
 
     # def getPlayerHealth(player):
-        # pass  
+        # pass  # TODO
         
     # christ, this is a mess
     for event in events:
@@ -202,7 +209,7 @@ def buildData(infile):
             logging.debug(f'Entity {targetid} ({targetname}) now has {armor} armour')
             
         if event.get('type') == '7':    # Hero card played
-            # print(event.items()) # debug
+            logging.debug(event.items())
             controller = event.xpath('TagChange[@tag="1828"]')[0].get('entity')
             newarmor = 5 # hack
             newhero = event.get('EntityCardName')
@@ -219,6 +226,20 @@ def buildData(infile):
                 logging.debug(f'{player2["name"]} played a Hero card...')
             logging.debug(f'...updating entity id to {event.get("entity")}')
             
+        if event.xpath('../SubSpell/SubSpellTarget'):     # Maestra reveal
+            logging.debug('SURPRISE!')
+            controller = event.xpath('../SubSpell/SubSpellTarget')[0].get('entity')
+            newentityid = event.xpath('../SubSpell/FullEntity')[0].get('id')
+            print(controller, newentityid)
+            if controller == player1['entityid']:
+                player1['class'] = 'Rogue'
+                player1['entityid'] = newentityid
+                logging.info(f'Maestra: Updating player 1 entity id from {controller} to {newentityid}')
+            elif controller == player2['entityid']:
+                player2['class'] = 'Rogue'
+                player2['entityid'] = newentityid
+                logging.info(f'Maestra: Updating player 2 entity id from {controller} to {newentityid}')
+            
     # outcome = tree.xpath('//TagChange[@tag="17"][@value="4"]|//TagChange[@tag="17"][@value="5"]')
     winner_id = tree.xpath('//TagChange[@tag="17"][@value="4"]')[0].get("entity")
 
@@ -232,11 +253,11 @@ def buildData(infile):
         logging.info(f"The winner was {player2['name']}\n")
 
     # outputToCSV(result)
-    metadata = {}
-    metadata['timestamp'] = timestamp
-    metadata['gamelength'] = gamelength
-    metadata['result'] = result
-    return generateJSON(metadata, player1, player2)
+    gamedata = {}
+    gamedata['timestamp'] = timestamp
+    gamedata['gamelength'] = gamelength
+    gamedata['result'] = result
+    return generateJSON(gamedata, player1, player2)
 
 ##########################################
 

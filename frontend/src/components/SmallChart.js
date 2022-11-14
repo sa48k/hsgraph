@@ -10,6 +10,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js'
+
 import { integerPropType } from '@mui/utils';
 
 ChartJS.register(
@@ -74,7 +75,6 @@ function SmallChart({ match }) {
             x: {
                 ticks: {
                     callback: function (value, index, ticks) {
-                        console.log(index)
                         if (value / 2 !== Math.ceil(index / 2) | index === 0) {
                             return Math.ceil(index / 2)
                         } else {
@@ -85,7 +85,6 @@ function SmallChart({ match }) {
             }
         }
     }
-
 
     const labels = Array.from({ length: match.matchdata.length }, (_, i) => i + 1)
     const data = {
