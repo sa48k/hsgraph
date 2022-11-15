@@ -4,21 +4,16 @@ import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
-    PointElement,
     LineElement,
-    Title,
-    Tooltip,
+    PointElement,
     Legend,
 } from 'chart.js'
-
-import { integerPropType } from '@mui/utils';
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    PointElement,
     LineElement,
-    Tooltip,
+    PointElement,
     Legend
 );
 
@@ -40,25 +35,7 @@ function SmallChart({ match }) {
         'Demon Hunter': '#193338',
     }
 
-    const newShade = (hexColor, magnitude) => {
-        hexColor = hexColor.replace(`#`, ``);
-        if (hexColor.length === 6) {
-            const decimalColor = parseInt(hexColor, 16);
-            let r = (decimalColor >> 16) + magnitude;
-            r > 255 && (r = 255);
-            r < 0 && (r = 0);
-            let g = (decimalColor & 0x0000ff) + magnitude;
-            g > 255 && (g = 255);
-            g < 0 && (g = 0);
-            let b = ((decimalColor >> 8) & 0x00ff) + magnitude;
-            b > 255 && (b = 255);
-            b < 0 && (b = 0);
-            return `#${(g | (b << 8) | (r << 16)).toString(16)}`;
-        } else {
-            return hexColor;
-        }
-    }
-
+    // adjust a hex code to make it lighter (+ve amount) or darker (-ve amount)
     const adjustColour = (color, amount) => {
         return '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
     }
@@ -70,23 +47,12 @@ function SmallChart({ match }) {
                 position: 'bottom',
             }
         },
-        scales: {
-
-            x: {
-                ticks: {
-                    callback: function (value, index, ticks) {
-                        if (value / 2 !== Math.ceil(index / 2) | index === 0) {
-                            return Math.ceil(index / 2)
-                        } else {
-                            return ''
-                        }
-                    }
-                }
-            }
-        }
+        tooltips: { enabled: false },
+        hover: { mode: null },
     }
 
-    const labels = Array.from({ length: match.matchdata.length }, (_, i) => i + 1)
+    const labels = [...new Array(match.matchdata.length)].map((t, i) => Math.ceil(i / 2))
+
     const data = {
         labels,
         datasets: [

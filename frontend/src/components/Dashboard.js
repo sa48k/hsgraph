@@ -8,13 +8,14 @@ import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import Badge from '@mui/material/Badge'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import MatchList from './MatchList'
 import GraphGridItems from './GraphGridItems'
+import Dialog from '@mui/material/Dialog'
+import Card from '@mui/material/Card'
 
 const drawerWidth = 240
 
@@ -65,8 +66,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme()
 
 const DashboardContent = () => {
-	const [open, setOpen] = useState(false)
+	const [drawerOpen, setDrawerOpen] = useState(false)
+	const [dialogOpen, setDialogOpen] = useState(false)
 	const [data, setData] = useState([])
+	const [selectedMatchID, setSelectedMatchID] = useState('')
 
 	const getMatchesData = () => {
 		fetch('./data/matchdata.json', {
@@ -84,14 +87,14 @@ const DashboardContent = () => {
 	}, [])
 
 	const toggleDrawer = () => {
-		setOpen(!open)
+		setDrawerOpen(!drawerOpen)
 	}
 
 	return (
 		<ThemeProvider theme={mdTheme}>
 			<Box sx={{ display: 'flex' }}>
 				<CssBaseline />
-				<AppBar position="absolute" open={open}>
+				<AppBar position="absolute" open={drawerOpen}>
 					<Toolbar
 						sx={{
 							pr: '24px', // keep right padding when drawer closed
@@ -104,7 +107,7 @@ const DashboardContent = () => {
 							onClick={toggleDrawer}
 							sx={{
 								marginRight: '36px',
-								...(open && { display: 'none' }),
+								...(drawerOpen && { display: 'none' }),
 							}}
 						>
 							<MenuIcon />
@@ -125,7 +128,7 @@ const DashboardContent = () => {
 						</IconButton>
 					</Toolbar>
 				</AppBar>
-				<Drawer variant="permanent" open={open}>
+				<Drawer variant="permanent" open={drawerOpen}>
 					<Toolbar
 						sx={{
 							display: 'flex',
@@ -159,10 +162,21 @@ const DashboardContent = () => {
 					<Toolbar />
 					<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 						<Grid container spacing={3}>
-							<GraphGridItems matches={data} />
+							<GraphGridItems
+								matches={data}
+								setDialogOpen={setDialogOpen}
+								setSelectedMatchID={setSelectedMatchID}
+							/>
 						</Grid>
 
 					</Container>
+					<Dialog open={dialogOpen}>
+						<Card sx={{ p: 4 }}>
+						<Typography variant="h1" component="div">
+							Todo: big graph card
+							</Typography>
+						</Card>
+					</Dialog>
 				</Box>
 			</Box>
 		</ThemeProvider>
