@@ -42,9 +42,15 @@ function SmallChart({ match }) {
 
     const options = {
         responsive: true,
+        scales: {
+            x: {
+                
+            }
+        },
         plugins: {
             legend: {
                 position: 'bottom',
+                onClick: (e) => e.stopPropagation()
             }
         },
         tooltips: { enabled: false },

@@ -3,43 +3,45 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 
 import Card from '@mui/material/Card'
-import Title from './Title'
 import SmallChart from './SmallChart'
-// import BigChartDialog from './BigChartDialog'
+// import BigChart from './BigChart'
 import PlayerIcons from './PlayerIcons'
 import Typography from '@mui/material/Typography'
+import Divider from '@mui/material/Divider'
 
-const GraphGridItems = (props) => {
+const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
     const opts = { month: "short", year: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }
 
     const handleCardClick = (e) => {
-        props.setDialogOpen(true)
-        props.setSelectedMatchID('42')
+        setDialogOpen(true)
+        setSelectedMatchID('42')
     }
     
-    let graphcards = props.matches.map((match) => {
+    let graphcards = matches.map((match) => {
         const d = new Date(match.timestamp)
         const ts = d.toLocaleDateString(undefined, opts)
         return (
-            <Grid key={match.id} item xs={12} sm={6} lg={4}>
-                <Card onClick={() => props.setDialogOpen(true)} sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column'
-                }}
+            <Grid key={match.id} item xs={12} md={6} lg={4}>
+                <Card
+                    onClick={() => setDialogOpen(true)}
+                    style={{ cursor: 'pointer' }}
+                    className="hvr-grow-shadow"
+                    sx={{ p: 2, display: 'flex', flexDirection: 'column' }}
                 >
-                    <Title>{match.player1.class + ' vs ' + match.player2.class}</Title>
-                    <Typography color="text.secondary" sx={{ flex: 1 }}>
+                    <Typography component="h2" variant="h6" color="primary">{match.player1.class + ' vs ' + match.player2.class}</Typography>
+                    <Typography variant="caption">
                         {ts}
                     </Typography>
+                    <br />
                     <Grid container spacing={1}>
                         <Grid item xs={10}>
                             <SmallChart match={match} />
                         </Grid>
                         <Grid item xs={2} p={1}>
-                            <PlayerIcons p1={match.player1} p2={match.player2} />
+                            <PlayerIcons match={match} />
                         </Grid>
                     </Grid>
+
                 </Card>
             </Grid>
         )

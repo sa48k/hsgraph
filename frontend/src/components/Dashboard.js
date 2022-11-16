@@ -80,7 +80,7 @@ const DashboardContent = () => {
 		})
 			.then(res => res.json())
 			.then(myJson => setData(myJson))
-		}	
+	}
 
 	useEffect(() => {
 		getMatchesData()
@@ -172,8 +172,8 @@ const DashboardContent = () => {
 					</Container>
 					<Dialog open={dialogOpen}>
 						<Card sx={{ p: 4 }}>
-						<Typography variant="h1" component="div">
-							Todo: big graph card
+							<Typography variant="h1" component="div">
+								Todo: big graph card
 							</Typography>
 						</Card>
 					</Dialog>
