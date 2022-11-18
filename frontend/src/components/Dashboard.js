@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import MatchList from './MatchList'
+import FileUploader from './FileUploader'
 import GraphGridItems from './GraphGridItems'
 import Dialog from '@mui/material/Dialog'
 import Card from '@mui/material/Card'
@@ -70,6 +71,7 @@ const DashboardContent = () => {
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const [data, setData] = useState([])
 	const [selectedMatchID, setSelectedMatchID] = useState('')
+	const [uploadedFiles, setUploadedFiles] = useState([])
 
 	const getMatchesData = () => {
 		fetch('./data/matchdata.json', {
@@ -143,7 +145,7 @@ const DashboardContent = () => {
 					</Toolbar>
 
 					<List component="nav">
-						<MatchList matches={data} />
+						<FileUploader setUploadedFiles={setUploadedFiles} uploadedFiles={uploadedFiles} />
 					</List>
 
 				</Drawer>
