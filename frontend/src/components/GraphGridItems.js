@@ -12,18 +12,21 @@ import Divider from '@mui/material/Divider'
 const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
     const opts = { month: "short", year: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }
 
-    const handleCardClick = (e) => {
+    const handleCardClick = (id) => {
+        console.log(id)
         setDialogOpen(true)
-        setSelectedMatchID('42')
+        setSelectedMatchID(id)
     }
     
-    let graphcards = matches.map((match) => {
+    // sort by date (newest first)
+    const sortedMatches = matches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    let graphCards = sortedMatches.map((match) => {
         const d = new Date(match.timestamp)
         const ts = d.toLocaleDateString(undefined, opts)
         return (
             <Grid key={match.id} item xs={12} md={6} lg={4}>
                 <Card
-                    onClick={() => setDialogOpen(true)}
+                    onClick={() => handleCardClick(match.id)}
                     style={{ cursor: 'pointer' }}
                     className="hvr-grow-shadow"
                     sx={{ p: 2, display: 'flex', flexDirection: 'column' }}
@@ -47,7 +50,7 @@ const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
         )
     })
 
-    return graphcards
+    return graphCards
 }
 
 export default GraphGridItems

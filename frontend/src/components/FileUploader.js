@@ -4,12 +4,25 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-function FileUploader({ uploadedFiles, setUploadedFiles }) {
+function FileUploader({ filesToUpload, setMatchData }) {
     const handleFileUpload = (e) => {
-        const files = Array.from(e.target.files || [])
+        const files = Array.from(e.target.files || []) // convert from iterable object to array
         console.log(files) // debug
-        setUploadedFiles(files)
+        // setFilesToUpload(files)
+        const formData = new FormData()
+        files.forEach((file, i) => {
+            formData.append(`file-${i}`, file, file.name)
+        })
+
+        fetch('http://127.0.0.1:5000/post', {
+            method: 'Post',
+            body: formData
+        })
+            .then((res) => res.json())
+            .then((data) => setMatchData(data))
+            .catch((err) => console.log(err))
     }
+
 
     return (
         <>
@@ -27,14 +40,14 @@ function FileUploader({ uploadedFiles, setUploadedFiles }) {
                 </Button>
             </label>
 
-            <List dense={true}>
+            {/* <List dense={true}>
                 {uploadedFiles.map(file => (
                     <ListItem>
                         <ListItemText primary={file.name} />
                     </ListItem>
                 ))}
                 
-            </List>
+            </List> */}
         </>
     )
 }

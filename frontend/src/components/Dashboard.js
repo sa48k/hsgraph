@@ -71,7 +71,7 @@ const DashboardContent = () => {
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const [data, setData] = useState([])
 	const [selectedMatchID, setSelectedMatchID] = useState('')
-	const [uploadedFiles, setUploadedFiles] = useState([])
+	const [matchData, setMatchData] = useState([])
 
 	const getMatchesData = () => {
 		fetch('./data/matchdata.json', {
@@ -145,7 +145,7 @@ const DashboardContent = () => {
 					</Toolbar>
 
 					<List component="nav">
-						<FileUploader setUploadedFiles={setUploadedFiles} uploadedFiles={uploadedFiles} />
+						<FileUploader setMatchData={setMatchData} />
 					</List>
 
 				</Drawer>

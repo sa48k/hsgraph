@@ -6,6 +6,7 @@ import string
 import random
 import time
 import logging
+import re
 from datetime import datetime
 from dateutil import parser
 
@@ -23,6 +24,17 @@ logging.basicConfig(
     ]
 )
 
+def getReplayURL(infile):
+    with open(infile, "rb") as file:
+        try:
+            file.seek(-2, os.SEEK_END)
+            while file.read(1) != b'\n':
+                file.seek(-2, os.SEEK_CUR)
+        except OSError:
+            file.seek(0)
+        last_line = file.readline().decode()
+    
+    
 def generateID(length=8):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
     return(''.join(random.choice(chars) for i in range(length)))
@@ -63,8 +75,9 @@ def buildData(infile):
     tree = etree.parse(infile)
     checkxml = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="2"]') # standard ranked and casual only
     if len(checkxml) == 0:
-        print('Skipping - no valid HSReplay xml found\n')
-        return None
+        errmsg = 'Skipping - no valid HSReplay xml found\n'
+        print(errmsg)
+        return errmsg
     
     # initial setup: player dicts; empty array for results; timestamps and calculated game length
     players = tree.xpath('//Player')
