@@ -16,13 +16,15 @@ function FileUploader({ filesToUpload, setMatchData }) {
 
         fetch('http://127.0.0.1:5000/post', {
             method: 'Post',
-            body: formData
+            body: formData,
+            headers: {
+                'Content-Type': 'application/xml'
+            }
         })
             .then((res) => res.json())
             .then((data) => setMatchData(data))
             .catch((err) => console.log(err))
     }
-
 
     return (
         <>

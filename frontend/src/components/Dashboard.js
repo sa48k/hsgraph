@@ -67,7 +67,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme()
 
 const DashboardContent = () => {
-	const [drawerOpen, setDrawerOpen] = useState(false)
+	const [drawerOpen, setDrawerOpen] = useState(true)
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const [data, setData] = useState([])
 	const [selectedMatchID, setSelectedMatchID] = useState('')

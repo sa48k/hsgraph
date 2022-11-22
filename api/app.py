@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
+from hsgraph import *
 
 app = Flask(__name__)
 CORS(app)
@@ -10,6 +11,7 @@ def home():
 	return "<h1>HSGraph API Test v0.1</h1>"
 
 @app.route('/post', methods=['POST'])
+@cross_origin()
 def process():
 	if not request.files:
 		resp = jsonify({'message': 'No file found in request'})
@@ -19,10 +21,11 @@ def process():
 	for f in request.files:
 		print(f)
 		infile = request.files[f].read()
-		print(infile)
+		data = buildData(infile)
   	# processing from hshpgraph.py goes here
-	resp = jsonify({'message': 'OK'})
+	resp = jsonify({'message': 'OK', 'data': data})
 	resp.status_code = 200
 	return resp
 
-app.run()
+if __name__ == "__main__":
+	app.run()

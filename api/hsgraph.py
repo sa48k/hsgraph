@@ -10,8 +10,6 @@ import re
 from datetime import datetime
 from dateutil import parser
 
-start_time = time.time()
-
 # logging
 file_handler = logging.FileHandler('debug.log')
 console_handler = logging.StreamHandler(sys.stdout)
@@ -25,15 +23,7 @@ logging.basicConfig(
 )
 
 def getReplayURL(infile):
-    with open(infile, "rb") as file:
-        try:
-            file.seek(-2, os.SEEK_END)
-            while file.read(1) != b'\n':
-                file.seek(-2, os.SEEK_CUR)
-        except OSError:
-            file.seek(0)
-        last_line = file.readline().decode()
-    
+    pass
     
 def generateID(length=8):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
@@ -243,15 +233,14 @@ def buildData(infile):
             logging.debug('SURPRISE!')
             controller = event.xpath('../SubSpell/SubSpellTarget')[0].get('entity')
             newentityid = event.xpath('../SubSpell/FullEntity')[0].get('id')
-            print(controller, newentityid)
             if controller == player1['entityid']:
                 player1['class'] = 'Rogue'
                 player1['entityid'] = newentityid
-                logging.info(f'Maestra: Updating player 1 entity id from {controller} to {newentityid}')
+                logging.debug(f'Maestra: Updating player 1 entity id from {controller} to {newentityid}')
             elif controller == player2['entityid']:
                 player2['class'] = 'Rogue'
                 player2['entityid'] = newentityid
-                logging.info(f'Maestra: Updating player 2 entity id from {controller} to {newentityid}')
+                logging.debug(f'Maestra: Updating player 2 entity id from {controller} to {newentityid}')
             
     # outcome = tree.xpath('//TagChange[@tag="17"][@value="4"]|//TagChange[@tag="17"][@value="5"]')
     winner_id = tree.xpath('//TagChange[@tag="17"][@value="4"]')[0].get("entity")
@@ -260,7 +249,7 @@ def buildData(infile):
         result.append([player1['starthealth'] - int(player1["damaged"]) + player1["healed"] + player1["armor"], 0])
         player1['winner'] = True
         logging.info(f"The winner was {player1['name']}\n")
-    else:
+    elif winner_id == player2['id']:
         result.append([0, player2['starthealth'] - int(player2["damaged"]) + player2["healed"] + player2["armor"]])
         player2['winner'] = True
         logging.info(f"The winner was {player2['name']}\n")
@@ -274,20 +263,25 @@ def buildData(infile):
 
 ##########################################
 
-logging.info(f'Looking for xml files in {os.getcwd()}')
-filelist = glob.glob('*.xml')
-if len(filelist) == 0:
-    logging.info('No XML files found')
-else:
-    fulldata = []
-    for f in filelist:
-        logging.info(f'Loading {f}')
-        matchjson = buildData(f)
-        fulldata.append(matchjson)
+def main():
+    start_time = time.time()
+    logging.info(f'Looking for xml files in {os.getcwd()}')
+    filelist = glob.glob('*.xml')
+    if len(filelist) == 0:
+        logging.info('No XML files found')
+    else:
+        fulldata = []
+        for f in filelist:
+            logging.info(f'Loading {f}')
+            matchjson = buildData(f.file)
+            fulldata.append(matchjson)
 
-    with open("matchdata_" + generateID(4) + ".json", "w") as outfile:
-        logging.info(f'Writing {outfile.name} to {os.getcwd()}')
-        output = [el for el in fulldata if el != None]          # remove empty elements
-        outfile.write(json.dumps(output))
+        with open("matchdata_" + generateID(4) + ".json", "w") as outfile:
+            logging.info(f'Writing {outfile.name} to {os.getcwd()}')
+            output = [el for el in fulldata if el != None]          # remove empty elements
+            outfile.write(json.dumps(output))
+        
+    logging.info("--- completed in %s seconds ---" % round((time.time() - start_time), 3))
     
-logging.info("--- %s seconds ---" % round((time.time() - start_time), 3))
+if __name__ == "__main__":
+    main()
