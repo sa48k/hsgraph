@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import MatchList from './MatchList'
+import BigChartDialog from './BigChartDialog'
 import FileUploader from './FileUploader'
 import GraphGridItems from './GraphGridItems'
 import Dialog from '@mui/material/Dialog'
@@ -172,12 +173,8 @@ const DashboardContent = () => {
 						</Grid>
 
 					</Container>
-					<Dialog open={dialogOpen}>
-						<Card sx={{ p: 4 }}>
-							<Typography variant="h1" component="div">
-								Todo: big graph card
-							</Typography>
-						</Card>
+					<Dialog open={dialogOpen} >
+						<BigChartDialog matchData={data.find((match) => match.id === selectedMatchID)} />
 					</Dialog>
 				</Box>
 			</Box>
@@ -188,3 +185,6 @@ const DashboardContent = () => {
 export default function Dashboard() {
 	return <DashboardContent />
 }
+
+
+{/* <BigChartDialog matchData={matchData.find((match) => match.id === selectedMatchID)} /> */}

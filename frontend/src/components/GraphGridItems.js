@@ -13,13 +13,13 @@ const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
     const opts = { month: "short", year: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }
 
     const handleCardClick = (id) => {
-        console.log(id)
-        setDialogOpen(true)
         setSelectedMatchID(id)
+        setDialogOpen(true)
     }
     
     // sort by date (newest first)
     const sortedMatches = matches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+
     let graphCards = sortedMatches.map((match) => {
         const d = new Date(match.timestamp)
         const ts = d.toLocaleDateString(undefined, opts)
@@ -35,7 +35,7 @@ const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
                     <Typography variant="caption">
                         {ts}
                     </Typography>
-                    <br />
+
                     <Grid container spacing={1}>
                         <Grid item xs={10}>
                             <SmallChart match={match} />

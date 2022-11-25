@@ -20,8 +20,10 @@ ChartJS.register(
 function SmallChart({ match }) {
     if (match.length < 1) return null
 
+    // TODO: put this in useContext
     const unzip = arr => arr.reduce((acc, c) => (c.forEach((v, i) => acc[i].push(v)), acc), Array.from({ length: Math.max(...arr.map(a => a.length)) }, (_) => []));
 
+    // This, too
     const classColours = {
         'Warrior': '#8E1002',
         'Shaman': '#0070DE',
@@ -33,8 +35,9 @@ function SmallChart({ match }) {
         'Mage': '#0092AB',
         'Priest': '#A7A17F',
         'Demon Hunter': '#193338',
-    }
+    } 
 
+    // and this
     // adjust a hex code to make it lighter (+ve amount) or darker (-ve amount)
     const adjustColour = (color, amount) => {
         return '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));

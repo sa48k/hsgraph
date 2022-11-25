@@ -1,11 +1,16 @@
 import React from 'react'
-import Dialog from '@mui/material/Dialog';
+import Typography from '@mui/material/Typography'
+import Card from '@mui/material/Card'
 
-const BigChartDialog = () => {
+const BigChartDialog = ({ matchData }) => {
+    console.log("HOOOOONK", matchData)
+    if (matchData === undefined) return <Card><h1>test</h1></Card>
     return (
-        <Dialog open={true}>
-            <div>BigChartDialog</div>
-        </Dialog>
+        <Card sx={{ p: 4 }}>
+            <Typography variant="h1" component="div">
+               {matchData.id}
+            </Typography>
+        </Card>
     )
 }
 

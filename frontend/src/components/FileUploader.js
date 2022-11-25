@@ -10,47 +10,43 @@ function FileUploader({ filesToUpload, setMatchData }) {
         console.log(files) // debug
         // setFilesToUpload(files)
         const formData = new FormData()
+        console.log('HEEEEE')
         files.forEach((file, i) => {
-            formData.append(`file-${i}`, file, file.name)
+            console.log('HAWWWW')
+            formData.append("file", file)
         })
+        console.log(Object.fromEntries(formData))
 
         fetch('http://127.0.0.1:5000/post', {
-            method: 'Post',
-            body: formData,
-            headers: {
-                'Content-Type': 'application/xml'
-            }
+            method: 'POST',
+            body: formData
         })
             .then((res) => res.json())
-            .then((data) => setMatchData(data))
-            .catch((err) => console.log(err))
+            .then((data) => console.log(data))
+
+        // .then((data) => setMatchData(data))
+        // .catch((err) => console.log(err))
     }
 
     return (
-        <>
+
+        <form>
             <input
                 accept=".xml"
                 style={{ display: 'none' }}
                 id="fileuploadinput"
+                name="files"
                 multiple
                 type="file"
                 onChange={handleFileUpload}
             />
             <label htmlFor="fileuploadinput">
-                <Button color="secondary" variant="contained" component="span">
+                <Button fullWidth={true} color="secondary" variant="contained" component="span" sx={{ mx: 2 }}>
                     Upload
                 </Button>
             </label>
-
-            {/* <List dense={true}>
-                {uploadedFiles.map(file => (
-                    <ListItem>
-                        <ListItemText primary={file.name} />
-                    </ListItem>
-                ))}
-                
-            </List> */}
-        </>
+        </form>
+   
     )
 }
 
