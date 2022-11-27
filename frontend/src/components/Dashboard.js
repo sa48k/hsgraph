@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { createContext } from 'react'
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import MuiDrawer from '@mui/material/Drawer'
@@ -12,14 +13,12 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import MatchList from './MatchList'
 import BigChartDialog from './BigChartDialog'
 import FileUploader from './FileUploader'
 import GraphGridItems from './GraphGridItems'
 import Dialog from '@mui/material/Dialog'
-import Card from '@mui/material/Card'
 
-const drawerWidth = 240
+const drawerWidth = 120
 
 const AppBar = styled(MuiAppBar, {
 	shouldForwardProp: (prop) => prop !== 'open',
@@ -89,10 +88,14 @@ const DashboardContent = () => {
 		getMatchesData()
 	}, [])
 
+	
 	const toggleDrawer = () => {
 		setDrawerOpen(!drawerOpen)
 	}
 
+	const handleClose = () => {
+		setDialogOpen(false)
+	}
 	return (
 		<ThemeProvider theme={mdTheme}>
 			<Box sx={{ display: 'flex' }}>
@@ -173,8 +176,8 @@ const DashboardContent = () => {
 						</Grid>
 
 					</Container>
-					<Dialog open={dialogOpen} >
-						<BigChartDialog matchData={data.find((match) => match.id === selectedMatchID)} />
+					<Dialog open={dialogOpen} onClose={() => handleClose()} fullWidth={true} maxWidth="xl">
+						<BigChartDialog match={data.find((match) => match.id === selectedMatchID)} />
 					</Dialog>
 				</Box>
 			</Box>

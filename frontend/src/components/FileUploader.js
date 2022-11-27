@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '@mui/material/Button'
 import List from '@mui/material/List';
+import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
@@ -29,7 +30,6 @@ function FileUploader({ filesToUpload, setMatchData }) {
     }
 
     return (
-
         <form>
             <input
                 accept=".xml"
@@ -41,12 +41,11 @@ function FileUploader({ filesToUpload, setMatchData }) {
                 onChange={handleFileUpload}
             />
             <label htmlFor="fileuploadinput">
-                <Button fullWidth={true} color="secondary" variant="contained" component="span" sx={{ mx: 2 }}>
+                <Button color="secondary" variant="contained" component="span" sx={{ mx: 2 }}>
                     Upload
                 </Button>
             </label>
         </form>
-   
     )
 }
 

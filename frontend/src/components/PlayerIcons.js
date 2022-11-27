@@ -1,4 +1,8 @@
 import React from 'react'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import { positions } from '@mui/system';
+
 
 const classColours = {
     'Warrior': '#8E1002',
@@ -13,20 +17,36 @@ const classColours = {
     'Demon Hunter': '#193338',
 } // todo: DRY
 
-const PlayerIcons = ({ match }) => {
+const PlayerIcons = ({ match, p1position = "", p2position = "" }) => {
     return (
-        <>
-            <img
-                className="heroicon"
-                src={`/images/${match.player1.class}_icon.png`}
-                style={{ borderRadius: 100, border: '2.5px solid', borderColor: classColours[match.player1.class] }}
-            />
-            <img
-                className="heroicon"
-                src={`/images/${match.player2.class}_icon.png`}
-                style={{ borderRadius: 100, border: '2.5px solid red', borderColor: classColours[match.player1.class] }}
-            />
-        </>
+        <Grid container
+            direction="column"
+            alignItems="center"
+            sx={{ height: "100%" }}
+            position="relative"
+        >
+            <Grid item>
+                <Box
+                    component="img"
+                    className="heroicon"
+                    src={`/images/${match.player1.class}_icon.png`}
+                    style={{ borderColor: classColours[match.player1.class] }}
+                    position="absolute"
+                    top={p1position} left="0px"
+                />
+            </Grid>
+            <Grid item>
+                <Box
+                    component="img"
+                    className="heroicon"
+                    src={`/images/${match.player2.class}_icon.png`}
+                    style={{ borderColor: classColours[match.player2.class] }}
+                    position="absolute"
+                    bottom={p2position} left="0px"
+                />
+            </Grid>
+        </Grid>
+
     )
 }
 

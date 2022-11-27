@@ -4,20 +4,24 @@ import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
-    LineElement,
     PointElement,
+    LineElement,
+    Title,
+    Tooltip,
     Legend,
-} from 'chart.js'
+} from 'chart.js';
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    LineElement,
     PointElement,
+    LineElement,
+    Title,
+    Tooltip,
     Legend
 );
 
-function SmallChart({ match }) {
+function HPLineChart({ match, options }) {
     if (match.length < 1) return null
 
     // TODO: put this in useContext
@@ -43,23 +47,6 @@ function SmallChart({ match }) {
         return '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
     }
 
-    const options = {
-        responsive: true,
-        scales: {
-            x: {
-                
-            }
-        },
-        plugins: {
-            legend: {
-                position: 'bottom',
-                onClick: (e) => e.stopPropagation()
-            }
-        },
-        tooltips: { enabled: false },
-        hover: { mode: null },
-    }
-
     const labels = [...new Array(match.matchdata.length)].map((t, i) => Math.ceil(i / 2))
 
     const data = {
@@ -70,8 +57,8 @@ function SmallChart({ match }) {
                 lineTension: 0.3,
                 pointRadius: 2,
                 data: unzip(match.matchdata)[0],
-                backgroundColor: classColours[match.player1.class],              // dots
-                borderColor: adjustColour(classColours[match.player1.class], 75)     // lines
+                backgroundColor: classColours[match.player1.class],                 // dots
+                borderColor: adjustColour(classColours[match.player1.class], 75)    // lines
             },
             {
                 label: match.player2.name,
@@ -86,4 +73,4 @@ function SmallChart({ match }) {
     return <Line options={options} data={data} />
 }
 
-export default SmallChart
+export default HPLineChart

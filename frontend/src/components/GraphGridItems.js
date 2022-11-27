@@ -3,8 +3,7 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 
 import Card from '@mui/material/Card'
-import SmallChart from './SmallChart'
-// import BigChart from './BigChart'
+import HPLineChart from './HPLineChart'
 import PlayerIcons from './PlayerIcons'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
@@ -19,6 +18,24 @@ const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
     
     // sort by date (newest first)
     const sortedMatches = matches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+
+    // options for the simple line graph displayed on each card
+    const options = {
+        responsive: true,
+        scales: {
+            x: {
+
+            }
+        },
+        plugins: {
+            legend: {
+                position: 'bottom',
+                onClick: (e) => e.stopPropagation()
+            }
+        },
+        tooltips: { enabled: false },
+        hover: { mode: null },
+    }
 
     let graphCards = sortedMatches.map((match) => {
         const d = new Date(match.timestamp)
@@ -36,12 +53,12 @@ const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
                         {ts}
                     </Typography>
 
-                    <Grid container spacing={1}>
+                    <Grid container padding={1} sx={{ height: "100%" }}>
                         <Grid item xs={10}>
-                            <SmallChart match={match} />
+                            <HPLineChart match={match} options={options} />
                         </Grid>
-                        <Grid item xs={2} p={1}>
-                            <PlayerIcons match={match} />
+                        <Grid item xs={2} pl={1}>
+                            <PlayerIcons match={match} p1position="-10%" p2position="25%"/>
                         </Grid>
                     </Grid>
 
