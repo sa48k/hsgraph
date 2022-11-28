@@ -15,7 +15,7 @@ const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
         setSelectedMatchID(id)
         setDialogOpen(true)
     }
-    
+
     // sort by date (newest first)
     const sortedMatches = matches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
 
@@ -54,12 +54,22 @@ const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
                     </Typography>
 
                     <Grid container padding={1} sx={{ height: "100%" }}>
+
                         <Grid item xs={10}>
-                            <HPLineChart match={match} options={options} />
+                            <HPLineChart
+                                match={match}
+                                options={options}
+                            />
                         </Grid>
-                        <Grid item xs={2} pl={1}>
-                            <PlayerIcons match={match} p1position="-10%" p2position="25%"/>
+
+                        <Grid item xs={2} pl={3}>
+                            <PlayerIcons
+                                match={match}
+                                p1position="15%"
+                                p2position="60%"
+                            />
                         </Grid>
+
                     </Grid>
 
                 </Card>

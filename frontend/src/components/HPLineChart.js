@@ -57,8 +57,8 @@ function HPLineChart({ match, options }) {
                 lineTension: 0.3,
                 pointRadius: 2,
                 data: unzip(match.matchdata)[0],
-                backgroundColor: classColours[match.player1.class],                 // dots
-                borderColor: adjustColour(classColours[match.player1.class], 75)    // lines
+                backgroundColor: adjustColour(classColours[match.player1.class], 75),                 // dots
+                borderColor: classColours[match.player1.class]    // lines
             },
             {
                 label: match.player2.name,

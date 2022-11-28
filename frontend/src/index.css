@@ -7,13 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 .heroicon {
   width: 100%;
-  border-radius: 50%; 
-  border: 5px solid;
+  border-radius: 50%;
+  /* transform: translateY(-50%); */
 }
