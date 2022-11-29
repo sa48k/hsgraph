@@ -65,8 +65,8 @@ const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
                         <Grid item xs={2} pl={3}>
                             <PlayerIcons
                                 match={match}
-                                p1position="15%"
-                                p2position="60%"
+                                p1position="30%"
+                                p2position="75%"
                             />
                         </Grid>
 

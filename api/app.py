@@ -18,10 +18,13 @@ def process():
     print('RECEIVED A POOOOST')
     file = request.files['file']
     filename = secure_filename(file.filename)
-    file.save(os.path.join('.', filename))
-    resp = jsonify({'message': 'OK'})#, 'data': data})
-    resp.status_code = 200
-    return resp
+    try:
+        xmlsource = file.read()
+        data = buildData(xmlsource)
+        print(data)
+        return data, 200
+    except: 
+        return('nope')
 
 if __name__ == "__main__":
 	app.run()

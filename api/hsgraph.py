@@ -62,7 +62,7 @@ def generateJSON(metadata, p1, p2):
 
 def buildData(infile):
     # rudimentary check that the xml is a HSreplay
-    tree = etree.parse(infile)
+    tree = etree.fromstring(infile) # .fromstring if it's from a string; .parse if it's from a file  # IMPORTANT
     checkxml = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="2"]') # standard ranked and casual only
     if len(checkxml) == 0:
         errmsg = 'Skipping - no valid HSReplay xml found\n'

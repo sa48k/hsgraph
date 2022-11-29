@@ -5,28 +5,20 @@ import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-function FileUploader({ filesToUpload, setMatchData }) {
+function FileUploader({ setMatchData }) {
     const handleFileUpload = (e) => {
         const files = Array.from(e.target.files || []) // convert from iterable object to array
-        console.log(files) // debug
-        // setFilesToUpload(files)
         const formData = new FormData()
-        console.log('HEEEEE')
         files.forEach((file, i) => {
-            console.log('HAWWWW')
             formData.append("file", file)
         })
-        console.log(Object.fromEntries(formData))
-
         fetch('http://127.0.0.1:5000/post', {
             method: 'POST',
             body: formData
         })
             .then((res) => res.json())
-            .then((data) => console.log(data))
-
-        // .then((data) => setMatchData(data))
-        // .catch((err) => console.log(err))
+            .then((data) => setMatchData(data.data))
+            .catch((err) => console.log(err))
     }
 
     return (
