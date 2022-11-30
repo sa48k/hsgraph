@@ -17,12 +17,11 @@ def home():
 def process():
     print('RECEIVED A POOOOST')
     file = request.files['file']
-    filename = secure_filename(file.filename)
     try:
         xmlsource = file.read()
         data = buildData(xmlsource)
         print(data)
-        return data, 200
+        return data
     except: 
         return('nope')
 

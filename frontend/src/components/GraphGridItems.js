@@ -8,7 +8,7 @@ import PlayerIcons from './PlayerIcons'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 
-const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
+const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID }) => {
     const opts = { month: "short", year: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }
 
     const handleCardClick = (id) => {
@@ -17,7 +17,7 @@ const GraphGridItems = ({ matches, setDialogOpen, setSelectedMatchID }) => {
     }
 
     // sort by date (newest first)
-    const sortedMatches = matches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    const sortedMatches = matchesData.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
 
     // options for the simple line graph displayed on each card
     const options = {

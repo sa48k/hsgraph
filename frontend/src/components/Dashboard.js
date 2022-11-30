@@ -69,26 +69,9 @@ const mdTheme = createTheme()
 const DashboardContent = () => {
 	const [drawerOpen, setDrawerOpen] = useState(true)
 	const [dialogOpen, setDialogOpen] = useState(false)
-	const [data, setData] = useState([])
 	const [selectedMatchID, setSelectedMatchID] = useState('')
-	const [matchData, setMatchData] = useState([])
+	const [matchesData, setMatchesData] = useState([])
 
-	const getMatchesData = () => {
-		fetch('./data/matchdata.json', {
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			}
-		})
-			.then(res => res.json())
-			.then(myJson => setData(myJson))
-	}
-
-	useEffect(() => {
-		getMatchesData()
-	}, [])
-
-	
 	const toggleDrawer = () => {
 		setDrawerOpen(!drawerOpen)
 	}
@@ -96,6 +79,7 @@ const DashboardContent = () => {
 	const handleClose = () => {
 		setDialogOpen(false)
 	}
+
 	return (
 		<ThemeProvider theme={mdTheme}>
 			<Box sx={{ display: 'flex' }}>
@@ -148,9 +132,9 @@ const DashboardContent = () => {
 						</IconButton>
 					</Toolbar>
 
-					<List component="nav">
-						<FileUploader setMatchData={setMatchData} />
-					</List>
+					
+						<FileUploader matchesData={matchesData} setMatchesData={setMatchesData} />
+				
 
 				</Drawer>
 				<Box
@@ -169,7 +153,7 @@ const DashboardContent = () => {
 					<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 						<Grid container spacing={3}>
 							<GraphGridItems
-								matches={data}
+								matchesData={matchesData}
 								setDialogOpen={setDialogOpen}
 								setSelectedMatchID={setSelectedMatchID}
 							/>
@@ -177,7 +161,7 @@ const DashboardContent = () => {
 
 					</Container>
 					<Dialog open={dialogOpen} onClose={() => handleClose()} fullWidth={true} maxWidth="xl">
-						<BigChartDialog match={data.find((match) => match.id === selectedMatchID)} />
+						<BigChartDialog match={matchesData.find((match) => match.id === selectedMatchID)} />
 					</Dialog>
 				</Box>
 			</Box>
@@ -188,6 +172,3 @@ const DashboardContent = () => {
 export default function Dashboard() {
 	return <DashboardContent />
 }
-
-
-{/* <BigChartDialog matchData={matchData.find((match) => match.id === selectedMatchID)} /> */}
