@@ -23,6 +23,10 @@ const BigChartDialog = ({ match }) => {
     const p2position = (p2finalhp / maxHP * 100 * 0.9).toString()
     // TODO: deal with overlap, maybe
 
+    const footer = (tooltipItems) => {
+        return 'honk'
+    }
+
     const options = {
         responsive: true,
         interaction: {
@@ -34,10 +38,11 @@ const BigChartDialog = ({ match }) => {
             legend: {
                 position: 'bottom'
             },
-            title: {
-                display: false,
-                text: 'BIG GRAPH TITLE'
-            },
+            tooltip: {
+                callbacks: {
+                    footer: footer,
+                }
+            }
         },
     };
 

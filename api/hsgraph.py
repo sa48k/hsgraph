@@ -242,7 +242,6 @@ def buildData(infile):
                 player2['entityid'] = newentityid
                 logging.debug(f'Maestra: Updating player 2 entity id from {controller} to {newentityid}')
             
-    # outcome = tree.xpath('//TagChange[@tag="17"][@value="4"]|//TagChange[@tag="17"][@value="5"]')
     winner_id = tree.xpath('//TagChange[@tag="17"][@value="4"]')[0].get("entity")
 
     if winner_id == player1['id']:
