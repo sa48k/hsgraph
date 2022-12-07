@@ -248,12 +248,11 @@ def buildData(infile):
         result.append([player1['starthealth'] - int(player1["damaged"]) + player1["healed"] + player1["armor"], 0])
         player1['winner'] = True
         logging.info(f"The winner was {player1['name']}\n")
-    elif winner_id == player2['id']:
+    else:   # TODO: Handle draws
         result.append([0, player2['starthealth'] - int(player2["damaged"]) + player2["healed"] + player2["armor"]])
         player2['winner'] = True
         logging.info(f"The winner was {player2['name']}\n")
 
-    # outputToCSV(result)
     gamedata = {}
     gamedata['timestamp'] = timestamp
     gamedata['gamelength'] = gamelength

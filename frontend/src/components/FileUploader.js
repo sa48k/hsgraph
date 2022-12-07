@@ -6,17 +6,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 function FileUploader({ matchesData, setMatchesData }) {
-    
     var sha1 = require('js-sha1');
-    const handleReturnedMatchData = (data) => {
-        
-        setMatchesData(matchesData => [...matchesData, data])
-    }
-    
+
+    // add match data from the API to state
     const handleFileUpload = (e) => {
         const files = Array.from(e.target.files || []) // convert from iterable object to array
         files.forEach((file, i) => {
-
             // check that this match hasn't been uploaded already
             const reader = new FileReader()
             reader.onload = function (event) {
@@ -24,20 +19,24 @@ function FileUploader({ matchesData, setMatchesData }) {
                 console.log(file.name, file_sha1)
             };
             reader.readAsArrayBuffer(file);
-
+            
             const formData = new FormData()
             formData.append("file", file)
             fetch('http://127.0.0.1:5000/post', {
                 method: 'POST',
                 body: formData
             })
-                .then((res) => res.json())
-                .then((data) => handleReturnedMatchData(data))
-                .catch((err) => console.log(err))
+            .then((res) => res.json())
+            .then((jsondata) => handleReturnedMatchData(jsondata))
+            .catch((err) => console.log(err))
         })
-
+        
     }
-
+    
+    const handleReturnedMatchData = (data) => {
+        setMatchesData(matchesData => [...matchesData, data])
+    }
+    
     return (
         <>
         <form>
