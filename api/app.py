@@ -20,11 +20,7 @@ def process():
     file = request.files['file']
     try:
         xmlsource = file.read()
-        print(type(xmlsource))
-        md5hash = hashlib.md5(xmlsource).hexdigest()
         data = buildData(xmlsource)
-        print(f'MD5: {md5hash}')
-        data['hash'] = md5hash
         return data
     except: 
         return('nope')

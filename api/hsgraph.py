@@ -23,7 +23,9 @@ logging.basicConfig(
 )
 
 def getReplayURL(infile):
-    pass
+    content = str(infile)
+    url = re.search('(https://hsreplay.net/replay/\w+)', content)[0]
+    return(url)
     
 def generateID(length=8):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
@@ -46,6 +48,7 @@ def generateJSON(metadata, p1, p2):
         "id": generateID(),
         "timestamp": metadata['timestamp'],
         "gamelength": metadata['gamelength'],
+        "url": metadata['url'],
         "player1": {
             "name": p1['name'],
             "class": p1['class'],
@@ -257,6 +260,7 @@ def buildData(infile):
     gamedata['timestamp'] = timestamp
     gamedata['gamelength'] = gamelength
     gamedata['result'] = result
+    gamedata['url'] = getReplayURL(infile)
     return generateJSON(gamedata, player1, player2)
 
 ##########################################

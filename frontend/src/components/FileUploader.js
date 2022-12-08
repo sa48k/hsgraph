@@ -6,7 +6,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 function FileUploader({ matchesData, setMatchesData }) {
-    var sha1 = require('js-sha1');
 
     // add match data from the API to state
     const handleFileUpload = (e) => {
@@ -15,8 +14,9 @@ function FileUploader({ matchesData, setMatchesData }) {
             // check that this match hasn't been uploaded already
             const reader = new FileReader()
             reader.onload = function (event) {
-                var file_sha1 = sha1(event.target.result)
-                console.log(file.name, file_sha1)
+                let content = new TextDecoder().decode(event.target.result)
+                let urlregex = /https:\/\/hsreplay.net\/replay\/\w+/i
+                let url = content.match(urlregex)[0]
             };
             reader.readAsArrayBuffer(file);
             

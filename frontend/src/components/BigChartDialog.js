@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
+import ListItemButton from '@mui/material/ListItemButton'
 import Card from '@mui/material/Card'
 import HPLineChart from './HPLineChart'
 import Grid from '@mui/material/Grid'
@@ -64,8 +65,10 @@ const BigChartDialog = ({ match }) => {
                 <ListItem>
                     <ListItemText primary={`Match Length: ${match.gamelength} minutes`} />
                 </ListItem>
-                <ListItem>
-                    <ListItemText primary="Replay link" />
+                <ListItem disablePadding>
+                    <ListItemButton component="a" href={match.url} target="_">
+                        <ListItemText primary="View replay" />
+                    </ListItemButton>
                 </ListItem>
             </List>
             <Typography variant="p" component="div">
