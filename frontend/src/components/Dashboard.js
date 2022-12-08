@@ -160,7 +160,7 @@ const DashboardContent = () => {
 						</Grid>
 
 					</Container>
-					<Dialog open={dialogOpen} onClose={() => handleClose()} fullWidth={true} maxWidth="xl">
+					<Dialog open={dialogOpen} onClose={() => handleClose()} fullWidth={true} maxWidth="lg">
 						<BigChartDialog match={matchesData.find((match) => match.id === selectedMatchID)} />
 					</Dialog>
 				</Box>

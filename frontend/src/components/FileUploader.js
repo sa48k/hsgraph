@@ -8,6 +8,12 @@ import ListItemText from '@mui/material/ListItemText';
 function FileUploader({ matchesData, setMatchesData }) {
 
     // add match data from the API to state
+    const handleReturnedMatchData = (data) => {
+        console.log(data)
+        if (data.status === 400) return null
+        setMatchesData(matchesData => [...matchesData, data])
+    }
+
     const handleFileUpload = (e) => {
         const files = Array.from(e.target.files || []) // convert from iterable object to array
         files.forEach((file, i) => {
@@ -33,9 +39,6 @@ function FileUploader({ matchesData, setMatchesData }) {
         
     }
     
-    const handleReturnedMatchData = (data) => {
-        setMatchesData(matchesData => [...matchesData, data])
-    }
     
     return (
         <>

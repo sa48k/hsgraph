@@ -13,9 +13,9 @@ from dateutil import parser
 # logging
 file_handler = logging.FileHandler('debug.log')
 console_handler = logging.StreamHandler(sys.stdout)
-console_handler.setLevel(logging.INFO)
+console_handler.setLevel(logging.DEBUG)
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     handlers=[
         file_handler,
         console_handler
@@ -67,10 +67,7 @@ def buildData(infile):
     # rudimentary check that the xml is a HSreplay
     tree = etree.fromstring(infile) # .fromstring if it's from a string; .parse if it's from a file  # IMPORTANT
     checkxml = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="2"]') # standard ranked and casual only
-    if len(checkxml) == 0:
-        errmsg = 'Skipping - no valid HSReplay xml found\n'
-        print(errmsg)
-        return errmsg
+    assert(len(checkxml) > 0), "Not a valid HSReplay XML file (must be standard casual or ranked)"
     
     # initial setup: player dicts; empty array for results; timestamps and calculated game length
     players = tree.xpath('//Player')

@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
-import hashlib
 from hsgraph import *
 
 app = Flask(__name__)
@@ -16,14 +15,15 @@ def home():
 @app.route('/post', methods=['POST'])
 @cross_origin()
 def process():
-    print('RECEIVED A POOOOST')
     file = request.files['file']
+    print(file)
     try:
         xmlsource = file.read()
         data = buildData(xmlsource)
         return data
-    except: 
-        return('nope')
+    except AssertionError as e:
+        error = {"message": f"{file.filename}: {e.args[0]}", "status": 400}
+        return error, 400
 
 if __name__ == "__main__":
 	app.run()

@@ -4,6 +4,8 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card'
 import HPLineChart from './HPLineChart'
 import Grid from '@mui/material/Grid'
@@ -49,9 +51,11 @@ const BigChartDialog = ({ match }) => {
 
     return (
         <Card sx={{ p: 6 }}>
+
             <Typography variant="h4" component="div">
                 {match.player1.class} vs {match.player2.class}
             </Typography>
+
             <Grid container sx={{ height: "100%" }}>
                 <Grid item xs={11}>
                     <HPLineChart match={match} options={options} />
@@ -60,21 +64,22 @@ const BigChartDialog = ({ match }) => {
                     <PlayerIcons match={match} p1position={`${p1position}%`} p2position={`${p2position}%`} />
                 </Grid>
             </Grid>
+
             <Divider sx={{ m: 4 }} />
-            <List>
+
+            <Stack direction="row" spacing={2}>
                 <ListItem>
+                    <AccessTimeIcon />
                     <ListItemText primary={`Match Length: ${match.gamelength} minutes`} />
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem>
                     <ListItemButton component="a" href={match.url} target="_">
                         <ListItemText primary="View replay" />
                     </ListItemButton>
                 </ListItem>
-            </List>
-            <Typography variant="p" component="div">
+                <ListItem>Item 3</ListItem>
+            </Stack>
 
-
-            </Typography>
         </Card>
     )
 }
