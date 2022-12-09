@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { createContext } from 'react'
+import React, { useState, useEffect, useContext, createContext } from 'react'
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import MuiDrawer from '@mui/material/Drawer'
@@ -14,11 +13,27 @@ import Grid from '@mui/material/Grid'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import BigChartDialog from './BigChartDialog'
+import DrawerContent from './DrawerContent'
 import FileUploader from './FileUploader'
 import GraphGridItems from './GraphGridItems'
 import Dialog from '@mui/material/Dialog'
 
-const drawerWidth = 120
+const drawerWidth = 200
+
+const classColours = {
+	'Warrior': '#8E1002',
+	'Shaman': '#0070DE',
+	'Rogue': '#4C4D48',
+	'Paladin': '#AA8F00',
+	'Hunter': '#016E01',
+	'Druid': '#703606',
+	'Warlock': '#7624AD',
+	'Mage': '#0092AB',
+	'Priest': '#A7A17F',
+	'Demon Hunter': '#193338',
+	'Death Knight': '#00FF00'
+}
+
 
 const AppBar = styled(MuiAppBar, {
 	shouldForwardProp: (prop) => prop !== 'open',
@@ -66,6 +81,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme()
 
+const Context = createContext('Default Value')
+
 const DashboardContent = () => {
 	const [drawerOpen, setDrawerOpen] = useState(true)
 	const [dialogOpen, setDialogOpen] = useState(false)
@@ -81,10 +98,11 @@ const DashboardContent = () => {
 	}
 
 	return (
+		<Context.Provider value={classColours}>
 		<ThemeProvider theme={mdTheme}>
 			<Box sx={{ display: 'flex' }}>
 				<CssBaseline />
-				<AppBar position="absolute" open={drawerOpen}>
+				<AppBar position="absolute" open={true}>
 					<Toolbar
 						sx={{
 							pr: '24px', // keep right padding when drawer closed
@@ -118,24 +136,8 @@ const DashboardContent = () => {
 						</IconButton>
 					</Toolbar>
 				</AppBar>
-				<Drawer variant="permanent" open={drawerOpen}>
-					<Toolbar
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'flex-end',
-							px: [1],
-						}}
-					>
-						<IconButton onClick={toggleDrawer}>
-							<ChevronLeftIcon />
-						</IconButton>
-					</Toolbar>
-
-					
-						<FileUploader matchesData={matchesData} setMatchesData={setMatchesData} />
-				
-
+				<Drawer variant="permanent" open={true}>
+					<DrawerContent matchesData={matchesData} setMatchesData={setMatchesData} />
 				</Drawer>
 				<Box
 					component="main"
@@ -165,7 +167,8 @@ const DashboardContent = () => {
 					</Dialog>
 				</Box>
 			</Box>
-		</ThemeProvider>
+			</ThemeProvider>
+		</Context.Provider>
 	)
 }
 

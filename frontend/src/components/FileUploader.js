@@ -23,6 +23,8 @@ function FileUploader({ matchesData, setMatchesData }) {
                 let content = new TextDecoder().decode(event.target.result)
                 let urlregex = /https:\/\/hsreplay.net\/replay\/\w+/i
                 let url = content.match(urlregex)[0]
+                
+                // match = { matchesData.find((match) => match.id === selectedMatchID) } />
             };
             reader.readAsArrayBuffer(file);
             
@@ -53,15 +55,13 @@ function FileUploader({ matchesData, setMatchesData }) {
                 onChange={handleFileUpload}
             />
             <label htmlFor="fileuploadinput">
-                <Button color="secondary" variant="contained" component="span" sx={{ mx: 1 }}>
+                    <Button color="secondary" variant="contained" component="span" sx={{ m: 2 }}>
                     Upload
                 </Button>
             </label>
 
-        </form><br />
-            <Button color="secondary" variant="contained" component="span" sx={{ mx: 1 }} onClick={() => setMatchesData([])}>
-                Clear
-            </Button>
+        </form>
+            
         </>
     )
 }

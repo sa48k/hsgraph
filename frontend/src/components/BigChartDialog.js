@@ -61,7 +61,7 @@ const BigChartDialog = ({ match }) => {
                     <HPLineChart match={match} options={options} />
                 </Grid>
                 <Grid item xs={1} p={1}>
-                    <PlayerIcons match={match} p1position={`${p1position}%`} p2position={`${p2position}%`} />
+                    <PlayerIcons match={match} p1position={`${p1position}%`} p2position={`${p2position}%`} borderRadius={4} />
                 </Grid>
             </Grid>
 
