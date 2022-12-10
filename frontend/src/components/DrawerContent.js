@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Toolbar from '@mui/material/Toolbar'
 import FileUploader from './FileUploader'
 import Button from '@mui/material/Button'
-import ButtonGroup from '@mui/material/ButtonGroup';
+import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { MyContext } from '../App'
 
 function DrawerContent({ matchesData, setMatchesData }) {
+    const classColours = useContext(MyContext)
+
     const handleChange = (event) => {
         
     }
@@ -31,17 +34,32 @@ function DrawerContent({ matchesData, setMatchesData }) {
             </Button>
 
             <FormControl sx={{ m: 2 }}>
-                <InputLabel id="demo-simple-select-label">Class</InputLabel>
+                <InputLabel id="player-class-select-label">Player</InputLabel>
                 <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
+                    labelId="player-class-select-label"
+                    id="player-class-select"
                     value={3}
-                    label="Age"
+                    label="PlayerClass"
                     onChange={handleChange}
                 >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {Object.keys(classColours).sort().map((cl, idx) => 
+                        <MenuItem value={idx}>{cl}</MenuItem>
+                    )}
+                </Select>
+            </FormControl>
+            
+            <FormControl sx={{ m: 2 }}>
+                <InputLabel id="opponent-class-select-label">Opponent</InputLabel>
+                <Select
+                    labelId="opponent-class-select-label"
+                    id="opponent-class-select"
+                    value={3}
+                    label="PlayerClass"
+                    onChange={handleChange}
+                >
+                    {Object.keys(classColours).sort().map((cl, idx) =>
+                        <MenuItem value={idx}>{cl}</MenuItem>
+                    )}
                 </Select>
             </FormControl>
            

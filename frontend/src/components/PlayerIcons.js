@@ -1,27 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import { positions } from '@mui/system';
-
-
-const classColours = {
-    'Warrior': '#8E1002',
-    'Shaman': '#0070DE',
-    'Rogue': '#4C4D48',
-    'Paladin': '#AA8F00',
-    'Hunter': '#016E01',
-    'Druid': '#703606',
-    'Warlock': '#7624AD',
-    'Mage': '#0092AB',
-    'Priest': '#A7A17F',
-    'Demon Hunter': '#193338',
-} // todo: DRY
+import { MyContext } from '../App'
 
 const adjustColour = (color, amount) => {
     return '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
 }
 
 const PlayerIcons = ({ match, p1position = "", p2position = "", borderRadius = 2 }) => {
+    const classColours = useContext(MyContext)
     const winner = match.player1.winner ? match.player1 : match.player2
     const loser = match.player1.winner ? match.player2 : match.player1
 

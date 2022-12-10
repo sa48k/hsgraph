@@ -18,6 +18,7 @@ import FileUploader from './FileUploader'
 import GraphGridItems from './GraphGridItems'
 import Dialog from '@mui/material/Dialog'
 
+
 const drawerWidth = 200
 
 const classColours = {
@@ -81,13 +82,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme()
 
-const Context = createContext('Default Value')
-
 const DashboardContent = () => {
 	const [drawerOpen, setDrawerOpen] = useState(true)
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const [selectedMatchID, setSelectedMatchID] = useState('')
 	const [matchesData, setMatchesData] = useState([])
+	
+
 
 	const toggleDrawer = () => {
 		setDrawerOpen(!drawerOpen)
@@ -98,77 +99,75 @@ const DashboardContent = () => {
 	}
 
 	return (
-		<Context.Provider value={classColours}>
 		<ThemeProvider theme={mdTheme}>
-			<Box sx={{ display: 'flex' }}>
-				<CssBaseline />
-				<AppBar position="absolute" open={true}>
-					<Toolbar
-						sx={{
-							pr: '24px', // keep right padding when drawer closed
-						}}
-					>
-						<IconButton
-							edge="start"
-							color="inherit"
-							aria-label="open drawer"
-							onClick={toggleDrawer}
+				<Box sx={{ display: 'flex' }}>
+					<CssBaseline />
+					<AppBar position="absolute" open={true}>
+						<Toolbar
 							sx={{
-								marginRight: '36px',
-								...(drawerOpen && { display: 'none' }),
+								pr: '24px', // keep right padding when drawer closed
 							}}
 						>
-							<MenuIcon />
-						</IconButton>
-						<Typography
-							component="h1"
-							variant="h6"
-							color="inherit"
-							noWrap
-							sx={{ flexGrow: 1 }}
-						>
-							hsgraph v0.9
-						</Typography>
-						<IconButton color="inherit">
-							{/* <Badge badgeContent={4} color="secondary">
+							<IconButton
+								edge="start"
+								color="inherit"
+								aria-label="open drawer"
+								onClick={toggleDrawer}
+								sx={{
+									marginRight: '36px',
+									...(drawerOpen && { display: 'none' }),
+								}}
+							>
+								<MenuIcon />
+							</IconButton>
+							<Typography
+								component="h1"
+								variant="h6"
+								color="inherit"
+								noWrap
+								sx={{ flexGrow: 1 }}
+							>
+								hsgraph v0.9
+							</Typography>
+							<IconButton color="inherit">
+								{/* <Badge badgeContent={4} color="secondary">
 
 							</Badge> */}
-						</IconButton>
-					</Toolbar>
-				</AppBar>
-				<Drawer variant="permanent" open={true}>
+							</IconButton>
+						</Toolbar>
+					</AppBar>
+					<Drawer variant="permanent" open={true}>
 					<DrawerContent matchesData={matchesData} setMatchesData={setMatchesData} />
-				</Drawer>
-				<Box
-					component="main"
-					sx={{
-						backgroundColor: (theme) =>
-							theme.palette.mode === 'light'
-								? theme.palette.grey[100]
-								: theme.palette.grey[900],
-						flexGrow: 1,
-						height: '100vh',
-						overflow: 'auto',
-					}}
-				>
-					<Toolbar />
-					<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-						<Grid container spacing={3}>
-							<GraphGridItems
-								matchesData={matchesData}
-								setDialogOpen={setDialogOpen}
-								setSelectedMatchID={setSelectedMatchID}
-							/>
-						</Grid>
+					</Drawer>
+					<Box
+						component="main"
+						sx={{
+							backgroundColor: (theme) =>
+								theme.palette.mode === 'light'
+									? theme.palette.grey[100]
+									: theme.palette.grey[900],
+							flexGrow: 1,
+							height: '100vh',
+							overflow: 'auto',
+						}}
+					>
+						<Toolbar />
+						<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+							<Grid container spacing={3}>
+								<GraphGridItems
+									matchesData={matchesData}
+									setDialogOpen={setDialogOpen}
+									setSelectedMatchID={setSelectedMatchID}
+								/>
+							</Grid>
 
-					</Container>
-					<Dialog open={dialogOpen} onClose={() => handleClose()} fullWidth={true} maxWidth="lg">
-						<BigChartDialog match={matchesData.find((match) => match.id === selectedMatchID)} />
-					</Dialog>
+						</Container>
+						<Dialog open={dialogOpen} onClose={() => handleClose()} fullWidth={true} maxWidth="lg">
+							<BigChartDialog match={matchesData.find((match) => match.id === selectedMatchID)} />
+						</Dialog>
+					</Box>
 				</Box>
-			</Box>
-			</ThemeProvider>
-		</Context.Provider>
+		</ThemeProvider>
 	)
 }
 

@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { MyContext } from '../App'
 import { Line } from 'react-chartjs-2'
 import {
     Chart as ChartJS,
@@ -21,25 +22,17 @@ ChartJS.register(
     Legend
 );
 
+
 function HPLineChart({ match, options }) {
+    const classColours = useContext(MyContext)
+    
     if (match.length < 1) return null
 
     // TODO: put this in useContext
     const unzip = arr => arr.reduce((acc, c) => (c.forEach((v, i) => acc[i].push(v)), acc), Array.from({ length: Math.max(...arr.map(a => a.length)) }, (_) => []));
 
     // This, too
-    const classColours = {
-        'Warrior': '#8E1002',
-        'Shaman': '#0070DE',
-        'Rogue': '#4C4D48',
-        'Paladin': '#AA8F00',
-        'Hunter': '#016E01',
-        'Druid': '#703606',
-        'Warlock': '#7624AD',
-        'Mage': '#0092AB',
-        'Priest': '#A7A17F',
-        'Demon Hunter': '#193338',
-    } 
+    
 
     // and this
     // adjust a hex code to make it lighter (+ve amount) or darker (-ve amount)
@@ -58,7 +51,7 @@ function HPLineChart({ match, options }) {
                 pointRadius: 2,
                 data: unzip(match.matchdata)[0],
                 backgroundColor: adjustColour(classColours[match.player1.class], 75),                 // dots
-                borderColor: classColours[match.player1.class]    // lines
+                borderColor: classColours[match.player1.class],    // lines
             },
             {
                 label: match.player2.name,

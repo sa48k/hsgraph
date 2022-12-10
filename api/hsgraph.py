@@ -106,7 +106,7 @@ def buildData(infile):
     player2['armor'] = 0
 
     # set initial classes (it might change later due to Maestra)
-    lookup = {'HERO_01': 'Warrior', 'HERO_02': 'Shaman', 'HERO_03': 'Rogue', 'HERO_04': 'Paladin', 'HERO_05': 'Hunter', 'HERO_06': 'Druid', 'HERO_07': 'Warlock', 'HERO_08': 'Mage', 'HERO_09': 'Priest', 'HERO_10': 'Demon Hunter'}
+    lookup = {'HERO_01': 'Warrior', 'HERO_02': 'Shaman', 'HERO_03': 'Rogue', 'HERO_04': 'Paladin', 'HERO_05': 'Hunter', 'HERO_06': 'Druid', 'HERO_07': 'Warlock', 'HERO_08': 'Mage', 'HERO_09': 'Priest', 'HERO_10': 'Demon Hunter', 'HERO_11': 'Death Knight'}
     classes = tree.xpath('//FullEntity[starts-with(@cardID, "HERO_")]')
     player1['class'] = lookup[classes[0].get("cardID")[:7]]
     player2['class'] = lookup[classes[2].get("cardID")[:7]]
