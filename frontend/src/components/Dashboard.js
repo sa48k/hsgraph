@@ -17,24 +17,9 @@ import DrawerContent from './DrawerContent'
 import FileUploader from './FileUploader'
 import GraphGridItems from './GraphGridItems'
 import Dialog from '@mui/material/Dialog'
-
+import { MyContext } from '../App'
 
 const drawerWidth = 200
-
-const classColours = {
-	'Warrior': '#8E1002',
-	'Shaman': '#0070DE',
-	'Rogue': '#4C4D48',
-	'Paladin': '#AA8F00',
-	'Hunter': '#016E01',
-	'Druid': '#703606',
-	'Warlock': '#7624AD',
-	'Mage': '#0092AB',
-	'Priest': '#A7A17F',
-	'Demon Hunter': '#193338',
-	'Death Knight': '#00FF00'
-}
-
 
 const AppBar = styled(MuiAppBar, {
 	shouldForwardProp: (prop) => prop !== 'open',
@@ -87,8 +72,11 @@ const DashboardContent = () => {
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const [selectedMatchID, setSelectedMatchID] = useState('')
 	const [matchesData, setMatchesData] = useState([])
-	
-
+	const [filterOptions, setFilterOptions] = useState({
+		player: 'Rogue',
+		opponent: 'Mage'
+	})
+	const classColours = useContext(MyContext)
 
 	const toggleDrawer = () => {
 		setDrawerOpen(!drawerOpen)
@@ -97,6 +85,18 @@ const DashboardContent = () => {
 	const handleClose = () => {
 		setDialogOpen(false)
 	}
+	
+	useEffect(() => {
+		localStorage.setItem('matchesData', JSON.stringify(matchesData));
+		console.log('LOCAL STORAGE, HOOOOO' + JSON.stringify(matchesData))
+	}, [matchesData]);
+
+	useEffect(() => {
+		const matchesData = JSON.parse(localStorage.getItem('matchesData'));
+		if (matchesData) {
+			setMatchesData(matchesData);
+		}
+	}, []);
 
 	return (
 		<ThemeProvider theme={mdTheme}>
@@ -127,7 +127,7 @@ const DashboardContent = () => {
 								noWrap
 								sx={{ flexGrow: 1 }}
 							>
-								hsgraph v0.9
+							hsgraph v0.9 {localStorage.getItem('matchesData')}
 							</Typography>
 							<IconButton color="inherit">
 								{/* <Badge badgeContent={4} color="secondary">
@@ -137,7 +137,7 @@ const DashboardContent = () => {
 						</Toolbar>
 					</AppBar>
 					<Drawer variant="permanent" open={true}>
-					<DrawerContent matchesData={matchesData} setMatchesData={setMatchesData} />
+					<DrawerContent matchesData={matchesData} setMatchesData={setMatchesData} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
 					</Drawer>
 					<Box
 						component="main"

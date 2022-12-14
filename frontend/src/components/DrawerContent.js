@@ -9,12 +9,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { MyContext } from '../App'
 
-function DrawerContent({ matchesData, setMatchesData }) {
+function DrawerContent({ matchesData, setMatchesData, filterOptions, setFilterOptions }) {
     const classColours = useContext(MyContext)
-
-    const handleChange = (event) => {
-        
-    }
 
     return (
         <>
@@ -38,12 +34,12 @@ function DrawerContent({ matchesData, setMatchesData }) {
                 <Select
                     labelId="player-class-select-label"
                     id="player-class-select"
-                    value={3}
+                    value={filterOptions.player}
                     label="PlayerClass"
-                    onChange={handleChange}
+                    onChange={event => setFilterOptions({ ...filterOptions, player: event.target.value })}
                 >
                     {Object.keys(classColours).sort().map((cl, idx) => 
-                        <MenuItem value={idx}>{cl}</MenuItem>
+                        <MenuItem key={idx} value={Object.keys(classColours)[idx]}>{cl}</MenuItem>
                     )}
                 </Select>
             </FormControl>
@@ -53,12 +49,12 @@ function DrawerContent({ matchesData, setMatchesData }) {
                 <Select
                     labelId="opponent-class-select-label"
                     id="opponent-class-select"
-                    value={3}
-                    label="PlayerClass"
-                    onChange={handleChange}
+                    value={filterOptions.opponent}
+                    label="OpponentClass"
+                    onChange={event => setFilterOptions({ ...filterOptions, opponent: event.target.value })}
                 >
                     {Object.keys(classColours).sort().map((cl, idx) =>
-                        <MenuItem value={idx}>{cl}</MenuItem>
+                        <MenuItem key={idx} value={Object.keys(classColours)[idx]}>{cl}</MenuItem>
                     )}
                 </Select>
             </FormControl>

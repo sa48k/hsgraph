@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from '@mui/material/Button'
 import List from '@mui/material/List';
 import Grid from '@mui/material/Grid';
@@ -6,7 +6,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 function FileUploader({ matchesData, setMatchesData }) {
-
     // add match data from the API to state
     const handleReturnedMatchData = (data) => {
         console.log(data)

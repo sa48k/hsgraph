@@ -11,17 +11,17 @@ export const MyContext = createContext()
 export default function App() {
 
   const classColours = {
-    'Warrior': '#8E1002',
-    'Shaman': '#0070DE',
-    'Rogue': '#4C4D48',
-    'Paladin': '#AA8F00',
-    'Hunter': '#016E01',
-    'Druid': '#703606',
-    'Warlock': '#7624AD',
-    'Mage': '#0092AB',
-    'Priest': '#A7A17F',
+    'Death Knight': '2c2e36',
     'Demon Hunter': '#193338',
-    'Death Knight': '2c2e36'
+    'Druid': '#703606',
+    'Hunter': '#016E01',
+    'Mage': '#0092AB',
+    'Paladin': '#AA8F00',
+    'Priest': '#A7A17F',
+    'Rogue': '#4C4D48',
+    'Shaman': '#0070DE',
+    'Warlock': '#7624AD',
+    'Warrior': '#8E1002'
   }
 
   return (
