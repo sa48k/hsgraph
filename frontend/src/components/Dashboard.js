@@ -71,7 +71,10 @@ const DashboardContent = () => {
 	const [drawerOpen, setDrawerOpen] = useState(true)
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const [selectedMatchID, setSelectedMatchID] = useState('')
-	const [matchesData, setMatchesData] = useState([])
+	const [matchesData, setMatchesData] = useState(() => {
+		return JSON.parse(localStorage.getItem('data')) || []
+	})
+
 	const [filterOptions, setFilterOptions] = useState({
 		player: 'Rogue',
 		opponent: 'Mage'
@@ -87,16 +90,8 @@ const DashboardContent = () => {
 	}
 	
 	useEffect(() => {
-		localStorage.setItem('matchesData', JSON.stringify(matchesData));
-		console.log('LOCAL STORAGE, HOOOOO' + JSON.stringify(matchesData))
+		localStorage.setItem('data', JSON.stringify(matchesData));
 	}, [matchesData]);
-
-	useEffect(() => {
-		const matchesData = JSON.parse(localStorage.getItem('matchesData'));
-		if (matchesData) {
-			setMatchesData(matchesData);
-		}
-	}, []);
 
 	return (
 		<ThemeProvider theme={mdTheme}>
@@ -127,7 +122,7 @@ const DashboardContent = () => {
 								noWrap
 								sx={{ flexGrow: 1 }}
 							>
-							hsgraph v0.9 {localStorage.getItem('matchesData')}
+							hsgraph v0.9
 							</Typography>
 							<IconButton color="inherit">
 								{/* <Badge badgeContent={4} color="secondary">
