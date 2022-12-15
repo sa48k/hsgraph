@@ -70,6 +70,7 @@ const mdTheme = createTheme()
 const DashboardContent = () => {
 	const [drawerOpen, setDrawerOpen] = useState(true)
 	const [dialogOpen, setDialogOpen] = useState(false)
+
 	const [selectedMatchID, setSelectedMatchID] = useState('')
 	const [matchesData, setMatchesData] = useState(() => {
 		return JSON.parse(localStorage.getItem('data')) || []
@@ -159,7 +160,8 @@ const DashboardContent = () => {
 						</Container>
 						<Dialog open={dialogOpen} onClose={() => handleClose()} fullWidth={true} maxWidth="lg">
 							<BigChartDialog match={matchesData.find((match) => match.id === selectedMatchID)} />
-						</Dialog>
+					</Dialog>
+					
 					</Box>
 				</Box>
 		</ThemeProvider>

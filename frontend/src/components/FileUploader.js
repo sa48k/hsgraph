@@ -1,16 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import Button from '@mui/material/Button'
-import List from '@mui/material/List';
-import Grid from '@mui/material/Grid';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import Dialog from '@mui/material/Dialog'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import TextareaAutosize from '@mui/base/TextareaAutosize'
 
-function FileUploader({ matchesData, setMatchesData }) {
+function FileUploader({ setMatchesData }) {
+    const [modalOpen, setModalOpen] = useState(false)
+    const [statusInfo, setStatusInfo] = useState([])
     // add match data from the API to state
     const handleReturnedMatchData = (data) => {
-        console.log(data)
-        if (data.status === 400) return null
+        setModalOpen(true)
+        if (data.status === 400) setStatusInfo(statusInfo => [...statusInfo, 'error'])
+        const message = `Added OK: ${data.player1.name} (${data.player1.name}) vs ${data.player2.name} (${data.player2.name})`
+        setStatusInfo(statusInfo => [...statusInfo, message])
         setMatchesData(matchesData => [...matchesData, data])
+    }
+
+    const handleDialogClose = () => {
+        setModalOpen(false)
+        setStatusInfo([])
     }
 
     const handleFileUpload = (e) => {
@@ -35,7 +44,7 @@ function FileUploader({ matchesData, setMatchesData }) {
             })
             .then((res) => res.json())
             .then((jsondata) => handleReturnedMatchData(jsondata))
-            .catch((err) => console.log(err))
+            .catch((err) => console.log('PANIC! ' + err))
         })
         
     }
@@ -61,6 +70,17 @@ function FileUploader({ matchesData, setMatchesData }) {
 
         </form>
             
+            <Dialog
+                open={modalOpen}
+                onClose={handleDialogClose}
+                scroll="paper"
+                aria-labelledby="status-modal-title"
+                aria-describedby="status-modal-description"
+            >
+                <Box style={{ whiteSpace: 'pre-line' }} sx={{ fontFamily: 'Monospace', m: 4 }}>
+                    {statusInfo.map((s) => `${s}\n`)}
+                </Box>
+            </Dialog>
         </>
     )
 }

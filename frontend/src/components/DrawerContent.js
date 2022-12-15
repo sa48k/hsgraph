@@ -9,7 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { MyContext } from '../App'
 
-function DrawerContent({ matchesData, setMatchesData, filterOptions, setFilterOptions }) {
+function DrawerContent({ matchesData, setMatchesData, setModalOpen, filterOptions, setFilterOptions, statusInfo, setStatusInfo }) {
     const classColours = useContext(MyContext)
 
     return (
