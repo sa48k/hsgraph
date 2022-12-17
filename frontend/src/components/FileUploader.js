@@ -20,7 +20,7 @@ function FileUploader({ matchesData, setMatchesData }) {
         if (data.status === 400) {
             setStatusInfo(statusInfo => [...statusInfo, data.message])
         }
-        const message = `Added OK: ${data.player1.class} (${data.player1.name}) vs ${data.player2.class} (${data.player2.name})`
+        const message = `Added ${data.gametype} match OK: ${data.player1.class} (${data.player1.name}) vs ${data.player2.class} (${data.player2.name})`
         setStatusInfo(statusInfo => [...statusInfo, message])
         setMatchesData(matchesData => [...matchesData, data])
     }

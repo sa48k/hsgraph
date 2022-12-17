@@ -30,7 +30,21 @@ def getReplayURL(infile):
 def generateID(length=8):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
     return(''.join(random.choice(chars) for i in range(length)))
-    
+
+def getGameType(gametype):
+    gtype = gametype.get('type')
+    format = gametype.get('format')
+    output = ''
+    if format == '1':
+        output += 'Wild '
+    elif format == '2':
+        output += 'Standard '
+    if gtype == '7':
+        output += 'Ranked'
+    elif gtype == '8':
+        output += 'Casual'
+    return output
+
 def outputToCSV(player1, player2, result):
     # write result to csv with the top row: turn #, player names / classes
     # then an array of tuples showing hero HP at the end of each turn
@@ -49,6 +63,7 @@ def generateJSON(metadata, p1, p2):
         "timestamp": metadata['timestamp'],
         "gamelength": metadata['gamelength'],
         "url": metadata['url'],
+        "gametype": metadata['gametype'],
         "player1": {
             "name": p1['name'],
             "class": p1['class'],
@@ -66,8 +81,8 @@ def generateJSON(metadata, p1, p2):
 def buildData(infile):
     # rudimentary check that the xml is a HSreplay
     tree = etree.fromstring(infile) # .fromstring if it's from a string; .parse if it's from a file  # IMPORTANT
-    checkxml = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="2"]') # standard ranked and casual only
-    assert(len(checkxml) > 0), "Not a valid HSReplay XML file (must be standard casual or ranked)"
+    gametype = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="1" or @format="2"]') # standard/wild ranked/casual only
+    assert(len(gametype) > 0), "Not a valid HSReplay XML file (must be standard casual or ranked)"
     
     # initial setup: player dicts; empty array for results; timestamps and calculated game length
     players = tree.xpath('//Player')
@@ -75,6 +90,7 @@ def buildData(infile):
     player2 = {}
     result = []
     timestamp = tree.xpath('//Game')[0].get('ts')
+    
     endtime = tree.xpath('(//Block[@entity="1"])[last()]')[0].get('ts')
     d1 = parser.isoparse(timestamp)
     d2 = parser.isoparse(endtime)
@@ -258,6 +274,7 @@ def buildData(infile):
     gamedata['gamelength'] = gamelength
     gamedata['result'] = result
     gamedata['url'] = getReplayURL(infile)
+    gamedata['gametype'] = getGameType(gametype[0])
     return generateJSON(gamedata, player1, player2)
 
 ##########################################
