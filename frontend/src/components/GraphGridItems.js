@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
-
+import CloseIcon from '@mui/icons-material/Close'
 import Card from '@mui/material/Card'
 import HPLineChart from './HPLineChart'
 import PlayerIcons from './PlayerIcons'
@@ -48,6 +48,7 @@ const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID }) => {
                     className="hvr-grow-shadow"
                     sx={{ p: 2, display: 'flex', flexDirection: 'column' }}
                 >
+                    {/* <CloseIcon sx={{ position: "absolute", top: 10, right: 10 }} /> */}
                     <Typography component="h2" variant="h6" color="primary">{match.player1.class + ' vs ' + match.player2.class}</Typography>
                     <Typography variant="caption">
                         {ts}
