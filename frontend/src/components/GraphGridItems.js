@@ -40,6 +40,8 @@ const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID }) => {
     let graphCards = sortedMatches.map((match) => {
         const d = new Date(match.timestamp)
         const ts = d.toLocaleDateString(undefined, opts)
+        const winner = match.player1.winner === true ? match.player1 : match.player2
+
         return (
             <Grid key={match.id} item xs={12} md={6} lg={4}>
                 <Card
@@ -66,8 +68,8 @@ const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID }) => {
                         <Grid item xs={2} pl={3}>
                             <PlayerIcons
                                 match={match}
-                                p1position="30%"
-                                p2position="75%"
+                                winnerposition="75%"
+                                loserposition="30%"
                             />
                         </Grid>
 
