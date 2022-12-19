@@ -4,16 +4,19 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import Stack from '@mui/material/Stack';
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import Stack from '@mui/material/Stack'
 import Card from '@mui/material/Card'
 import HPLineChart from './HPLineChart'
 import Grid from '@mui/material/Grid'
-import Chip from '@mui/material/Chip';
+import Chip from '@mui/material/Chip'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
+import DeleteIcon from '@mui/icons-material/Delete'
 import Divider from '@mui/material/Divider'
 import PlayerIcons from './PlayerIcons'
 
-const BigChartDialog = ({ match }) => {
+const BigChartDialog = ({ match, setDialogOpen }) => {
 
     if (match === undefined) return <Card><h1>Loading...</h1></Card>
 
@@ -25,10 +28,10 @@ const BigChartDialog = ({ match }) => {
     // the loser's icon will be at bottom="0%" (0 on the y-axis)
     // the winner's icon should be next to their final point on the chart
     const maxHP = Math.max(...match.matchdata.flat())
-    const p1finalhp = match.matchdata.slice(-1)[0][0]
-    const p2finalhp = match.matchdata.slice(-1)[0][1]
-    const p1position = (p1finalhp / maxHP * 100 * 0.9).toString()
-    const p2position = (p2finalhp / maxHP * 100 * 0.9).toString()
+    const winnerfinalhp = match.player1.winner ? match.matchdata.slice(-1)[0][0] : match.matchdata.slice(-1)[0][1]
+    const loserfinalhp = match.player1.winner ? match.matchdata.slice(-1)[0][1] : match.matchdata.slice(-1)[0][0]
+    const winnerposition = (winnerfinalhp / maxHP * 100 * 0.9).toString()
+    const loserposition = (loserfinalhp / maxHP * 100 * 0.9).toString()
     // TODO: deal with overlap, maybe
 
     const getOrCreateTooltip = (chart) => {
@@ -157,12 +160,17 @@ const BigChartDialog = ({ match }) => {
 
     return (
         <Card sx={{ p: 6 }}>
-
-            <Typography variant="h4" component="div">
-                {match.player1.class} vs {match.player2.class}
-                <Chip color="primary" variant="outlined" label={match.gametype.split(' ')[0]} sx={{ ml: 2 }}></Chip>
-                <Chip color="primary" variant="outlined" label={match.gametype.split(' ')[1]} sx={{ mx: 2 }}></Chip>
-            </Typography>
+            <Grid container justifyContent="space-between">
+                <Grid item>
+                    <Typography variant="h4" component="div">
+                        {match.player1.class} vs {match.player2.class}
+                    </Typography>
+                </Grid>
+                <Grid item>
+                    <Chip color="secondary" variant="outlined" label={match.gametype.split(' ')[0]} sx={{ ml: 2 }}></Chip>
+                    <Chip color="secondary" variant="outlined" label={match.gametype.split(' ')[1]} sx={{ mx: 2 }}></Chip>
+                </Grid>
+            </Grid>
             <Typography variant="caption" component="div">
                 {ts}
             </Typography>
@@ -172,7 +180,7 @@ const BigChartDialog = ({ match }) => {
                     <HPLineChart match={match} options={options} />
                 </Grid>
                 <Grid item xs={1} p={1}>
-                    <PlayerIcons match={match} winnerposition={`${p1position}%`} loserposition={`${p2position}%`} borderRadius={4} />
+                    <PlayerIcons match={match} winnerposition={`${winnerposition}%`} loserposition={`${loserposition}%`} borderRadius={4} />
                 </Grid>
             </Grid>
 
@@ -185,11 +193,20 @@ const BigChartDialog = ({ match }) => {
                 </ListItem>
                 <ListItem>
                     <ListItemButton component="a" href={match.url} target="_">
-                        <ListItemText primary="View replay" />
+                        <ListItemText sx={{ textDecoration: 'underline' }} primary="View replay" />
                     </ListItemButton>
                 </ListItem>
-                <ListItem>Item 3</ListItem>
+                <ListItem>
+                    <ListItemButton>
+                        <DeleteIcon sx={{ mr: 1 }} />
+                        Delete Match Data
+                    </ListItemButton>
+                </ListItem>
             </Stack>
+
+            <IconButton onClick={() => setDialogOpen(false)} fontSize="large" sx={{ position: "absolute", top: 15, right: 15 }}>
+                <CloseIcon />
+            </IconButton>
 
         </Card>
     )

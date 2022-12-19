@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import Box from '@mui/material/Box'
+import CloseIcon from '@mui/icons-material/Close'
+import IconButton from '@mui/material/IconButton'
 
 import Typography from '@mui/material/Typography'
 import TextareaAutosize from '@mui/base/TextareaAutosize'
@@ -9,11 +11,11 @@ import TextareaAutosize from '@mui/base/TextareaAutosize'
 function FileUploader({ matchesData, setMatchesData }) {
     const [modalOpen, setModalOpen] = useState(false)
     const [statusInfo, setStatusInfo] = useState([])
-    
+
     useEffect(() => {
         bottomRef.current?.scrollIntoView()
     }, [statusInfo]);
-    
+
     // add match data from the API to state
     const handleReturnedMatchData = (data) => {
         setModalOpen(true)
@@ -41,14 +43,14 @@ function FileUploader({ matchesData, setMatchesData }) {
                 let urlregex = /https:\/\/hsreplay.net\/replay\/\w+/i
                 let url = content.match(urlregex)[0]
                 let checkAlreadyUploaded = matchesData.findIndex((match) => match.url === url)
-                
+
                 // if it has, toss it
                 if (checkAlreadyUploaded !== -1) {
                     data['status'] = 400
                     data['message'] = `${file.name} has already been parsed and added`
                     handleReturnedMatchData(data)
 
-                // otherwise, send it to the API to be parsed
+                    // otherwise, send it to the API to be parsed
                 } else {
                     const formData = new FormData()
                     formData.append("file", file)
@@ -64,30 +66,30 @@ function FileUploader({ matchesData, setMatchesData }) {
             reader.readAsArrayBuffer(file)
         })
     }
-    
+
     const bottomRef = useRef(null);
 
     return (
         <>
             <form>
-                <input
-                    accept=".xml"
-                    style={{ display: 'none' }}
-                    id="fileuploadinput"
-                    name="files"
-                    multiple
-                    type="file"
-                    onChange={handleFileUpload}
-                />
-                <label htmlFor="fileuploadinput">
-                    <Button color="secondary" variant="contained" component="span" sx={{ m: 2 }}>
-                        Upload
-                    </Button>
-                </label>
+                <Button sx={{ mx: 2 }} color="secondary" variant="contained" component="label">
+                    Upload XML
+                    <input
+                        accept=".xml"
+                        style={{ display: 'none' }}
+                        id="fileuploadinput"
+                        name="files"
+                        multiple
+                        type="file"
+                        onChange={handleFileUpload}
+                        hidden
+                    />
+                </Button>
+
 
             </form>
 
-            
+
             <Dialog
                 open={modalOpen}
                 onClose={handleDialogClose}
@@ -98,12 +100,16 @@ function FileUploader({ matchesData, setMatchesData }) {
                 aria-labelledby="status-modal-title"
                 aria-describedby="status-modal-description"
             >
-                <Box style={{ whiteSpace: 'pre-line' }} sx={{ fontFamily: 'Monospace', m: 4 }}>
-                    {statusInfo.map((s) => `${s}\n`)}
+                <Box style={{ position: "relative" }}>
+                    <IconButton onClick={handleDialogClose} sx={{ position: "absolute", top: 30, right: 30 }} >
+                        <CloseIcon />
+                    </IconButton>
+                    <Box style={{ whiteSpace: 'pre-line' }} sx={{ fontFamily: 'Monospace', m: 4 }}>
+                        {statusInfo.map((s) => `${s}\n`)}
+                    </Box>
                 </Box>
-                <Button ref={bottomRef} sx={{ mb: 1 }} onClick={handleDialogClose}>Close</Button>
-                </Dialog>
-         
+            </Dialog>
+
         </>
     )
 }

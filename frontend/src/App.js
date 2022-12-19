@@ -11,6 +11,7 @@ export const MyContext = createContext()
 export default function App() {
 
   const classColours = {
+    'All': 'ffffff',
     'Death Knight': '2c2e36',
     'Demon Hunter': '#193338',
     'Druid': '#703606',

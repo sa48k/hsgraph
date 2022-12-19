@@ -1,7 +1,6 @@
 import React from 'react'
 import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import CloseIcon from '@mui/icons-material/Close'
+import Chip from '@mui/material/Chip'
 import Card from '@mui/material/Card'
 import HPLineChart from './HPLineChart'
 import PlayerIcons from './PlayerIcons'
@@ -40,7 +39,7 @@ const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID }) => {
     let graphCards = sortedMatches.map((match) => {
         const d = new Date(match.timestamp)
         const ts = d.toLocaleDateString(undefined, opts)
-        const winner = match.player1.winner === true ? match.player1 : match.player2
+        // const winner = match.player1.winner === true ? match.player1 : match.player2
 
         return (
             <Grid key={match.id} item xs={12} md={6} lg={4}>
@@ -50,8 +49,17 @@ const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID }) => {
                     className="hvr-grow-shadow"
                     sx={{ p: 2, display: 'flex', flexDirection: 'column' }}
                 >
-                    {/* <CloseIcon sx={{ position: "absolute", top: 10, right: 10 }} /> */}
-                    <Typography component="h2" variant="h6" color="primary">{match.player1.class + ' vs ' + match.player2.class}</Typography>
+                    <Grid container justifyContent="space-between">
+                        <Grid item>
+                        <Typography component="h2" variant="h6" color="primary">
+                            {match.player1.class + ' vs ' + match.player2.class}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Chip size="small" color="secondary" variant="outlined" label={match.gametype.split(' ')[0]} sx={{ ml: 1 }}></Chip>
+                            <Chip size="small" color="secondary" variant="outlined" label={match.gametype.split(' ')[1]} sx={{ mx: 1 }}></Chip>
+                        </Grid>
+                    </Grid>
                     <Typography variant="caption">
                         {ts}
                     </Typography>
