@@ -59,7 +59,35 @@ function DrawerContent({ matchesData, setMatchesData, setModalOpen, filterOption
                 </Select>
             </FormControl>
 
-            
+            <FormControl sx={{ m: 2, mt: 3 }}>
+                <InputLabel id="filter-sort-select-label">Sort By</InputLabel>
+                <Select
+                    labelId="filter-sort-select-label"
+                    id="filter-sort-select"
+                    value={filterOptions.sortFilter}
+                    label="sortFilter"
+                    onChange={event => setFilterOptions({ ...filterOptions, sortFilter: event.target.value })}
+                >
+                    {['Newest first', 'Oldest first', 'Win margin'].map((sortoption, idx) =>
+                        <MenuItem key={idx} value={sortoption}>{sortoption}</MenuItem>
+                    )}
+                </Select>
+            </FormControl>
+
+            <FormControl sx={{ m: 2 }}>
+                <InputLabel id="filter-sort-select-label">Show</InputLabel>
+                <Select
+                    labelId="outcome-sort-select-label"
+                    id="outcome-sort-select"
+                    value={filterOptions.outcomeFilter}
+                    label="outcomeFilter"
+                    onChange={event => setFilterOptions({ ...filterOptions, outcomeFilter: event.target.value })}
+                >
+                    {['All matches', 'Wins only', 'Losses onlyn'].map((sortoption, idx) =>
+                        <MenuItem key={idx} value={sortoption}>{sortoption}</MenuItem>
+                    )}
+                </Select>
+            </FormControl>
            
         </>
     )

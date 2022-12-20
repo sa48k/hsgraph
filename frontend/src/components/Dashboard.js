@@ -77,7 +77,9 @@ const DashboardContent = () => {
 
 	const [filterOptions, setFilterOptions] = useState({
 		player: 'All',
-		opponent: 'Mage'
+		opponent: 'Mage',
+		sortFilter: 'Newest first',
+		outcomeFilter: 'All matches'
 	})
 	const classColours = useContext(MyContext)
 
@@ -85,84 +87,85 @@ const DashboardContent = () => {
 		setDrawerOpen(!drawerOpen)
 	}
 
-	const handleClose = () => {
+	const handleDialogClose = () => {
 		setDialogOpen(false)
 	}
-	
+
 	useEffect(() => {
 		localStorage.setItem('data', JSON.stringify(matchesData));
 	}, [matchesData]);
 
 	return (
 		<ThemeProvider theme={mdTheme}>
-				<Box sx={{ display: 'flex' }}>
-					<CssBaseline />
-					<AppBar position="absolute" open={true}>
-						<Toolbar
-							sx={{
-								pr: '24px', // keep right padding when drawer closed
-							}}
-						>
-							<IconButton
-								edge="start"
-								color="inherit"
-								aria-label="open drawer"
-								onClick={toggleDrawer}
-								sx={{
-									marginRight: '36px',
-									...(drawerOpen && { display: 'none' }),
-								}}
-							>
-								<MenuIcon />
-							</IconButton>
-							<Typography
-								component="h1"
-								variant="h6"
-								color="inherit"
-								noWrap
-								sx={{ flexGrow: 1 }}
-							>
-							hsgraph v0.9
-							</Typography>
-							<IconButton color="inherit">
-								{/* <Badge badgeContent={4} color="secondary">
-
-							</Badge> */}
-							</IconButton>
-						</Toolbar>
-					</AppBar>
-					<Drawer variant="permanent" open={true}>
-					<DrawerContent matchesData={matchesData} setMatchesData={setMatchesData} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
-					</Drawer>
-					<Box
-						component="main"
+			<Box sx={{ display: 'flex' }}>
+				<CssBaseline />
+				<AppBar position="absolute" open={true}>
+					<Toolbar
 						sx={{
-							backgroundColor: (theme) =>
-								theme.palette.mode === 'light'
-									? theme.palette.grey[100]
-									: theme.palette.grey[900],
-							flexGrow: 1,
-							height: '100vh',
-							overflow: 'auto',
+							pr: '24px', // keep right padding when drawer closed
 						}}
 					>
-						<Toolbar />
-						<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-							<Grid container spacing={3}>
-								<GraphGridItems
-									matchesData={matchesData}
-									setDialogOpen={setDialogOpen}
-									setSelectedMatchID={setSelectedMatchID}
-								/>
-							</Grid>
+						<IconButton
+							edge="start"
+							color="inherit"
+							aria-label="open drawer"
+							onClick={toggleDrawer}
+							sx={{
+								marginRight: '36px',
+								...(drawerOpen && { display: 'none' }),
+							}}
+						>
+							<MenuIcon />
+						</IconButton>
+						<Typography
+							component="h1"
+							variant="h6"
+							color="inherit"
+							noWrap
+							sx={{ flexGrow: 1 }}
+						>
+							hsgraph v0.9
+						</Typography>
+						<IconButton color="inherit">
+							{/* <Badge badgeContent={4} color="secondary">
 
-						</Container>
-						<Dialog open={dialogOpen} onClose={() => handleClose()} fullWidth={true} maxWidth="lg">
+							</Badge> */}
+						</IconButton>
+					</Toolbar>
+				</AppBar>
+				<Drawer variant="permanent" open={true}>
+					<DrawerContent matchesData={matchesData} setMatchesData={setMatchesData} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
+				</Drawer>
+				<Box
+					component="main"
+					sx={{
+						backgroundColor: (theme) =>
+							theme.palette.mode === 'light'
+								? theme.palette.grey[100]
+								: theme.palette.grey[900],
+						flexGrow: 1,
+						height: '100vh',
+						overflow: 'auto',
+					}}
+				>
+					<Toolbar />
+					<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+						<Grid container spacing={3}>
+							<GraphGridItems
+								matchesData={matchesData}
+								setDialogOpen={setDialogOpen}
+								setSelectedMatchID={setSelectedMatchID}
+								filterOptions={filterOptions}
+							/>
+						</Grid>
+
+					</Container>
+					<Dialog open={dialogOpen} onClose={() => handleDialogClose()} fullWidth={true} maxWidth="lg">
 						<BigChartDialog match={matchesData.find((match) => match.id === selectedMatchID)} setDialogOpen={setDialogOpen} />
 					</Dialog>
-					
-					</Box>
+
 				</Box>
+			</Box>
 		</ThemeProvider>
 	)
 }

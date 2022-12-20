@@ -47,6 +47,7 @@ const BigChartDialog = ({ match, setDialogOpen }) => {
             tooltipEl.style.position = 'absolute';
             tooltipEl.style.transform = 'translate(-50%, 0)';
             tooltipEl.style.transition = 'all .1s ease';
+            tooltipEl.style.zIndex = "5"
 
             const table = document.createElement('table');
             table.style.margin = '0px';

@@ -7,7 +7,7 @@ import PlayerIcons from './PlayerIcons'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 
-const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID }) => {
+const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID, filterOptions }) => {
     const opts = { month: "short", year: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }
 
     const handleCardClick = (id) => {
@@ -15,8 +15,15 @@ const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID }) => {
         setDialogOpen(true)
     }
 
-    // sort by date (newest first)
-    const sortedMatches = matchesData.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    const getWinMargin = (match) => {
+        let margin = Math.abs(match.matchdata.slice(-1)[0][0] - match.matchdata.slice(-1)[0][1])
+        console.log(margin)
+        return margin
+    }
+    // apply filter options
+    if (filterOptions.sortFilter === 'Newest first') var sortedMatches = matchesData.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    if (filterOptions.sortFilter === 'Oldest first') var sortedMatches = matchesData.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+    if (filterOptions.sortFilter === 'Win margin') var sortedMatches = matchesData.sort((a, b) => getWinMargin(a) - getWinMargin(b))
 
     // options for the simple line graph displayed on each card
     const options = {
@@ -39,10 +46,10 @@ const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID }) => {
     let graphCards = sortedMatches.map((match) => {
         const d = new Date(match.timestamp)
         const ts = d.toLocaleDateString(undefined, opts)
-        // const winner = match.player1.winner === true ? match.player1 : match.player2
+        // const winner = match.player1.winner === true ? match.player1 : match.player2 // use to apply checkmark or cross on icons for a11y
 
         return (
-            <Grid key={match.id} item xs={12} md={6} lg={4}>
+            <Grid key={match.id} item xs={12} md={6} xl={4}>
                 <Card
                     onClick={() => handleCardClick(match.id)}
                     style={{ cursor: 'pointer' }}
