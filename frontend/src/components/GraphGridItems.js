@@ -8,22 +8,29 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 
 const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID, filterOptions }) => {
-    const opts = { month: "short", year: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }
+    const datetimeoptions = { month: "short", year: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }
 
     const handleCardClick = (id) => {
         setSelectedMatchID(id)
         setDialogOpen(true)
     }
 
-    const getWinMargin = (match) => {
-        let margin = Math.abs(match.matchdata.slice(-1)[0][0] - match.matchdata.slice(-1)[0][1])
-        console.log(margin)
-        return margin
+    const getWinMargin = (match) => Math.abs(match.matchdata.slice(-1)[0][0] - match.matchdata.slice(-1)[0][1])
+
+    // apply filter options, poorly
+    if (filterOptions.player !== 'All') {
+        var sortedMatches = matchesData.filter(match => match.player1.class === filterOptions.player || match.player2.class === filterOptions.player)
+    } else {
+        var sortedMatches = matchesData
     }
-    // apply filter options
-    if (filterOptions.sortFilter === 'Newest first') var sortedMatches = matchesData.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-    if (filterOptions.sortFilter === 'Oldest first') var sortedMatches = matchesData.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-    if (filterOptions.sortFilter === 'Win margin') var sortedMatches = matchesData.sort((a, b) => getWinMargin(a) - getWinMargin(b))
+
+    if (filterOptions.opponent !== 'All') {
+        var sortedMatches = sortedMatches.filter(match => match.player1.class === filterOptions.opponent || match.player2.class === filterOptions.opponent)
+    }
+
+    if (filterOptions.sortFilter === 'Newest first') var sortedMatches = sortedMatches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    if (filterOptions.sortFilter === 'Oldest first') var sortedMatches = sortedMatches.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+    if (filterOptions.sortFilter === 'Win margin') var sortedMatches = sortedMatches.sort((a, b) => getWinMargin(b) - getWinMargin(a))
 
     // options for the simple line graph displayed on each card
     const options = {
@@ -45,7 +52,7 @@ const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID, filter
 
     let graphCards = sortedMatches.map((match) => {
         const d = new Date(match.timestamp)
-        const ts = d.toLocaleDateString(undefined, opts)
+        const ts = d.toLocaleDateString(undefined, datetimeoptions)
         // const winner = match.player1.winner === true ? match.player1 : match.player2 // use to apply checkmark or cross on icons for a11y
 
         return (
@@ -53,7 +60,7 @@ const GraphGridItems = ({ matchesData, setDialogOpen, setSelectedMatchID, filter
                 <Card
                     onClick={() => handleCardClick(match.id)}
                     style={{ cursor: 'pointer' }}
-                    className="hvr-grow-shadow"
+                    className="hvr-grow-shadow graphcard"
                     sx={{ p: 2, display: 'flex', flexDirection: 'column' }}
                 >
                     <Grid container justifyContent="space-between">

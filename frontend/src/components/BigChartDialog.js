@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import Divider from '@mui/material/Divider'
 import PlayerIcons from './PlayerIcons'
 
-const BigChartDialog = ({ match, setDialogOpen }) => {
+const BigChartDialog = ({ match, removeMatch, setDialogOpen }) => {
 
     if (match === undefined) return <Card><h1>Loading...</h1></Card>
 
@@ -198,7 +198,7 @@ const BigChartDialog = ({ match, setDialogOpen }) => {
                     </ListItemButton>
                 </ListItem>
                 <ListItem>
-                    <ListItemButton>
+                    <ListItemButton onClick={() => removeMatch(match.id)}>
                         <DeleteIcon sx={{ mr: 1 }} />
                         Delete Match Data
                     </ListItemButton>

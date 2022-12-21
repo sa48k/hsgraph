@@ -5,21 +5,19 @@ import MuiDrawer from '@mui/material/Drawer'
 import Box from '@mui/material/Box'
 import MuiAppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
-import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import MenuIcon from '@mui/icons-material/Menu'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import BigChartDialog from './BigChartDialog'
 import DrawerContent from './DrawerContent'
-import FileUploader from './FileUploader'
 import GraphGridItems from './GraphGridItems'
 import Dialog from '@mui/material/Dialog'
 import { MyContext } from '../App'
 
 const drawerWidth = 200
+var displayedCardsCount = 0
 
 const AppBar = styled(MuiAppBar, {
 	shouldForwardProp: (prop) => prop !== 'open',
@@ -77,7 +75,7 @@ const DashboardContent = () => {
 
 	const [filterOptions, setFilterOptions] = useState({
 		player: 'All',
-		opponent: 'Mage',
+		opponent: 'All',
 		sortFilter: 'Newest first',
 		outcomeFilter: 'All matches'
 	})
@@ -88,6 +86,13 @@ const DashboardContent = () => {
 	}
 
 	const handleDialogClose = () => {
+		setDialogOpen(false)
+	}
+
+	const removeMatch = (id) => {
+		const idx = matchesData.findIndex(match => match.id === id)
+		const matches = matchesData
+		setMatchesData((matches) => matches.splice(idx, 1))
 		setDialogOpen(false)
 	}
 
@@ -161,7 +166,7 @@ const DashboardContent = () => {
 
 					</Container>
 					<Dialog open={dialogOpen} onClose={() => handleDialogClose()} fullWidth={true} maxWidth="lg">
-						<BigChartDialog match={matchesData.find((match) => match.id === selectedMatchID)} setDialogOpen={setDialogOpen} />
+						<BigChartDialog match={matchesData.find((match) => match.id === selectedMatchID)} setDialogOpen={setDialogOpen} removeMatch={removeMatch} />
 					</Dialog>
 
 				</Box>
