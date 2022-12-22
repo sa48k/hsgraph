@@ -34,6 +34,7 @@ const BigChartDialog = ({ match, removeMatch, setDialogOpen }) => {
     const loserposition = (loserfinalhp / maxHP * 100 * 0.9).toString()
     // TODO: deal with overlap, maybe
 
+    // Custom HTML for tooltip
     const getOrCreateTooltip = (chart) => {
         let tooltipEl = chart.canvas.parentNode.querySelector('div');
 
