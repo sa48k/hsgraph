@@ -83,7 +83,7 @@ function DrawerContent({ matchesData, setMatchesData, setModalOpen, filterOption
                     label="outcomeFilter"
                     onChange={event => setFilterOptions({ ...filterOptions, outcomeFilter: event.target.value })}
                 >
-                    {['All matches', 'Wins only', 'Losses onlyn'].map((sortoption, idx) =>
+                    {['All matches', 'Wins only', 'Losses only'].map((sortoption, idx) =>
                         <MenuItem key={idx} value={sortoption}>{sortoption}</MenuItem>
                     )}
                 </Select>
