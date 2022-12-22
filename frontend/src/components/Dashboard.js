@@ -90,9 +90,9 @@ const DashboardContent = () => {
 	}
 
 	const removeMatch = (id) => {
-		const idx = matchesData.findIndex(match => match.id === id)
 		const matches = matchesData
-		setMatchesData((matches) => matches.splice(idx, 1))
+		matches.splice(matches.findIndex(match => match.id === id), 1)
+		setMatchesData(matches)
 		setDialogOpen(false)
 	}
 
