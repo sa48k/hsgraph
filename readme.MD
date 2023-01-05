@@ -6,7 +6,7 @@ Works on XML files downloaded from [hsreplay.net](https://hsreplay.net).
 ## Installation
 Requires: Node.js, npm, Python3
 
-- Install all Python modules from `requirements.txt` in the `api` directory
+- Activate the virtual environment in `/venv`, then install all Python modules from `api/requirements.txt`
 - cd to the `/frontend` directory then `npm install` to install required dependencies (only needs to be done once)
 
 ## Usage

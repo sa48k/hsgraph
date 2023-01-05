@@ -15,7 +15,7 @@ file_handler = logging.FileHandler('debug.log')
 console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setLevel(logging.DEBUG)
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     handlers=[
         file_handler,
         console_handler
@@ -80,7 +80,7 @@ def generateJSON(metadata, p1, p2):
 
 def buildData(infile):
     # rudimentary check that the xml is a HSreplay
-    tree = etree.fromstring(infile) # .fromstring if it's from a string; .parse if it's from a file  # IMPORTANT
+    tree = etree.fromstring(infile)      # .fromstring if it's from a string; .parse if it's from a file  # IMPORTANT
     gametype = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="1" or @format="2"]') # standard/wild ranked/casual only
     assert(len(gametype) > 0), "Not a valid HSReplay XML file (must be standard casual or ranked)"
     
@@ -101,9 +101,9 @@ def buildData(infile):
     player1['entityid'] = players[0].xpath('Tag[@tag="27"]')[0].get('value')    # this can change when a hero card is played
     player1['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player1['entityid'] + '"]/parent::* ')[0].get('EntityName') 
     player1['starthealth'] = 30
-    renathalcheck = tree.xpath('//Block[@type="5"]/TagChange[@tag="45"][@value="40"][@entity="' + player1['entityid'] + '"]')
-    if renathalcheck: # check for Renathal and set starting health to 40 if needed
-        player1['starthealth'] = 40    
+    renathalcheck = tree.xpath('//Block[@type="5"]/TagChange[@tag="45"][@entity="' + player1['entityid'] + '"]')
+    if renathalcheck: # check for Renathal and set starting health to 35/40 if needed
+        player1['starthealth'] = int(renathalcheck[0].get('value'))
     player1['damaged'] = 0
     player1['healed'] = 0
     player1['armor'] = 0
@@ -114,9 +114,9 @@ def buildData(infile):
     player2['entityid'] = players[1].xpath('Tag[@tag="27"] ')[0].get('value')
     player2['hero'] = tree.xpath('//FullEntity//Tag[@value="' + player2['entityid'] + '"]/parent::* ')[0].get('EntityName')
     player2['starthealth'] = 30
-    renathalcheck = tree.xpath('//Block[@type="5"]/TagChange[@tag="45"][@value="40"][@entity="' + player2['entityid'] + '"]')
+    renathalcheck = tree.xpath('//Block[@type="5"]/TagChange[@tag="45"][@entity="' + player2['entityid'] + '"]')
     if renathalcheck:
-        player2['starthealth'] = 40  
+        player2['starthealth'] = int(renathalcheck[0].get('value'))
     player2['damaged'] = 0
     player2['healed'] = 0
     player2['armor'] = 0
@@ -288,7 +288,7 @@ def main():
     else:
         fulldata = []
         for f in filelist:
-            logging.info(f'Loading {f}')
+            print(f'Loading {f}')
             matchjson = buildData(f.file)
             fulldata.append(matchjson)
 
