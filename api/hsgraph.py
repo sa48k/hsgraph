@@ -15,7 +15,7 @@ file_handler = logging.FileHandler('debug.log')
 console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setLevel(logging.DEBUG)
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     handlers=[
         file_handler,
         console_handler
