@@ -5,7 +5,7 @@ from hsgraph import *
 
 app = Flask(__name__)
 CORS(app)
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 5 # 5MB max for now
 
 @app.route('/', methods=['GET'])
@@ -16,7 +16,6 @@ def home():
 @cross_origin()
 def process():
     file = request.files['file']
-    print(file)
     try:
         xmlsource = file.read()
         data = buildData(xmlsource)
@@ -26,4 +25,4 @@ def process():
         return error, 400
 
 if __name__ == "__main__":
-	app.run()
+	app.run(host="0.0.0.0", debug="False")

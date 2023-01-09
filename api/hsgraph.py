@@ -24,26 +24,26 @@ logging.basicConfig(
 
 def getReplayURL(infile):
     content = str(infile)
-    url = re.search('(https://hsreplay.net/replay/\w+)', content)[0]
+    url_line = content.split('\\n')[-2]
+    url = re.search('(https://hsreplay.net/replay/\w+)', url_line)[0]
     return(url)
     
 def generateID(length=8):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
     return(''.join(random.choice(chars) for i in range(length)))
 
-def getGameType(gametype):
-    gtype = gametype.get('type')
-    format = gametype.get('format')
-    output = ''
-    if format == '1':
-        output += 'Wild '
-    elif format == '2':
-        output += 'Standard '
-    if gtype == '7':
-        output += 'Ranked'
-    elif gtype == '8':
-        output += 'Casual'
-    return output
+def getGameType(game_info):
+    game_type_codes = {
+        '7': 'Ranked',
+        '8': 'Casual'
+    }
+    game_format_codes = {
+        '1': 'Wild',
+        '2': 'Standard'
+    }
+    game_type = game_type_codes.get(game_info.get('type'))
+    game_format = game_format_codes.get(game_info.get('format'))
+    return '{} {}'.format(game_format, game_type)
 
 def outputToCSV(player1, player2, result):
     # write result to csv with the top row: turn #, player names / classes
