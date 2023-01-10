@@ -22,13 +22,13 @@ logging.basicConfig(
     ]
 )
 
-def getReplayURL(infile):
-    content = str(infile)
-    url_line = content.split('\\n')[-2]
+def getReplayURL(xmlstring):
+    content = str(xmlstring)
+    url_line = content.split('\\n')[-2]                 # get second-to-last line
     url = re.search('(https://hsreplay.net/replay/\w+)', url_line)[0]
     return(url)
     
-def generateID(length=8):
+def generateID(length=6):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
     return(''.join(random.choice(chars) for i in range(length)))
 
@@ -82,7 +82,7 @@ def buildData(infile):
     # rudimentary check that the xml is a HSreplay
     tree = etree.fromstring(infile)      # .fromstring if it's from a string; .parse if it's from a file  # IMPORTANT
     gametype = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="1" or @format="2"]') # standard/wild ranked/casual only
-    assert(len(gametype) > 0), "Not a valid HSReplay XML file (must be standard casual or ranked)"
+    assert(len(gametype) > 0), "Not a valid HSReplay XML file (must be standard or wild, casual or ranked)"
     
     # initial setup: player dicts; empty array for results; timestamps and calculated game length
     players = tree.xpath('//Player')
@@ -122,10 +122,10 @@ def buildData(infile):
     player2['armor'] = 0
 
     # set initial classes (it might change later due to Maestra)
-    lookup = {'HERO_01': 'Warrior', 'HERO_02': 'Shaman', 'HERO_03': 'Rogue', 'HERO_04': 'Paladin', 'HERO_05': 'Hunter', 'HERO_06': 'Druid', 'HERO_07': 'Warlock', 'HERO_08': 'Mage', 'HERO_09': 'Priest', 'HERO_10': 'Demon Hunter', 'HERO_11': 'Death Knight'}
+    hero_lookup = {'HERO_01': 'Warrior', 'HERO_02': 'Shaman', 'HERO_03': 'Rogue', 'HERO_04': 'Paladin', 'HERO_05': 'Hunter', 'HERO_06': 'Druid', 'HERO_07': 'Warlock', 'HERO_08': 'Mage', 'HERO_09': 'Priest', 'HERO_10': 'Demon Hunter', 'HERO_11': 'Death Knight'}
     classes = tree.xpath('//FullEntity[starts-with(@cardID, "HERO_")]')
-    player1['class'] = lookup[classes[0].get("cardID")[:7]]
-    player2['class'] = lookup[classes[2].get("cardID")[:7]]
+    player1['class'] = hero_lookup[classes[0].get("cardID")[:7]]
+    player2['class'] = hero_lookup[classes[2].get("cardID")[:7]]
 
     logging.debug('Players:\n' + json.dumps(player1) + '\n' + json.dumps(player2))
     logging.info(f"{timestamp[:16]} - {player1['name']} ({player1['class']}) vs {player2['name']} ({player2['class']})")

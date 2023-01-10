@@ -1,5 +1,6 @@
 FROM node:18-alpine
-WORKDIR /app
+WORKDIR /frontend
 COPY . .
 RUN npm run build
-CMD ["npm", "start"]
+EXPOSE 3000
+CMD ["nohup", "npm", "start", "&"]

@@ -16,10 +16,10 @@ Requires: Node.js, npm, Python3
 
 ## Features
 - Generates graphs over time of each heroes' health in a Hearthstone replay. Tracks damage, healing, and armour.
-- Supports Renathal - players start at 40HP if he is present in the deck. EDIT: nerfed, ffs Blizzard
-- Supports Maestra of the Masquerade - correct class for each hero is shown, even if they start as another class
+- Supports Renathal - players start at 40HP (pre-nerf) or 35HP (post-nerf) if present in the deck. 
+- Supports Maestra of the Masquerade - correct class for each hero is shown, even if they start as another class, *unless* Rogue is never revealed.
 
 ## Limitations
-- Only tested on standard and wild ranked and casual games. Almost certainly won't work with most tavern brawls. Definitely won't work with any other game modes.
+- Only tested on standard and wild ranked and casual games. 
 - Doesn't support OG Alexstrasza (set a Hero's health to 15), among many other things. 
 - Tons of bugs. 
