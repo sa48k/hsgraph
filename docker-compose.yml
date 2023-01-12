@@ -5,9 +5,9 @@ services:
   api:
     build: 
       context: ./api
-    command: ["flask", "run", "--host=0.0.0.0"]
+    command: ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
     environment:
-      - FLASK_ENV=development
+      - FLASK_ENV=production
       - FLASK_APP=app.py
     ports:
       - "5000:5000"
@@ -15,13 +15,14 @@ services:
   client:
     build: 
       context: ./frontend
-    command: ["npm", "start"]
+    command: ["nginx", "-g", "daemon off;"]
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
     ports:
-      - '80:3000'
+      - '80:80'
     depends_on:
       - api
     stdin_open: true
     tty: true
+
 

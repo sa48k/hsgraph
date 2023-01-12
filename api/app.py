@@ -6,11 +6,11 @@ from hsgraph import *
 app = Flask(__name__)
 CORS(app)
 app.config["DEBUG"] = False
-app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 5 # 5MB max for now
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 10 # 10MB max for now
 
 @app.route('/', methods=['GET'])
 def home():
-	return "<h1>HSGraph API Test v0.1</h1>"
+	return "<h1>HSGraph API Test</h1>"
 
 @app.route('/post', methods=['POST'])
 @cross_origin()
