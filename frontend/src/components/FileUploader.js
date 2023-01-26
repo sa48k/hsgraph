@@ -54,13 +54,13 @@ function FileUploader({ matchesData, setMatchesData }) {
                 } else {
                     const formData = new FormData()
                     formData.append("file", file)
-                    fetch('http://127.0.0.1:5000/post', {
+                    fetch('http://api:5000/post', {
                         method: 'POST',
                         body: formData
                     })
                         .then((res) => res.json())
                         .then((jsondata) => handleReturnedMatchData(jsondata))
-                        .catch((err) => console.log('PANIC! ' + err))
+                        .catch((err) => console.log('Something bad happened: ' + err))
                 }
             };
             reader.readAsArrayBuffer(file)
@@ -85,10 +85,7 @@ function FileUploader({ matchesData, setMatchesData }) {
                         hidden
                     />
                 </Button>
-
-
             </form>
-
 
             <Dialog
                 open={modalOpen}

@@ -1,0 +1,28 @@
+
+version: '3'
+
+services:
+  api:
+    build: 
+      context: ./api
+    command: ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app.py
+    ports:
+      - "5000:5000"
+
+  client:
+    build: 
+      context: ./frontend
+    command: ["nginx", "-g", "daemon off;"]
+    environment:
+      - NODE_ENV=production
+    ports:
+      - '80:80'
+    depends_on:
+      - api
+    stdin_open: true
+    tty: true
+
+
