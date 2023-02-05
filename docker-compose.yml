@@ -3,8 +3,7 @@ version: '3'
 
 services:
   api:
-    build: 
-      context: ./api
+    image: 511277412354.dkr.ecr.ap-southeast-2.amazonaws.com/hearthstone-replay-graph:hsgraph-api
     command: ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
     environment:
       - FLASK_ENV=production
@@ -13,16 +12,13 @@ services:
       - "5000:5000"
 
   client:
-    build: 
-      context: ./frontend
+    image: 511277412354.dkr.ecr.ap-southeast-2.amazonaws.com/hearthstone-replay-graph:hsgraph-client
     command: ["nginx", "-g", "daemon off;"]
     environment:
       - NODE_ENV=production
+
     ports:
       - '80:80'
-    depends_on:
-      - api
-    stdin_open: true
     tty: true
 
 

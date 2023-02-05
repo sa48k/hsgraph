@@ -39,7 +39,8 @@ def getGameType(game_info):
     }
     game_format_codes = {
         '1': 'Wild',
-        '2': 'Standard'
+        '2': 'Standard',
+        '3': 'Classic'
     }
     game_type = game_type_codes.get(game_info.get('type'))
     game_format = game_format_codes.get(game_info.get('format'))
@@ -81,8 +82,8 @@ def generateJSON(metadata, p1, p2):
 def buildData(infile):
     # rudimentary check that the xml is a HSreplay
     tree = etree.fromstring(infile)      # .fromstring if it's from a string; .parse if it's from a file  # IMPORTANT
-    gametype = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="1" or @format="2"]') # standard/wild ranked/casual only
-    assert(len(gametype) > 0), "Not a valid HSReplay XML file (must be standard or wild, casual or ranked)"
+    gametype = tree.xpath('/HSReplay[@version][@build]/Game[@type="7" or @type="8"][@format="1" or @format="2" or @format="3"]') # standard/wild/classic ranked/casual only
+    assert(len(gametype) > 0), "Not a valid HSReplay XML file (must be standard or wild or classic, casual or ranked)"
     
     # initial setup: player dicts; empty array for results; timestamps and calculated game length
     players = tree.xpath('//Player')

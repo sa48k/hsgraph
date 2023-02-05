@@ -54,7 +54,7 @@ function FileUploader({ matchesData, setMatchesData }) {
                 } else {
                     const formData = new FormData()
                     formData.append("file", file)
-                    fetch('/post', {
+                    fetch('http://localhost:5000/post', {
                         method: 'POST',
                         body: formData
 
